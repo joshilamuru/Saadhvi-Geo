@@ -41,8 +41,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         setupView()
         //getting values in textviews
-        
-    
+        userTextfield.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        passwordTextfield.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
     }
     
@@ -83,7 +83,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func logInPressed(_ sender: Any) {
       
-        if((validate(userTextfield).0) && (validate(passwordTextfield).0)){
+        if((validate(textField: userTextfield).0) && (validate(textField: passwordTextfield).0)){
+        
+        
             print("both are valid")
             
             
@@ -109,14 +111,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                       self.loadTaskTypefromServer(username: self.userTextfield.text!, password: self.encryptedPassword)
                     self.loadPOIfromServer(username: self.userTextfield.text!, password: self.encryptedPassword)
                   
+                }else{
+                    //show alert message - Invalid username/password
+                    self.showAlertMessage(message: "Invalid username and password")
+                    SVProgressHUD.dismiss()
                 }
             }
         }else
         {
+            self.passwordValidationLabel.text = "Check your email and password"
             UIView.animate(withDuration: 0.25, animations: {
                 self.passwordValidationLabel.isHidden = false
-            })
-            self.passwordValidationLabel.text = "Check your email and password"
+            },completion: nil)
             print("Input not correct")
             
         }
@@ -297,91 +303,101 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         Alamofire.request(url, method: .post, parameters: message, encoding: JSONEncoding.default, headers: nil).responseJSON
              {
                 (response) in
-                
-                        print(response.request as Any)
-                        print(response.response as Any)
-                        print(response.result.value as Any)
-                
-                    if response.result.isSuccess{
-                        print("success - authenticated")
-                        self.authenticated = true
-                      //  SVProgressHUD.dismiss()
-                        
+                    
+                if let result = response.result.value as? String {
+                                if(result == "Login-Failure"){
+                                    self.authenticated = false
+                                    SVProgressHUD.dismiss()
+                                    self.showAlertMessage(message: "Invalid username or password")
+                                    print("Error \(response.result.error)")
+                                    
+                                }
+                }else {
+                 //print(response.result as Any)
+                    if let resultDic : JSON = JSON(response.result.value!){
+                        if resultDic["message"].stringValue == "IMEI-Invalid-Failure"{
+                            self.authenticated = false
+                            SVProgressHUD.dismiss()
+                            self.showAlertMessage(message: "Invalid IMEI")
+                            
+                        }else if resultDic["message"].stringValue == "IMEI-Valid-Success"{
+                            self.authenticated = true
+                        }
                     }
-                    else {
-                        print("Error \(response.result.error)")
-                        self.authenticated = false
-                        SVProgressHUD.dismiss()
-                        
-                    }
-                completion(self.authenticated)
+                }
+                
+                
+                  completion(self.authenticated)
              
         }
+    }
        
+
+
+   
+    func showAlertMessage(message: String){
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
-    struct CustomEncoding: ParameterEncoding {
-        func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
-            var request = try! URLEncoding().encode(urlRequest, with: parameters)
-            let urlString = request.url?.absoluteString.replacingOccurrences(of: "%5B%5D=", with: "=")
-            request.url = URL(string: urlString!)
-            return request
-        }
-    }
     
     
     
-    @IBAction func userEditingDidChange(_ sender: UITextField) {
-        userValidationLabel.isHidden = true
-        passwordValidationLabel.isHidden = true
-        switch sender {
-            
-        case userTextfield:
-            let (validuser, messageuser) = validate(userTextfield)
-            
-            if(validuser){
-                passwordTextfield.becomeFirstResponder()
-                
-            }
-            
-            self.userValidationLabel.text = messageuser
-            
-            UIView.animate(withDuration: 0.25, animations: {
-                self.userValidationLabel.isHidden = validuser
-            })
-            
-            
-        case passwordTextfield:
-            // Validate Text Field
-            let (valid, message) = validate(passwordTextfield)
-            if(valid){
-                passwordTextfield.resignFirstResponder()
-            }
-            // Update Password Validation Label
-            self.passwordValidationLabel.text = message
-            
-            // Show/Hide Password Validation Label
-            UIView.animate(withDuration: 0.25, animations: {
-                self.passwordValidationLabel.isHidden = valid
-            })
-        default:
-         //   passwordTextfield.resignFirstResponder()
-            userTextfield.becomeFirstResponder()
-        }
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        self.userValidationLabel.isHidden = true
+        self.passwordValidationLabel.isHidden = true
+//        switch sender {
+//
+//        case userTextfield:
+//            let (validuser, messageuser) = validate(textField: userTextfield)
+//
+//            if(validuser){
+//                passwordTextfield.becomeFirstResponder()
+//
+//            }
+//
+//            self.userValidationLabel.text = messageuser
+//
+//            UIView.animate(withDuration: 0.25, animations: {
+//                self.userValidationLabel.isHidden = validuser
+//            })
+//
+//
+//        case passwordTextfield:
+//            // Validate Text Field
+//            let (valid, message) = validate(textField: passwordTextfield)
+//            if(valid){
+//                passwordTextfield.resignFirstResponder()
+//            }
+//            // Update Password Validation Label
+//            self.passwordValidationLabel.text = message
+//
+//            // Show/Hide Password Validation Label
+//            UIView.animate(withDuration: 0.25, animations: {
+//                self.passwordValidationLabel.isHidden = valid
+//            })
+//        default:
+//         //   passwordTextfield.resignFirstResponder()
+//            userTextfield.becomeFirstResponder()
+//        }
         
     }
+
     
-    
-    fileprivate func validate(_ textField: UITextField) ->(Bool, String?) {
+    fileprivate func validate(textField: UITextField) ->(Bool, String?) {
         
-        guard let text = textField.text else {
-            return (false, nil)
+        guard textField.text != nil else {
+            return (false, "This field cannot be empty.")
         }
         if(textField == userTextfield) {
             if(!isValidEmail(textField.text!)){
                 return (false, "Invalid email" )
             }
         }
-        return (text.count > 0, "This field cannot be empty.")
+        if(textField.text?.count == 0){
+            return (false, "This field cannot be empty.")
+        }
+        return (true, nil)
     }
     
     func isValidEmail(_ emailField: String) -> Bool {

@@ -32,7 +32,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                 <connections>
-                                    <action selector="userEditingDidChange:" destination="752-nG-DdT" eventType="editingDidEnd" id="YXh-nx-idC"/>
                                     <outlet property="delegate" destination="752-nG-DdT" id="ker-Yt-Etr"/>
                                 </connections>
                             </textField>
@@ -45,7 +44,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                                 <connections>
-                                    <action selector="userEditingDidChange:" destination="752-nG-DdT" eventType="editingDidEnd" id="FWa-7D-skK"/>
                                     <outlet property="delegate" destination="752-nG-DdT" id="CaX-hf-DZ6"/>
                                 </connections>
                             </textField>

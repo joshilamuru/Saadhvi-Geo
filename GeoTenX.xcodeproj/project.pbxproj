@@ -32,6 +32,7 @@
 		CBC50FB6211DCC1600015827 /* SyncAcctToServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC50FB5211DCC1600015827 /* SyncAcctToServer.swift */; };
 		CBC50FB8211DCC4200015827 /* SyncDataToServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC50FB7211DCC4200015827 /* SyncDataToServer.swift */; };
 		CBC84E0F20D17B83005D6A82 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC84E0E20D17B83005D6A82 /* MapViewController.swift */; };
+		CBE1C1CD2122CBD500B4D61F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE1C1CC2122CBD500B4D61F /* Default-568h@2x.png */; };
 		CBE2AED72111792B00892F7E /* TaskType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE2AED62111792B00892F7E /* TaskType.swift */; };
 		CBE2AED92111AC4A00892F7E /* CustomField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE2AED82111AC4A00892F7E /* CustomField.swift */; };
 		CBF70AE120DD12CC002E69D5 /* POI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF70AE020DD12CC002E69D5 /* POI.swift */; };
@@ -69,6 +70,7 @@
 		CBC50FB5211DCC1600015827 /* SyncAcctToServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncAcctToServer.swift; sourceTree = "<group>"; };
 		CBC50FB7211DCC4200015827 /* SyncDataToServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDataToServer.swift; sourceTree = "<group>"; };
 		CBC84E0E20D17B83005D6A82 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		CBE1C1CC2122CBD500B4D61F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		CBE2AED62111792B00892F7E /* TaskType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskType.swift; sourceTree = "<group>"; };
 		CBE2AED82111AC4A00892F7E /* CustomField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomField.swift; sourceTree = "<group>"; };
 		CBF70AE020DD12CC002E69D5 /* POI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POI.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 		CB55BF6F20D0E5DA0084375D = {
 			isa = PBXGroup;
 			children = (
+				CBE1C1CC2122CBD500B4D61F /* Default-568h@2x.png */,
 				CB55BF7A20D0E5DA0084375D /* GeoTenX */,
 				CB55BF7920D0E5DA0084375D /* Products */,
 				C8A24CA73B788FA09DAAD2B7 /* Pods */,
@@ -285,6 +288,7 @@
 				CB55BF8920D0E5F10084375D /* LaunchScreen.storyboard in Resources */,
 				CB55BF8620D0E5F10084375D /* Assets.xcassets in Resources */,
 				CB3121682122A7DD00F9B19F /* DetailsCell.xib in Resources */,
+				CBE1C1CD2122CBD500B4D61F /* Default-568h@2x.png in Resources */,
 				CB55BF8120D0E5DA0084375D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

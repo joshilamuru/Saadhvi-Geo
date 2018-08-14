@@ -27,9 +27,10 @@ class SyncAcctToServer : NSObject {
         let url = URL(string: urlstring)
         let username = UserDefaults.standard.value(forKey: "username") as? String
         var keychainPassword = ""
+        if let user = username{
         do {
             let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,
-                                                    account: username!,
+                                                    account: user,
                                                     accessGroup: KeychainConfiguration.accessGroup)
             keychainPassword = try passwordItem.readPassword()
             
@@ -48,7 +49,7 @@ class SyncAcctToServer : NSObject {
             let para:NSMutableDictionary = NSMutableDictionary()
             let acctArray:NSMutableArray = NSMutableArray()
             
-            para.setValue(username, forKey: "eMail")
+            para.setValue(user, forKey: "eMail")
             para.setValue(keychainPassword, forKey: "password")
             para.setValue("911430509678238", forKey: "mobileIMEINumber")
             
@@ -104,6 +105,7 @@ class SyncAcctToServer : NSObject {
                     }
                     
             }
+        }
         }
     }
     func updateRealm(data: Results<POI>) {
