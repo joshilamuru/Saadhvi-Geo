@@ -15,21 +15,31 @@ import RealmSwift
 
 
 class PointOfInterest: NSObject {
+    var name: String
     var address : String
     var latitude : Double
     var longitude : Double
     var done : Bool = false
     var taskTypeID: Int
+    var createdDate: String
+    var TypeName: String
+    var shortNotes: String
+    var taskStatus: String
     func distanceFromUser(userLoc: CLLocation) -> Double {
        return CLLocation(latitude: latitude, longitude: longitude).distance(from: userLoc)
     }
     
     
-    init(address: String, latitude: Double, longitude: Double, taskTypeID: Int) {
+    init(name: String, address: String, latitude: Double, longitude: Double, taskTypeID: Int, createdDate: String, TypeName: String, shortNotes: String, taskStatus: String) {
         self.address = address
         self.latitude = latitude
         self.longitude = longitude
         self.taskTypeID = taskTypeID
+        self.name = name
+        self.createdDate = createdDate
+        self.TypeName = TypeName
+        self.shortNotes = shortNotes
+        self.taskStatus = taskStatus
     }
 }
 
@@ -135,7 +145,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
         nearHundred.removeAll()
         for place in savedPlaces {
             if(calcDistanceFromUser(place: place) >= 10.0) {
-                let nearHundredPlace = PointOfInterest(address: place.name, latitude: place.latitude, longitude: place.longitude, taskTypeID: place.TasktypeID )
+                
+                let nearHundredPlace = PointOfInterest(name: place.name, address: place.address, latitude: place.latitude, longitude: place.longitude, taskTypeID: place.TasktypeID, createdDate: place.createdDate, TypeName: place.TypeName, shortNotes: place.shortNotes, taskStatus: place.taskStatus)
                 nearHundred.append(nearHundredPlace)
                 
             }

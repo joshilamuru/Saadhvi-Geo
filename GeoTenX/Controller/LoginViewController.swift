@@ -254,6 +254,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     newPlace.latitude = json["accountRead"][i]["taskLat"].doubleValue
                     newPlace.longitude = json["accountRead"][i]["taskLng"].doubleValue
                     newPlace.createdDate = json["accountRead"][i]["createdDate"].stringValue
+                    newPlace.shortNotes = json["accountRead"][i]["shortNotes"].stringValue
+                    newPlace.taskStatus = json["accountRead"][i]["taskStatus"].stringValue
+                    newPlace.TypeName = json["accountRead"][i]["TypeName"].stringValue
                     newPlace.synced = true
                     realm.add(newPlace, update: true)
                   

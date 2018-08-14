@@ -22,6 +22,8 @@ class POI: Object {
     @objc dynamic var TypeName: String = ""
     @objc dynamic var createdDate: String = ""
     @objc dynamic var synced : Bool = false
+    @objc dynamic var shortNotes : String = ""
+    @objc dynamic var taskStatus : String = ""
  //   @objc dynamic var done : Bool = false
 //    
     override static func primaryKey() -> String? {

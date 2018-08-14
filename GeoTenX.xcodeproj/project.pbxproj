@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04D31043A09B8CD4B1D33596 /* Pods_sampleForGeo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 448F809AB68DD3EDE3353DA4 /* Pods_sampleForGeo.framework */; };
 		457A2DE04F364BE8F49D3456 /* Pods_GeoTenX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1FD9094BF0D73148EA7C01 /* Pods_GeoTenX.framework */; };
 		CB1BDA7720DB6BF2001FB883 /* AddPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1BDA7620DB6BF2001FB883 /* AddPlaceViewController.swift */; };
 		CB1BDA7920DB76CB001FB883 /* GMSCircle+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1BDA7820DB76CB001FB883 /* GMSCircle+Bounds.swift */; };
+		CB3121672122A7DD00F9B19F /* CustomDetailsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3121652122A7DD00F9B19F /* CustomDetailsViewCell.swift */; };
+		CB3121682122A7DD00F9B19F /* DetailsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB3121662122A7DD00F9B19F /* DetailsCell.xib */; };
 		CB31D71B20E27D6200677D73 /* CheckInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB31D71A20E27D6200677D73 /* CheckInController.swift */; };
 		CB34F3742119CB9B00AFA75B /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */; };
 		CB55BF7C20D0E5DA0084375D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55BF7B20D0E5DA0084375D /* AppDelegate.swift */; };
@@ -44,6 +45,8 @@
 		946C38E7BFE3F822CA77381E /* Pods-GeoTenX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoTenX.release.xcconfig"; path = "Pods/Target Support Files/Pods-GeoTenX/Pods-GeoTenX.release.xcconfig"; sourceTree = "<group>"; };
 		CB1BDA7620DB6BF2001FB883 /* AddPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceViewController.swift; sourceTree = "<group>"; };
 		CB1BDA7820DB76CB001FB883 /* GMSCircle+Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GMSCircle+Bounds.swift"; sourceTree = "<group>"; };
+		CB3121652122A7DD00F9B19F /* CustomDetailsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailsViewCell.swift; sourceTree = "<group>"; };
+		CB3121662122A7DD00F9B19F /* DetailsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailsCell.xib; sourceTree = "<group>"; };
 		CB31D71A20E27D6200677D73 /* CheckInController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInController.swift; sourceTree = "<group>"; };
 		CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		CB55BF7820D0E5DA0084375D /* GeoTenX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeoTenX.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,7 +80,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04D31043A09B8CD4B1D33596 /* Pods_sampleForGeo.framework in Frameworks */,
 				457A2DE04F364BE8F49D3456 /* Pods_GeoTenX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,6 +104,15 @@
 				CB1BDA7820DB76CB001FB883 /* GMSCircle+Bounds.swift */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		CB3121642122A71A00F9B19F /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				CB3121652122A7DD00F9B19F /* CustomDetailsViewCell.swift */,
+				CB3121662122A7DD00F9B19F /* DetailsCell.xib */,
+			);
+			path = CustomCell;
 			sourceTree = "<group>";
 		};
 		CB55BF6F20D0E5DA0084375D = {
@@ -191,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				CB55BF7F20D0E5DA0084375D /* Main.storyboard */,
+				CB3121642122A71A00F9B19F /* CustomCell */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -272,6 +284,7 @@
 			files = (
 				CB55BF8920D0E5F10084375D /* LaunchScreen.storyboard in Resources */,
 				CB55BF8620D0E5F10084375D /* Assets.xcassets in Resources */,
+				CB3121682122A7DD00F9B19F /* DetailsCell.xib in Resources */,
 				CB55BF8120D0E5DA0084375D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -374,6 +387,7 @@
 				CB55BF7C20D0E5DA0084375D /* AppDelegate.swift in Sources */,
 				CB55BF8420D0E5DB0084375D /* sampleForGeo.xcdatamodeld in Sources */,
 				CBE2AED92111AC4A00892F7E /* CustomField.swift in Sources */,
+				CB3121672122A7DD00F9B19F /* CustomDetailsViewCell.swift in Sources */,
 				CBC84E0F20D17B83005D6A82 /* MapViewController.swift in Sources */,
 				CBC50FB6211DCC1600015827 /* SyncAcctToServer.swift in Sources */,
 				CB7F7105211BF83100591603 /* AcctDetailsViewController.swift in Sources */,
@@ -526,7 +540,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MZ8S4RZJ4B;
-				INFOPLIST_FILE = "$(SRCROOT)/GeoTen/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/GeoTenX/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -548,7 +562,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MZ8S4RZJ4B;
-				INFOPLIST_FILE = "$(SRCROOT)/GeoTen/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/GeoTenX/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

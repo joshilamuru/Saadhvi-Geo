@@ -36,22 +36,22 @@ class NetworkManager: NSObject {
         case .wifi, .cellular:
 
             print("Reachable via WiFi/cellular-Syncing data..")
-            let username = UserDefaults.standard.value(forKey: "username") as? String
+//            let username = UserDefaults.standard.value(forKey: "username") as? String
+//
+//            var keychainPassword = ""
+//            if let user = username{
+//                do {
+//                    let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,
+//                                                            account: username!,
+//                                                            accessGroup: KeychainConfiguration.accessGroup)
+//                    keychainPassword = try passwordItem.readPassword()
+//
+//                } catch {
+//                    fatalError("Error reading password from keychain - \(error)")
+//                }
             
-            var keychainPassword = ""
-            if let user = username{
-                do {
-                    let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,
-                                                            account: username!,
-                                                            accessGroup: KeychainConfiguration.accessGroup)
-                    keychainPassword = try passwordItem.readPassword()
-                    
-                } catch {
-                    fatalError("Error reading password from keychain - \(error)")
-                }
-                
-                    SyncAcctToServer.SharedSyncInstance.syncData(user: user, password: keychainPassword)
-            }
+                    SyncAcctToServer.SharedSyncInstance.syncData()
+           // }
         case .none:
             print("Network not reachable")
         }

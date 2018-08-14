@@ -15,7 +15,7 @@
         <!--Login View Controller-->
         <scene sceneID="oie-6x-U9l">
             <objects>
-                <viewController id="752-nG-DdT" customClass="LoginViewController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="752-nG-DdT" customClass="LoginViewController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QXQ-6Q-IlK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -210,7 +210,7 @@
         <!--Acct Details View Controller-->
         <scene sceneID="rnv-Vh-gqQ">
             <objects>
-                <viewController id="ehb-6T-eO9" customClass="AcctDetailsViewController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ehb-6T-eO9" customClass="AcctDetailsViewController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ngt-cu-YEM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -237,7 +237,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="ChkInPressed:" destination="ehb-6T-eO9" eventType="touchUpInside" id="J4Z-Ia-BSm"/>
+                                    <action selector="ChkInPressed:" destination="ehb-6T-eO9" eventType="touchUpInside" id="nKI-Zi-tfF"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OCx-fv-rtJ">
@@ -292,7 +292,8 @@
                         <viewLayoutGuide key="safeArea" id="Kl2-Sm-OgO"/>
                     </view>
                     <connections>
-                        <outlet property="mapView" destination="7km-A6-bfJ" id="54e-1y-t36"/>
+                        <outlet property="DetailsTableView" destination="mWK-WH-DMH" id="v4B-ak-iaD"/>
+                        <outlet property="mapView" destination="7km-A6-bfJ" id="w3x-UK-zfm"/>
                         <segue destination="66u-wa-AJU" kind="show" identifier="formSegue" id="m0X-jx-2bh"/>
                     </connections>
                 </viewController>
@@ -303,7 +304,7 @@
         <!--Dynamic Form View Controller-->
         <scene sceneID="Obo-dE-3Rl">
             <objects>
-                <viewController id="66u-wa-AJU" customClass="DynamicFormViewController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="66u-wa-AJU" customClass="DynamicFormViewController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qh0-VX-eL1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -330,7 +331,7 @@
         <!--Check In Controller-->
         <scene sceneID="bvP-vz-hme">
             <objects>
-                <viewController id="VA9-ii-Z0T" customClass="CheckInController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="VA9-ii-Z0T" customClass="CheckInController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eq5-HG-iQl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -360,7 +361,7 @@
                                 <rect key="frame" x="0.0" y="95" width="375" height="572"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationWidth="10" reuseIdentifier="listCell" id="WuO-lU-g5f" customClass="chkListCell" customModule="sampleForGeo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationWidth="10" reuseIdentifier="listCell" id="WuO-lU-g5f" customClass="chkListCell" customModule="GeoTenX" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WuO-lU-g5f" id="OWz-D5-fQ8">
@@ -438,7 +439,7 @@
         <!--Title-->
         <scene sceneID="AAO-iO-OmG">
             <objects>
-                <viewController id="JYE-4a-cUT" customClass="AddPlaceViewController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="JYE-4a-cUT" customClass="AddPlaceViewController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XWs-cv-pBG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -568,7 +569,7 @@
         <!--Comments View Controller-->
         <scene sceneID="EsB-Jw-9tD">
             <objects>
-                <viewController id="efS-K1-eWk" customClass="CommentsViewController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="efS-K1-eWk" customClass="CommentsViewController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pUC-fF-6em">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -583,7 +584,7 @@
         <!--Pictures View Controller-->
         <scene sceneID="NCx-ze-ZQF">
             <objects>
-                <viewController id="58R-Jn-0zK" customClass="PicturesViewController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="58R-Jn-0zK" customClass="PicturesViewController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7Cm-MM-6zB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -598,7 +599,7 @@
         <!--Forms View Controller-->
         <scene sceneID="POI-EC-y1v">
             <objects>
-                <viewController id="ZMv-Zr-Hze" customClass="FormsViewController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZMv-Zr-Hze" customClass="FormsViewController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cZh-f3-laa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -613,7 +614,7 @@
         <!--Category View Controller-->
         <scene sceneID="PXg-TD-zNL">
             <objects>
-                <viewController id="y7E-bj-Xs1" customClass="CategoryViewController" customModule="sampleForGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="y7E-bj-Xs1" customClass="CategoryViewController" customModule="GeoTenX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DJK-7X-Zhz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
