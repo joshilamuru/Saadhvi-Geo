@@ -26,7 +26,7 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         
         //register for xib file
         DetailsTableView.register(UINib(nibName: "DetailsCell", bundle: nil), forCellReuseIdentifier: "customDetailCell")
-        configureTableView()
+        //configureTableView()
     }
 
     func initMap() {
@@ -86,12 +86,12 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         }
         return cell
     }
-    
-  //configure tableview
-    func configureTableView() {
+   
+    override func viewWillAppear(_ animated: Bool) {
         DetailsTableView.rowHeight = UITableViewAutomaticDimension
         DetailsTableView.estimatedRowHeight = 120.0
     }
+ 
    
 }
 

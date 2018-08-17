@@ -23,38 +23,32 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NcH-ey-r0Z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y96-cn-MG9">
-                                <rect key="frame" x="8" y="20" width="312" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="y96-cn-MG9" secondAttribute="height" multiplier="13:1" id="zIA-HW-z9B"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k58-I9-STP">
                                 <rect key="frame" x="8" y="0.0" width="312" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="k58-I9-STP" secondAttribute="height" multiplier="78:5" id="fyk-tR-OFR"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="L9A-c8-yCG">
+                                <rect key="frame" x="8" y="20" width="312" height="24"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="y96-cn-MG9" firstAttribute="leading" secondItem="NcH-ey-r0Z" secondAttribute="leading" constant="8" id="0kU-gO-Ew1"/>
                             <constraint firstAttribute="trailing" secondItem="k58-I9-STP" secondAttribute="trailing" id="6kr-kr-9s7"/>
-                            <constraint firstItem="y96-cn-MG9" firstAttribute="top" secondItem="k58-I9-STP" secondAttribute="bottom" id="Eg8-W7-ogW"/>
-                            <constraint firstAttribute="trailing" secondItem="y96-cn-MG9" secondAttribute="trailing" id="FTw-m1-7Wq"/>
-                            <constraint firstAttribute="bottom" secondItem="y96-cn-MG9" secondAttribute="bottom" id="OP9-AQ-ijk"/>
-                            <constraint firstAttribute="bottom" secondItem="y96-cn-MG9" secondAttribute="bottom" id="Z04-8v-6rW"/>
+                            <constraint firstItem="L9A-c8-yCG" firstAttribute="top" secondItem="k58-I9-STP" secondAttribute="bottom" id="EWi-Rp-Imi"/>
+                            <constraint firstAttribute="trailing" secondItem="L9A-c8-yCG" secondAttribute="trailing" id="EYd-5Z-YLh"/>
+                            <constraint firstItem="L9A-c8-yCG" firstAttribute="leading" secondItem="NcH-ey-r0Z" secondAttribute="leading" constant="8" id="X7N-GT-bxc"/>
+                            <constraint firstAttribute="bottom" secondItem="L9A-c8-yCG" secondAttribute="bottom" id="adI-5o-YOd"/>
                             <constraint firstItem="k58-I9-STP" firstAttribute="leading" secondItem="NcH-ey-r0Z" secondAttribute="leading" constant="8" id="e02-eZ-GWq"/>
                             <constraint firstItem="k58-I9-STP" firstAttribute="top" secondItem="NcH-ey-r0Z" secondAttribute="top" id="eCW-kR-PjM"/>
-                            <constraint firstItem="y96-cn-MG9" firstAttribute="leading" secondItem="NcH-ey-r0Z" secondAttribute="leading" constant="8" id="fe6-lM-4VI"/>
-                            <constraint firstItem="y96-cn-MG9" firstAttribute="top" secondItem="k58-I9-STP" secondAttribute="bottom" id="gEw-NI-JYU"/>
-                            <constraint firstAttribute="trailing" secondItem="y96-cn-MG9" secondAttribute="trailing" id="sV8-sP-8br"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -68,9 +62,10 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="ItemBkg" destination="NcH-ey-r0Z" id="Ltn-qM-lHb"/>
-                <outlet property="ItemDescription" destination="y96-cn-MG9" id="MhX-1v-l85"/>
+                <outlet property="ItemDescription" destination="L9A-c8-yCG" id="EPn-sp-3DF"/>
                 <outlet property="ItemName" destination="k58-I9-STP" id="eCF-UT-7lX"/>
             </connections>
+            <point key="canvasLocation" x="41" y="58"/>
         </tableViewCell>
     </objects>
 </document>

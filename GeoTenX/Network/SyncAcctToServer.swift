@@ -1,7 +1,4 @@
-//
-//
-//  sampleForGeo
-//
+
 //  Created by saadhvi on 8/10/18.
 //  Copyright © 2018 Joshila. All rights reserved.
 //
@@ -85,7 +82,7 @@ class SyncAcctToServer : NSObject {
             para.setObject(acctArray, forKey: "accounts" as NSCopying)
             let values : [String: Any] = para as! [String : Any]
             
-            
+            print("values send: \(values)")
             
             request.httpBody = try! JSONSerialization.data(withJSONObject: values)
             

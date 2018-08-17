@@ -27,8 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
        // UINavigationBar.appearance().tintColor = UIColor.orange
         UINavigationBar.appearance().backgroundColor = UIColor.orange
         
-        GMSPlacesClient.provideAPIKey("AIzaSyADTOdP3ffEs5_cCDkgrKCVg9KtzIUudyI")
-        GMSServices.provideAPIKey("AIzaSyADTOdP3ffEs5_cCDkgrKCVg9KtzIUudyI")
+        GMSPlacesClient.provideAPIKey("AIzaSyD7vNT3SwPn-tY2rfabadA1l8rPFPPOOXs")
+        GMSServices.provideAPIKey("AIzaSyD7vNT3SwPn-tY2rfabadA1l8rPFPPOOXs")
         return true
     }
 
@@ -73,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
-        let container = NSPersistentContainer(name: "sampleForGeo")
+        let container = NSPersistentContainer(name: "GeoTenX")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.

@@ -9,7 +9,7 @@
 import UIKit
 
 struct Constants {
-    static let APP_NAME = "sampleForGeo"
+    static let APP_NAME = "GeoTenX"
     struct Routes {
         static let Api = "/api/mobile"
     }
@@ -28,4 +28,5 @@ struct Constants {
         static let syncAcctTypes = "WSCustomReadSyncAT.do"
         static let syncTaskTypes = "WSCustomReadSync.do"
         static let createPOI = "WSCreateAccount.do"
+        static let createTask = ""
 }

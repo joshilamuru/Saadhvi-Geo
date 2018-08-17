@@ -12,22 +12,17 @@
 		CB1BDA7920DB76CB001FB883 /* GMSCircle+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1BDA7820DB76CB001FB883 /* GMSCircle+Bounds.swift */; };
 		CB3121672122A7DD00F9B19F /* CustomDetailsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3121652122A7DD00F9B19F /* CustomDetailsViewCell.swift */; };
 		CB3121682122A7DD00F9B19F /* DetailsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB3121662122A7DD00F9B19F /* DetailsCell.xib */; };
-		CB31D71B20E27D6200677D73 /* CheckInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB31D71A20E27D6200677D73 /* CheckInController.swift */; };
 		CB34F3742119CB9B00AFA75B /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */; };
 		CB55BF7C20D0E5DA0084375D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55BF7B20D0E5DA0084375D /* AppDelegate.swift */; };
 		CB55BF8120D0E5DA0084375D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB55BF7F20D0E5DA0084375D /* Main.storyboard */; };
 		CB55BF8420D0E5DB0084375D /* sampleForGeo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB55BF8220D0E5DB0084375D /* sampleForGeo.xcdatamodeld */; };
 		CB55BF8620D0E5F10084375D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB55BF8520D0E5F10084375D /* Assets.xcassets */; };
-		CB55BF8920D0E5F10084375D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB55BF8720D0E5F10084375D /* LaunchScreen.storyboard */; };
 		CB5D7B2820D526B80042EE03 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5D7B2720D526B80042EE03 /* Constants.swift */; };
 		CB69E1BD20D68DA300AF7430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB69E1BC20D68DA300AF7430 /* LoginViewController.swift */; };
-		CB71DF1020E52DFE00AEC106 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB71DF0F20E52DFE00AEC106 /* CommentsViewController.swift */; };
-		CB71DF1220E52E1600AEC106 /* PicturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB71DF1120E52E1600AEC106 /* PicturesViewController.swift */; };
-		CB71DF1420E52E2800AEC106 /* FormsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB71DF1320E52E2800AEC106 /* FormsViewController.swift */; };
-		CB71DF1620E52E3900AEC106 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB71DF1520E52E3900AEC106 /* CategoryViewController.swift */; };
 		CB71DF1C20ECC2E500AEC106 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB71DF1B20ECC2E500AEC106 /* LocationService.swift */; };
 		CB7F7105211BF83100591603 /* AcctDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */; };
 		CB9AD93A211EF29D000EA6AF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9AD939211EF29D000EA6AF /* NetworkManager.swift */; };
+		CBA6E5C22126E8FF00740775 /* UIApplication+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA6E5C12126E8FF00740775 /* UIApplication+TopViewController.swift */; };
 		CBAB32BA211825A200D3E9DA /* DynamicFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAB32B9211825A200D3E9DA /* DynamicFormViewController.swift */; };
 		CBC50FB6211DCC1600015827 /* SyncAcctToServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC50FB5211DCC1600015827 /* SyncAcctToServer.swift */; };
 		CBC50FB8211DCC4200015827 /* SyncDataToServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC50FB7211DCC4200015827 /* SyncDataToServer.swift */; };
@@ -48,24 +43,19 @@
 		CB1BDA7820DB76CB001FB883 /* GMSCircle+Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GMSCircle+Bounds.swift"; sourceTree = "<group>"; };
 		CB3121652122A7DD00F9B19F /* CustomDetailsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailsViewCell.swift; sourceTree = "<group>"; };
 		CB3121662122A7DD00F9B19F /* DetailsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailsCell.xib; sourceTree = "<group>"; };
-		CB31D71A20E27D6200677D73 /* CheckInController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInController.swift; sourceTree = "<group>"; };
 		CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		CB55BF7820D0E5DA0084375D /* GeoTenX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeoTenX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB55BF7B20D0E5DA0084375D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB55BF8020D0E5DA0084375D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CB55BF8320D0E5DB0084375D /* sampleForGeo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sampleForGeo.xcdatamodel; sourceTree = "<group>"; };
 		CB55BF8520D0E5F10084375D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		CB55BF8820D0E5F10084375D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CB55BF8A20D0E5F10084375D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB5D7B2720D526B80042EE03 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB69E1BC20D68DA300AF7430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		CB71DF0F20E52DFE00AEC106 /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
-		CB71DF1120E52E1600AEC106 /* PicturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturesViewController.swift; sourceTree = "<group>"; };
-		CB71DF1320E52E2800AEC106 /* FormsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsViewController.swift; sourceTree = "<group>"; };
-		CB71DF1520E52E3900AEC106 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		CB71DF1B20ECC2E500AEC106 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcctDetailsViewController.swift; sourceTree = "<group>"; };
 		CB9AD939211EF29D000EA6AF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		CBA6E5C12126E8FF00740775 /* UIApplication+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+TopViewController.swift"; sourceTree = "<group>"; };
 		CBAB32B9211825A200D3E9DA /* DynamicFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicFormViewController.swift; sourceTree = "<group>"; };
 		CBC50FB5211DCC1600015827 /* SyncAcctToServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncAcctToServer.swift; sourceTree = "<group>"; };
 		CBC50FB7211DCC4200015827 /* SyncDataToServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDataToServer.swift; sourceTree = "<group>"; };
@@ -139,13 +129,13 @@
 		CB55BF7A20D0E5DA0084375D /* GeoTenX */ = {
 			isa = PBXGroup;
 			children = (
+				CBA6E5C02126E8CC00740775 /* Extensions */,
 				CBC50FB4211DCBFB00015827 /* Network */,
 				CB69E1BB20D68C6100AF7430 /* Controller */,
 				CB69E1BA20D68C0000AF7430 /* Model */,
 				CBD30F2820D6615200E88576 /* View */,
 				CB5D7B2720D526B80042EE03 /* Constants.swift */,
 				CB55BF8520D0E5F10084375D /* Assets.xcassets */,
-				CB55BF8720D0E5F10084375D /* LaunchScreen.storyboard */,
 				CB55BF8A20D0E5F10084375D /* Info.plist */,
 				CB55BF8220D0E5DB0084375D /* sampleForGeo.xcdatamodeld */,
 				CB1BDA7C20DB80C3001FB883 /* SupportingFiles */,
@@ -166,13 +156,11 @@
 		CB69E1BB20D68C6100AF7430 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CB71DF0E20E52DD100AEC106 /* CheckIn */,
 				CB69E1BC20D68DA300AF7430 /* LoginViewController.swift */,
 				CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */,
 				CBC84E0E20D17B83005D6A82 /* MapViewController.swift */,
 				CB55BF7B20D0E5DA0084375D /* AppDelegate.swift */,
 				CB1BDA7620DB6BF2001FB883 /* AddPlaceViewController.swift */,
-				CB31D71A20E27D6200677D73 /* CheckInController.swift */,
 				CB71DF1B20ECC2E500AEC106 /* LocationService.swift */,
 				CBAB32B9211825A200D3E9DA /* DynamicFormViewController.swift */,
 				CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */,
@@ -180,15 +168,12 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		CB71DF0E20E52DD100AEC106 /* CheckIn */ = {
+		CBA6E5C02126E8CC00740775 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CB71DF0F20E52DFE00AEC106 /* CommentsViewController.swift */,
-				CB71DF1120E52E1600AEC106 /* PicturesViewController.swift */,
-				CB71DF1320E52E2800AEC106 /* FormsViewController.swift */,
-				CB71DF1520E52E3900AEC106 /* CategoryViewController.swift */,
+				CBA6E5C12126E8FF00740775 /* UIApplication+TopViewController.swift */,
 			);
-			path = CheckIn;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		CBC50FB4211DCBFB00015827 /* Network */ = {
@@ -285,7 +270,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB55BF8920D0E5F10084375D /* LaunchScreen.storyboard in Resources */,
 				CB55BF8620D0E5F10084375D /* Assets.xcassets in Resources */,
 				CB3121682122A7DD00F9B19F /* DetailsCell.xib in Resources */,
 				CBE1C1CD2122CBD500B4D61F /* Default-568h@2x.png in Resources */,
@@ -384,20 +368,16 @@
 				CB34F3742119CB9B00AFA75B /* KeychainPasswordItem.swift in Sources */,
 				CBC50FB8211DCC4200015827 /* SyncDataToServer.swift in Sources */,
 				CB5D7B2820D526B80042EE03 /* Constants.swift in Sources */,
-				CB71DF1220E52E1600AEC106 /* PicturesViewController.swift in Sources */,
 				CBF70AE120DD12CC002E69D5 /* POI.swift in Sources */,
 				CBE2AED72111792B00892F7E /* TaskType.swift in Sources */,
-				CB71DF1420E52E2800AEC106 /* FormsViewController.swift in Sources */,
 				CB55BF7C20D0E5DA0084375D /* AppDelegate.swift in Sources */,
 				CB55BF8420D0E5DB0084375D /* sampleForGeo.xcdatamodeld in Sources */,
 				CBE2AED92111AC4A00892F7E /* CustomField.swift in Sources */,
 				CB3121672122A7DD00F9B19F /* CustomDetailsViewCell.swift in Sources */,
 				CBC84E0F20D17B83005D6A82 /* MapViewController.swift in Sources */,
 				CBC50FB6211DCC1600015827 /* SyncAcctToServer.swift in Sources */,
+				CBA6E5C22126E8FF00740775 /* UIApplication+TopViewController.swift in Sources */,
 				CB7F7105211BF83100591603 /* AcctDetailsViewController.swift in Sources */,
-				CB71DF1620E52E3900AEC106 /* CategoryViewController.swift in Sources */,
-				CB71DF1020E52DFE00AEC106 /* CommentsViewController.swift in Sources */,
-				CB31D71B20E27D6200677D73 /* CheckInController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,14 +390,6 @@
 				CB55BF8020D0E5DA0084375D /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		CB55BF8720D0E5F10084375D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CB55BF8820D0E5F10084375D /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

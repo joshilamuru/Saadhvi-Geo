@@ -36,29 +36,20 @@ class NetworkManager: NSObject {
         case .wifi, .cellular:
 
             print("Reachable via WiFi/cellular-Syncing data..")
-//            let username = UserDefaults.standard.value(forKey: "username") as? String
-//
-//            var keychainPassword = ""
-//            if let user = username{
-//                do {
-//                    let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,
-//                                                            account: username!,
-//                                                            accessGroup: KeychainConfiguration.accessGroup)
-//                    keychainPassword = try passwordItem.readPassword()
-//
-//                } catch {
-//                    fatalError("Error reading password from keychain - \(error)")
-//                }
-            
-                    SyncAcctToServer.SharedSyncInstance.syncData()
-           // }
+
+            SyncAcctToServer.SharedSyncInstance.syncData()
+      
         case .none:
             print("Network not reachable")
+            let alert = UIAlertController(title: "Internet Connection Lost", message: "Please check your internet connection", preferredStyle: .alert)
+            let cancelButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            alert.addAction(cancelButton)
+            UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
         }
     }
     
     
-
+ 
     func startMonitoring() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.reachabilityChanged),

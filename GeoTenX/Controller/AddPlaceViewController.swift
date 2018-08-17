@@ -82,9 +82,14 @@ class AddPlaceViewController:
             do{
                 try realm.write{
                     realm.add(newPlace)
+                    if (NetworkManager.sharedInstance.reachability).connection != .none {
+                        
                     SyncAcctToServer.SharedSyncInstance.syncData()
-                    //syncPOItoServer(place: newPlace)
+                    
                     _ = navigationController?.popViewController(animated: true)
+                    }else{
+                        showAlertMessage(message: "Lost internet connection. Please connect to internet")
+                    }
                 }
             }catch{
                 print("Error adding place to realm \(error)")
@@ -95,7 +100,11 @@ class AddPlaceViewController:
     }
     
   
-    
+    func showAlertMessage(message: String){
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
         marker.icon = GMSMarker.markerImage(with: .red)
         
@@ -129,8 +138,8 @@ class AddPlaceViewController:
         }
     }
    
-    
-    func mapView(mapView: GMSMapView, didChangeCameraPosition position: GMSCameraPosition) {
+   
+    private func mapView(mapView: GMSMapView, didChangeCameraPosition position: GMSCameraPosition) {
         
        print("from didchangecamera position")
     }
@@ -142,7 +151,7 @@ class AddPlaceViewController:
     //NOT WORKING >>>NEED TO FIND OUT
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "addPlaceSegue") {
-            let destinationVC = segue.destination as! MapViewController
+          //  let destinationVC = segue.destination as! MapViewController
           
         }
     }
@@ -163,7 +172,7 @@ class AddPlaceViewController:
     
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
+        print("Place address: \(place.formattedAddress!)")
         dismiss(animated: true, completion: nil)
         newPlacMapView.clear()
         

@@ -11,7 +11,8 @@ import UIKit
 class CustomDetailsViewCell: UITableViewCell {
 
     @IBOutlet weak var ItemBkg: UIView!
-    @IBOutlet weak var ItemDescription: UILabel!
+   
+    @IBOutlet weak var ItemDescription: UITextView!
     @IBOutlet weak var ItemName: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()

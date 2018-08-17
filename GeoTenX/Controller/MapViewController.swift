@@ -77,7 +77,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
         pointOfInterestTableView.dataSource = self
        
         print("Current location obtained :  \(currentLocation.coordinate.latitude, currentLocation.coordinate.longitude)")
-       
+      
        // loadPOI()
        // initMap()
         
@@ -105,9 +105,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
         self.currentLocation = userinfo!["location"] as! CLLocation
         print("Latitude : \(self.currentLocation.coordinate.latitude)")
         print("Longitude : \(self.currentLocation.coordinate.longitude)")
-        loadPOI()
+        
         
         initMap()
+        loadPOI()
         
     }
     

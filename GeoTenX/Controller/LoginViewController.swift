@@ -14,11 +14,12 @@ import SVProgressHUD
 import RealmSwift
 
 struct KeychainConfiguration {
-    static let serviceName = "TouchMeIn"
+    static let serviceName = "SerName"
     static let accessGroup: String? = nil
 }
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
+    var json: JSON = JSON.null
     var passwordItems: [KeychainPasswordItem] = []
     let createLoginButtonTag = 0
     let loginButtonTag = 1
@@ -31,14 +32,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var authenticated = false
     let realm = try! Realm()
     var encryptedPassword = ""
-   
+    //let myGroup = DispatchGroup()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.userTextfield.delegate = self
         self.passwordTextfield.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        
         setupView()
         //getting values in textviews
         userTextfield.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -82,24 +85,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func logInPressed(_ sender: Any) {
-      
+        dismissKeyboard()
+        SVProgressHUD.show()
+        let user = userTextfield.text
+        if(NetworkManager.sharedInstance.reachability.connection != .none) {
         if((validate(textField: userTextfield).0) && (validate(textField: passwordTextfield).0)){
-        
-        
             print("both are valid")
             
-            
-            SVProgressHUD.show()
             encryptedPassword = passwordTextfield.text!.md5()
-            authenticateUser(username: userTextfield.text!, password: encryptedPassword) {
+            authenticateUser(username: user!, password: encryptedPassword) {
             (response) in
                 if(self.authenticated){
                     //store in keychain
-                     UserDefaults.standard.setValue(self.userTextfield.text, forKey: "username")
+                    
+                     UserDefaults.standard.setValue(user, forKey: "username")
                     do {
                         
                         let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,
-                                                                account: self.userTextfield.text!,
+                                                                account: user!,
                                                                 accessGroup: KeychainConfiguration.accessGroup)
                         
                         // Save the password for the user
@@ -108,14 +111,36 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         fatalError("Error updating keychain - \(error)")
                     }
                     //get the tasktypes and accounts from server
-                      self.loadTaskTypefromServer(username: self.userTextfield.text!, password: self.encryptedPassword)
-                    self.loadPOIfromServer(username: self.userTextfield.text!, password: self.encryptedPassword)
-                  
-                }else{
+                    self.loadPOIfromServer(username: user!, password: self.encryptedPassword) {
+                     (poiLoaded) in
+                        if(poiLoaded) {
+                            self.loadTaskTypefromServer(username: user!, password: self.encryptedPassword){
+                                (dataLoaded) in
+                                if(dataLoaded){
+                                    SVProgressHUD.dismiss()
+                                    self.performSegue(withIdentifier: "loginPressedSegue", sender: self)
+                                }
+                                
+                            }
+                        }
+                        
+                    }
+//                    self.loadTaskTypefromServer(username: user!, password: self.encryptedPassword){
+//                        (dataLoaded) in
+//                        if(dataLoaded){
+//                            SVProgressHUD.dismiss()
+//                            self.performSegue(withIdentifier: "loginPressedSegue", sender: self)
+//                        }
+//
+//                    }
+//
+                    
+                    }
+                    else{
                     //show alert message - Invalid username/password
-                    self.showAlertMessage(message: "Invalid username and password")
+                  //  self.showAlertMessage(message: "Invalid username/password")
                     SVProgressHUD.dismiss()
-                }
+                    }
             }
         }else
         {
@@ -126,10 +151,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             print("Input not correct")
             
         }
+        }else{
+            SVProgressHUD.dismiss()
+           // showAlertMessage(message: "No Internet connection. Please connect to internet and try again")
+        }
         
     }
     
-    func loadTaskTypefromServer(username: String, password: String) -> Void {
+   
+    
+    func loadTaskTypefromServer(username: String, password: String, completion: @escaping (_ : Bool)->())  {
         let url = Constants.Domains.Stag + Constants.syncTaskTypes
         let input : [String: Any] = [ "TaskTypeLUV": 0,
                                       "CustomFieldLUV": 0,
@@ -139,6 +170,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                       "eMail": username,
                                       "mobileIMEINumber": "911430509678238",
                                       "password": password]
+      
+         SVProgressHUD.setStatus("Loading task types and custom fields...")
+        
         Alamofire.request(url, method: .post, parameters: input, encoding: JSONEncoding.default, headers: nil).responseJSON
             {
                 (response) in
@@ -149,19 +183,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 
                 if response.result.isSuccess{
                     //loadPOI in realm
-                    
-                    let result : JSON = JSON(response.result.value!)
-                    
-                    self.updateTaskTypesData(json: result)
-                    
-                    
-                    self.updateCustomFieldData(json: result)
                    
+                        let result : JSON = JSON(response.result.value!)
+                        
+                        self.updateTaskTypesData(json: result)
+                        
+                        self.updateCustomFieldData(json: result)
+                   
+                   completion(true)
+                   
+                }else{
+                    completion(false)
                 }
                 
         }
+      
     }
-    func loadPOIfromServer(username: String, password: String) -> Void {
+    func loadPOIfromServer(username: String, password: String, completion: @escaping (_ : Bool)->())  {
         //
         let url = Constants.Domains.Stag + Constants.requestPOI
        // let url = "http://49.207.180.189:8082/taskease/requestAT.htm"
@@ -173,7 +211,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                      "eMail": username,
                                      "mobileIMEINumber": "911430509678238",
                                      "password": password]
-      
+   //    self.myGroup.enter()
+        SVProgressHUD.setStatus("Loading places...")
         Alamofire.request(url, method: .post, parameters: input, encoding: JSONEncoding.default, headers: nil).responseJSON
             {
                 (response) in
@@ -188,17 +227,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     let acctsJSON : JSON = JSON(response.result.value!)
                     
                     self.updatePOIData(json: acctsJSON)
-                    SVProgressHUD.dismiss()
-                    self.performSegue(withIdentifier: "loginPressedSegue", sender: self)
+//                    SVProgressHUD.dismiss()
+//                    self.performSegue(withIdentifier: "loginPressedSegue", sender: self)
+                     completion(true)
                 }
                 else {
-                    print("Error \(response.result.error)")
+                    print("Error \(response.result.error as Optional)")
                     
                     SVProgressHUD.dismiss()
-                    
+                     completion(false)
                 }
                 
-                
+             // self.myGroup.leave()
         }
     }
     
@@ -287,13 +327,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         
         let url = Constants.Domains.Stag + Constants.authUserMethod
-        //let url = "http://49.207.180.189:8082/taskease/authenticationUser.htm"
-        //+ Constants.authUserMethod
-        //{"eMail":"user2@taskease.com","password":"21232f297a57a5a743894a0e4a801fc3","mobileIMEINumber":"911430509678238","deviceID":"APA91bGIWYSx_ufY3fMVu0z1jk4U_LVvh-FdFhDJUrlZA0igkpJH0sJ-k9tRv11N24T9_-ccADRAKMCOldHKDdaIOD1WucuCX_AL9s_6_8-7PKMzDeSdo8MQql0EQDUnsMZ7E6TPlvfXZCrplk4U9DFL2oH2OyJEkw","mobileInfo":"VERSION.RELEASE-6.0,MODEL-Android SDK built for x86,TASKEASE_VERSION_NAME-Revamp 2.51.67","osType":"ANDROID"}
-        
-        //let encryptedPassword = MD5(string: password).toHexString()
-        
-        
+        if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+            print(uuid)
+            
+        }
         
         let message: [String: String] =
             ["eMail": username, "password": password, "mobileIMEINumber": "911430509678238", "deviceID":
@@ -301,40 +338,41 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
        
         Alamofire.request(url, method: .post, parameters: message, encoding: JSONEncoding.default, headers: nil).responseJSON
-             {
-                (response) in
-                    
+             { response in
                 if let result = response.result.value as? String {
-                                if(result == "Login-Failure"){
-                                    self.authenticated = false
-                                    SVProgressHUD.dismiss()
-                                    self.showAlertMessage(message: "Invalid username or password")
-                                    print("Error \(response.result.error)")
-                                    
-                                }
-                }else {
-                 //print(response.result as Any)
-                    if let resultDic : JSON = JSON(response.result.value!){
-                        if resultDic["message"].stringValue == "IMEI-Invalid-Failure"{
-                            self.authenticated = false
-                            SVProgressHUD.dismiss()
-                            self.showAlertMessage(message: "Invalid IMEI")
-                            
-                        }else if resultDic["message"].stringValue == "IMEI-Valid-Success"{
-                            self.authenticated = true
-                        }
+                    if(result == "Login-Failure"){
+                        self.authenticated = false
+                        SVProgressHUD.dismiss()
+                        self.showAlertMessage(message: "Invalid username or password")
+                       // print("Error \(response.result.error!)")
+                        
                     }
+                }else if let resultDic = response.result.value as? [String: Any]{
+                        let json = JSON(resultDic)
+                        print("Json: \(json["message"])")
+                            if json["message"].stringValue == "IMEI-Invalid-Failure"{
+                                self.authenticated = false
+                                SVProgressHUD.dismiss()
+                                self.showAlertMessage(message: "Invalid IMEI")
+                                
+                            }else {
+                                if json["message"].stringValue == "IMEI-valid-Success"{
+                                self.authenticated = true
+                            }
+                    }
+                }else {
+                    SVProgressHUD.dismiss()
+                    self.showAlertMessage(message: "Error connecting to server")
                 }
                 
                 
-                  completion(self.authenticated)
-             
+               
+          completion(self.authenticated)
         }
+        
+             
     }
-       
-
-
-   
+  
     func showAlertMessage(message: String){
         let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -346,41 +384,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @objc func textFieldDidChange(_ textField: UITextField) {
         self.userValidationLabel.isHidden = true
         self.passwordValidationLabel.isHidden = true
-//        switch sender {
-//
-//        case userTextfield:
-//            let (validuser, messageuser) = validate(textField: userTextfield)
-//
-//            if(validuser){
-//                passwordTextfield.becomeFirstResponder()
-//
-//            }
-//
-//            self.userValidationLabel.text = messageuser
-//
-//            UIView.animate(withDuration: 0.25, animations: {
-//                self.userValidationLabel.isHidden = validuser
-//            })
-//
-//
-//        case passwordTextfield:
-//            // Validate Text Field
-//            let (valid, message) = validate(textField: passwordTextfield)
-//            if(valid){
-//                passwordTextfield.resignFirstResponder()
-//            }
-//            // Update Password Validation Label
-//            self.passwordValidationLabel.text = message
-//
-//            // Show/Hide Password Validation Label
-//            UIView.animate(withDuration: 0.25, animations: {
-//                self.passwordValidationLabel.isHidden = valid
-//            })
-//        default:
-//         //   passwordTextfield.resignFirstResponder()
-//            userTextfield.becomeFirstResponder()
-//        }
-        
+    
     }
 
     
@@ -413,7 +417,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return emailTest.evaluate(with: emailField)
     }
     
-    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
   
 }
 
