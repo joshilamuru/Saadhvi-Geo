@@ -78,6 +78,12 @@ class AddPlaceViewController:
             newPlace.address = placeTextField.text!
             newPlace.latitude = marker.position.latitude
             newPlace.longitude = marker.position.longitude
+            let df = DateFormatter()
+            df.setLocalizedDateFormatFromTemplate("dd-mm-yyyy HH:MM:SS")
+            let timeNow = df.string(from: Date())
+//            let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .full, timeStyle: .full)
+//            newPlace.createdDate = timestamp
+            newPlace.createdDate = timeNow
             newPlace.synced = false
             do{
                 try realm.write{
@@ -99,6 +105,7 @@ class AddPlaceViewController:
         
     }
     
+   
   
     func showAlertMessage(message: String){
         let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)

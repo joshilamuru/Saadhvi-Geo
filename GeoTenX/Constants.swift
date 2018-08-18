@@ -28,5 +28,5 @@ struct Constants {
         static let syncAcctTypes = "WSCustomReadSyncAT.do"
         static let syncTaskTypes = "WSCustomReadSync.do"
         static let createPOI = "WSCreateAccount.do"
-        static let createTask = ""
+        static let createTask = "WSCreateTask.do"
 }

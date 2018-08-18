@@ -15,23 +15,35 @@ class DynamicFormViewController: FormViewController {
  var acct : String = ""
     var taskTypeID : Int!
     @IBOutlet weak var acctLabel: UILabel!
+    var customFields: Results<CustomField>? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+     
         self.navigationItem.title = "Check-In"
         acctLabel.text = acct
-        let customFields = getCustomFieldsByTaskID(ID: String(taskTypeID))
+        customFields = getCustomFieldsByTaskID(ID: String(taskTypeID))
+        if(!(customFields?.isEmpty)!){
+            loadForm()
+        }else{
+            showAlertMessage(message: "No custom fields available. Try again")
+        }
+        }
+
+    func loadForm() {
+    
         
         form +++ Section("Account Info")
-       // let section = form.sectionBy(tag: "Account Info")
-        for field in customFields {
+        // let section = form.sectionBy(tag: "Account Info")
+        for field in customFields! {
             switch(field.EntryType) {
             case "Text":
-
+                
                 self.form.last! <<< TextRow(){ row in
-                                    row.title = field.DisplayName
-                                    row.placeholder = field.Desc
+                    row.title = field.DisplayName
+                    row.placeholder = field.Desc
                 }
-
+                
             case "Number":
                 self.form.last! <<< IntRow(){ row in
                     row.title = field.DisplayName
@@ -50,19 +62,19 @@ class DynamicFormViewController: FormViewController {
                     row.clearAction = .yes(style: .default)
                     
                 }
-//            case "Option", "Choice", "Auto Text":
-//                self.form +++ SelectableSection<ListCheckRow<String>>(field.DisplayName, selectionType: .singleSelection(enableDeselection: true)){section in
-//                    section.tag = field.DisplayName
-//                }
-//
-//                let options = (field.DefaultValues).components(separatedBy: ",")
-//                for item in options {
-//                    form.last! <<< ListCheckRow<String>(item){ listRow in
-//                        listRow.title = item
-//                        listRow.selectableValue = item
-//                        listRow.value = nil
-//                    }
-//                }
+                //            case "Option", "Choice", "Auto Text":
+                //                self.form +++ SelectableSection<ListCheckRow<String>>(field.DisplayName, selectionType: .singleSelection(enableDeselection: true)){section in
+                //                    section.tag = field.DisplayName
+                //                }
+                //
+                //                let options = (field.DefaultValues).components(separatedBy: ",")
+                //                for item in options {
+                //                    form.last! <<< ListCheckRow<String>(item){ listRow in
+                //                        listRow.title = item
+                //                        listRow.selectableValue = item
+                //                        listRow.value = nil
+                //                    }
+            //                }
             case "Option", "Auto Text":
                 self.form.last! <<< PushRow<String>(){
                     $0.title = field.DisplayName
@@ -72,9 +84,9 @@ class DynamicFormViewController: FormViewController {
                     $0.value = ""
                     $0.selectorTitle = "Choose an option"
                     }.onPresent{from, to in
-                    to.dismissOnSelection = true
+                        to.dismissOnSelection = true
                         to.dismissOnChange = false
-                    }
+                }
             case "Choice":
                 self.form.last! <<< MultipleSelectorRow<String> {
                     $0.title = field.DisplayName
@@ -84,7 +96,7 @@ class DynamicFormViewController: FormViewController {
                     $0.value = [""]
                     }.onPresent{from, to in
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(DynamicFormViewController.multipleSelectorDone(_:)))
-                       
+                        
                 }
                 
                 
@@ -92,19 +104,18 @@ class DynamicFormViewController: FormViewController {
                 print("no custom fields - \(field.EntryType)")
                 
             }
-           
-            }
-//        for section in form.allSections {
-//            print("Section tags - \(section.tag)")
-//        }
-            self.form.last! <<< ButtonRow("Save") {
-                $0.title = "Save"
-                }.cellUpdate { cell, row in
+            
+        }
+        //        for section in form.allSections {
+        //            print("Section tags - \(section.tag)")
+        //        }
+        self.form.last! <<< ButtonRow("Save") {
+            $0.title = "Save"
+            }.cellUpdate { cell, row in
                 cell.textLabel?.textColor = UIColor.orange
                 cell.backgroundColor = UIColor.darkGray }
-        }
+    }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -122,6 +133,13 @@ class DynamicFormViewController: FormViewController {
         
         return fields
     }
+ 
+    func showAlertMessage(message: String){
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     
+   
 }
 

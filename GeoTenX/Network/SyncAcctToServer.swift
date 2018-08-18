@@ -53,17 +53,19 @@ class SyncAcctToServer : NSObject {
             for place in POIs
             {
                 let acct: NSMutableDictionary = NSMutableDictionary()
-                acct.setValue(place.name, forKey: "name")
+            
                 acct.setValue(place.accountID, forKey: "accountIDFrmMobile")
                 acct.setValue("0", forKey: "accountID")
                 acct.setValue(place.name, forKey: "accountName")
                 acct.setValue(place.name, forKey: "taskDescription")
                 acct.setValue("0", forKey: "dueDate")
                 acct.setValue("0", forKey: "dueTime")
+                acct.setValue("0", forKey: "remindDate")
+                acct.setValue("0", forKey: "remindTime")
                 acct.setValue(place.latitude, forKey: "taskLat")
                 acct.setValue(place.longitude, forKey: "taskLng")
                 acct.setValue(place.address, forKey: "taskAddress")
-                acct.setValue("sync", forKey: "Synched")
+                acct.setValue("Synched", forKey: "sync")
                 acct.setValue(0, forKey: "markedAsDone")
                 acct.setValue(timestamp, forKey: "createdDate")
                 acct.setValue("", forKey: "shortNotes")
