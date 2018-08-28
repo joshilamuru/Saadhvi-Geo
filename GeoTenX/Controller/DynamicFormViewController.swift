@@ -11,7 +11,8 @@ import Eureka
 import RealmSwift
 import ImageRow
 
-class DynamicFormViewController: FormViewController {
+class DynamicFormViewController: FormViewController{
+    
  var acct : String = ""
     var taskTypeID : Int!
     @IBOutlet weak var acctLabel: UILabel!
@@ -19,21 +20,23 @@ class DynamicFormViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        
-     
-        self.navigationItem.title = "Check-In"
+        let str = NSLocalizedString("Check-In", comment: "Check-In")
+        self.navigationItem.title = str
         acctLabel.text = acct
         customFields = getCustomFieldsByTaskID(ID: String(taskTypeID))
         if(!(customFields?.isEmpty)!){
             loadForm()
         }else{
-            showAlertMessage(message: "No custom fields available. Try again")
+            let str = NSLocalizedString("No custom fields available. Try again", comment: "No custom fields available. Try again")
+            
+            showAlertMessage(message: str)
         }
         }
 
     func loadForm() {
     
-        
-        form +++ Section("Account Info")
+        let sectStr = NSLocalizedString("Account Info", comment: "Account Info")
+        form +++ Section(sectStr)
         // let section = form.sectionBy(tag: "Account Info")
         for field in customFields! {
             switch(field.EntryType) {
@@ -82,7 +85,8 @@ class DynamicFormViewController: FormViewController {
                     print("Values are: \(values)")
                     $0.options = values
                     $0.value = ""
-                    $0.selectorTitle = "Choose an option"
+                    let strOption = NSLocalizedString("Choose an option", comment: "Choose an option")
+                    $0.selectorTitle = strOption
                     }.onPresent{from, to in
                         to.dismissOnSelection = true
                         to.dismissOnChange = false
@@ -98,6 +102,32 @@ class DynamicFormViewController: FormViewController {
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(DynamicFormViewController.multipleSelectorDone(_:)))
                         
                 }
+      /*      case "Dual Camera":
+                //go to dual cameraviewcontroller
+               //use presenter row
+                self.form.last! <<< ButtonRowWithPresent<DualCameraViewController>() {
+                    
+                    $0.title = field.DisplayName
+                    $0.presentationMode = PresentationMode<DualCameraViewController>.show(controllerProvider: ControllerProvider.Callback {
+                    let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+                    let vc = mainStoryboard.instantiateViewControllerWithIdentifier("colorPickerViewController") as! ColorPickerViewController
+                    vc.delegate = self
+                    return vc
+                        }, completionCallback: {vc in
+                            vc.navigationController?.popViewControllerAnimated(true)
+                            
+                    })
+                }
+            */
+            case "Dual Camera":
+                self.form.last! <<< PushRow<String>() {
+                    $0.title = field.DisplayName
+                    $0.presentationMode = .segueName(segueName: "DualCameraSegue", onDismiss: nil)
+                }
+                
+                
+                
+                
                 
                 
             default:
@@ -110,7 +140,8 @@ class DynamicFormViewController: FormViewController {
         //            print("Section tags - \(section.tag)")
         //        }
         self.form.last! <<< ButtonRow("Save") {
-            $0.title = "Save"
+            
+            $0.title = NSLocalizedString("Save", comment: "Save")
             }.cellUpdate { cell, row in
                 cell.textLabel?.textColor = UIColor.orange
                 cell.backgroundColor = UIColor.darkGray }
@@ -135,8 +166,10 @@ class DynamicFormViewController: FormViewController {
     }
  
     func showAlertMessage(message: String){
-        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let formatAlert = NSLocalizedString("Alert", comment: "Alert")
+        let alert = UIAlertController(title: formatAlert, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let formatOK = NSLocalizedString("OK", comment: "OK")
+        alert.addAction(UIAlertAction(title: formatOK, style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     

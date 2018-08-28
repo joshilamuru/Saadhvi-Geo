@@ -1,0 +1,48 @@
+/*
+ Localizable.strings
+ GeoTenX
+ 
+ Created by saadhvi on 8/20/18.
+ Copyright © 2018 Joshila. All rights reserved.
+ */
+"Username" = "Username";
+"Password" = "Password";
+"Nearby Places" = "Nearby Places";
+"Account Details" = "Account Details";
+"Add Place" = "Add Place";
+"Customer Name" = "Customer Name";
+"Name of the place you are currently at" = "Name of the place you are currently at";
+"Address" = "Address";
+"Check-In" = "Check-In";
+"Track Orders" = "Track Orders";
+"Account Name" = "Account Name";
+"Account Address" = "Account Address";
+"Created Date" ="Created Date";
+"Notes" = "Notes";
+"Task Status" = "Task Status";
+"Add A New Place" = "Add A New Place";
+"Please select a place before continuing." = "Please select a place before continuing.";
+"Alert" = "Alert";
+"Ok" = "Ok";
+"View Account Details" = "View Account Details";
+"Places near you" = "Places near you";
+"Select a place to continue"= "Select a place to continue";
+"Enter username" = "Enter username";
+"Enter password" = "Enter password";
+"Check your email and password" = "Check your email and password";
+"Unable to load tasktypes and customfields" = "Unable to load tasktypes and customfields";
+"Loading places..." = "Loading places...";
+"Authenticating user..." = "Authenticating user...";
+"Invalid username or password" = "Invalid username or password";
+"Place name cannot be empty" = "Place name cannot be empty";
+"Name of place cannot be empty" = "Name of place cannot be empty";
+"Address cannot be empty. Enter address" = "Address cannot be empty. Enter address";
+"Lost internet connection. Please connect to internet" = "Lost internet connection. Please connect to internet";
+"Location" = "Location";
+"Please select a place within \"100 mts\" of your current location" = "Please select a place within \"100 mts\" of your current location";
+"No custom fields available. Try again" = "No custom fields available. Try again";
+"Account Info" = "Account Info";
+"Choose an option" = "Choose an option";
+"Save" = "Save";
+"Select Category" = "Select Category";
+"Select SubCategory" = "Select SubCategory";

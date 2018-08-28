@@ -61,13 +61,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
     var searchController: UISearchController!
     let realm = try! Realm()
     var mapInitialized: Bool = false
-    
-    
+    var savedPlaces = [POI]()
+    var copysavedPlaces = [POI]()
    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+        detailButton.setTitle(NSLocalizedString("Account Details", comment: "View Account Details"), for: .normal)
         NotificationCenter.default.addObserver(self, selector: #selector(MapViewController.locationUpdateNotification(_:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
         let LocationMgr = LocationService.SharedManager
         LocationMgr.delegate = self
@@ -103,8 +103,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
     @objc func locationUpdateNotification(_ notification: Notification) {
         let userinfo = notification.userInfo
         self.currentLocation = userinfo!["location"] as! CLLocation
-        print("Latitude : \(self.currentLocation.coordinate.latitude)")
-        print("Longitude : \(self.currentLocation.coordinate.longitude)")
+        print("Latitude from mapviewcontroller: \(self.currentLocation.coordinate.latitude)")
+        print("Longitude from mapviewcontroller : \(self.currentLocation.coordinate.longitude)")
         
         
         initMap()
@@ -118,13 +118,26 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
         //  initMap()
     }
     override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
+        
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
+        do{
+            try realm.write {
+                for place in savedPlaces{
+                    place.done = false
+                }
+            }
+        
+        
+       
+        }catch{
+            print("error updating done field in POI")
+        }
     }
     func initLocationManager() {
         //Setup location manager
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
        // locationManager.startMonitoringSignificantLocationChanges()
     }
@@ -141,11 +154,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
     }
     
     func loadPOI(){
+        savedPlaces = Array(realm.objects(POI.self))
+        copysavedPlaces = savedPlaces
+        sortPlacesByDist()
+        selectedIndex = nil
+        self.pointOfInterestTableView.reloadData()
+    }
+    func sortPlacesByDist(){
+    savedPlaces.sort(by: {$0.distanceFromUser(userLoc: currentLocation) < $1.distanceFromUser(userLoc: currentLocation)})
+    }
+    func loadNearHundredPOI(){
         
         let savedPlaces = Array(realm.objects(POI.self))
         nearHundred.removeAll()
         for place in savedPlaces {
-            if(calcDistanceFromUser(place: place) >= 10.0) {
+            if(calcDistanceFromUser(place: place) <= 100) {
                 
                 let nearHundredPlace = PointOfInterest(name: place.name, address: place.address, latitude: place.latitude, longitude: place.longitude, taskTypeID: place.TasktypeID, createdDate: place.createdDate, TypeName: place.TypeName, shortNotes: place.shortNotes, taskStatus: place.taskStatus)
                 nearHundred.append(nearHundredPlace)
@@ -174,7 +197,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationItem.title = "Nearby Places"
+        navigationItem.title = NSLocalizedString("Nearby Places", comment: "Places near you")
         
         loadPOI()
       
@@ -186,17 +209,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
     }
     
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  /*  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "addPlaceSegue") {
             let destinationVC = segue.destination as! AddPlaceViewController
             destinationVC.currentLocation = (currentLocation)
             
             navigationItem.title = " "
-            destinationVC.navigationItem.title = "Add A New Place"
+            destinationVC.navigationItem.title = NSLocalizedString("Add A New Place", comment: "Add A New Place")
         }else if (segue.identifier == "detailSegue") {
             let destinationVC = segue.destination as! AcctDetailsViewController
             navigationItem.title = ""
-            destinationVC.navigationItem.title = "Account Details"
+            destinationVC.navigationItem.title = NSLocalizedString("Account Details", comment: "Account Details")
             if(selectedIndex != nil){
                 destinationVC.acctLocation = CLLocation(latitude: filteredNearHundred[selectedIndex].latitude, longitude: filteredNearHundred[selectedIndex].longitude)
                 
@@ -209,8 +232,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
             }
         //    destinationVC.navigationItem.title = "Check-In \n \(filteredNearHundred[selectedIndex].address)"
         }
+    }*/
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "addPlaceSegue") {
+            let destinationVC = segue.destination as! AddPlaceViewController
+            destinationVC.currentLocation = (currentLocation)
+            
+            navigationItem.title = " "
+            destinationVC.navigationItem.title = NSLocalizedString("Add A New Place", comment: "Add A New Place")
+        }else if (segue.identifier == "detailSegue") {
+            let destinationVC = segue.destination as! AcctDetailsViewController
+            navigationItem.title = ""
+            destinationVC.navigationItem.title = NSLocalizedString("Account Details", comment: "Account Details")
+            if(selectedIndex != nil){
+                destinationVC.acctLocation = CLLocation(latitude: savedPlaces[selectedIndex].latitude, longitude: savedPlaces[selectedIndex].longitude)
+                
+                destinationVC.poi = savedPlaces[selectedIndex]
+                //print(filteredNearHundred[selectedIndex])
+            }else
+            {
+                print("no row selected in tableview")
+                //alert user to select
+            }
+            //    destinationVC.navigationItem.title = "Check-In \n \(filteredNearHundred[selectedIndex].address)"
+        }
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -225,7 +271,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
             performSegue(withIdentifier: "detailSegue", sender: self)
         }else{
             //alert user if no selection made
-            let alert = UIAlertController(title: "Alert", message: "Please select a place before continuing.", preferredStyle: .alert)
+            let formatString = NSLocalizedString("Please select a place before continuing.", comment: "Select a place to continue")
+            let alert = UIAlertController(title: "Alert", message: formatString, preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             self.present(alert, animated: true)
@@ -238,9 +285,77 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
 
 // MARK: TableView datasource and delegate methods
 extension MapViewController : UITableViewDelegate, UITableViewDataSource {
-    
-    //TableView DataSource Methods
+//TableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("savedPlaces count: \(savedPlaces.count)")
+        return savedPlaces.count
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "pointOfInterestCell", for: indexPath)
+      
+        let item = savedPlaces[indexPath.row]
+        cell.textLabel?.text = item.name
+        
+        //value = condition ? valueIfTrue : valueIfFalse
+        cell.accessoryType = item.done == true ? .checkmark : .none
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+        
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    do{
+        try realm.write{
+        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
+            savedPlaces[indexPath.row].done = false
+            selectedIndex = nil
+            
+            mapView.clear()
+            //tableView.reloadRows(at: [indexPath], with: .top)
+        }else {
+            //clearing previously selected row
+            for poi in savedPlaces{
+                poi.done = false
+            }
+            savedPlaces[indexPath.row].done = true
+            
+            selectedIndex = indexPath.row
+            
+            mapView.clear()
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: savedPlaces[indexPath.row].latitude, longitude: savedPlaces[indexPath.row].longitude)
+            marker.map = mapView
+            self.mapView.animate(toLocation: marker.position)
+          }
+        }
+    }catch{
+        print("error selecting tableview row")
+        }
+        tableView.reloadData()
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+    
+    
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        if let searchText = searchController.searchBar.text {
+            
+            savedPlaces = searchText.isEmpty ? copysavedPlaces : copysavedPlaces.filter({( poi : POI) -> Bool in
+                return poi.name.lowercased().contains(searchText.lowercased())
+            })
+           self.pointOfInterestTableView.reloadData()
+            
+        }
+        self.pointOfInterestTableView.reloadData()
+    }
+    //TableView DataSource Methods
+ /*   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("nearHundred count: \(nearHundred.count)")
         return filteredNearHundred.count
         
@@ -249,10 +364,9 @@ extension MapViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "pointOfInterestCell", for: indexPath)
 
-//        let item = nearHundred[indexPath.row]
-//        cell.textLabel?.text = item.address
+        
         let item = filteredNearHundred[indexPath.row]
-        cell.textLabel?.text = item.address
+        cell.textLabel?.text = item.name
         
         //value = condition ? valueIfTrue : valueIfFalse
         cell.accessoryType = item.done == true ? .checkmark : .none
@@ -290,16 +404,18 @@ extension MapViewController : UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    
+    
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text {
             filteredNearHundred = searchText.isEmpty ? nearHundred : nearHundred.filter({( poi : PointOfInterest) -> Bool in
-            return poi.address.lowercased().contains(searchText.lowercased())
+            return poi.name.lowercased().contains(searchText.lowercased())
             })
         
             self.pointOfInterestTableView.reloadData()
         }
         
-    }
+    }*/
     
     
     

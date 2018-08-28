@@ -35,13 +35,16 @@ class TaskType: Object {
     @objc dynamic var AutoGenFieldNo: String = ""
     @objc dynamic var ReferenceNo: String = ""
      @objc dynamic var synced : Bool = false
-    
+    @objc dynamic var taskIDToServer: Int = 0
     
     override static func primaryKey() -> String? {
         return "TaskTypeIDFrmMobile"
     }
     
-    
+    func incrementID() -> Int {
+        let realm = try! Realm()
+        return (realm.objects(POI.self).max(ofProperty: "taskIDToServer") as Int? ?? 0) + 1
+    }
     
    
 }

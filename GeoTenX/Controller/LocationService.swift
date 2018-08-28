@@ -52,7 +52,7 @@ class LocationService : NSObject, CLLocationManagerDelegate {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: self, userInfo: userInfo as? [AnyHashable : Any])
                
             }
-            print("longitude = \(currentLocation.coordinate.longitude), latitude = \(currentLocation.coordinate.latitude)")
+            print("longitude from location service= \(currentLocation.coordinate.longitude), latitude = \(currentLocation.coordinate.latitude)")
         }
     }
         

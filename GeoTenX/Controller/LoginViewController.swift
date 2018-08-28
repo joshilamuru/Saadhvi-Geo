@@ -20,6 +20,7 @@ struct KeychainConfiguration {
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     var json: JSON = JSON.null
+    let userDefault = UserDefaults.standard
     var passwordItems: [KeychainPasswordItem] = []
     let createLoginButtonTag = 0
     let loginButtonTag = 1
@@ -27,6 +28,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var userTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     
+    @IBOutlet weak var LoginBtn: UIButton!
     @IBOutlet weak var userValidationLabel: UILabel!
     @IBOutlet weak var passwordValidationLabel: UILabel!
     var authenticated = false
@@ -36,9 +38,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //let myGroup = DispatchGroup()
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        
         //if already logged in ??
         self.userTextfield.delegate = self
         self.passwordTextfield.delegate = self
+         userTextfield.placeholder = NSLocalizedString("Username", comment: "Enter username")
+        passwordTextfield.placeholder = NSLocalizedString("Password", comment: "Enter password")
+        LoginBtn.setTitle(NSLocalizedString("Login", comment: "Login"), for: .normal)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
@@ -56,6 +63,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        //autologin if user logged in the device
+                if (userDefault.bool(forKey: "isLoggedIn")){
+                    print("user logged in")
+                  self.performSegue(withIdentifier: "loginPressedSegue", sender: self)
+                }else{
+                    print("no user logged in")
+                }
+        }
+
+        
     @objc func keyboardWillChange(notification: Notification){
         guard let keyboardRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
@@ -99,7 +117,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 if(self.authenticated){
                     //store in keychain
                     
-                     UserDefaults.standard.setValue(user, forKey: "username")
+                     self.userDefault.setValue(user, forKey: "username")
                     do {
                         
                         let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,
@@ -108,7 +126,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         
                         // Save the password for the user
                         try passwordItem.savePassword(self.encryptedPassword)
+                        self.userDefault.setValue(true, forKey: "isLoggedIn")
+                        
+                        
                     } catch {
+                        self.userDefault.setValue(false, forKey: "isLoggedIn")
                         fatalError("Error updating keychain - \(error)")
                     }
                     DispatchQueue.main.async {
@@ -121,12 +143,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     //show alert message - Invalid username/password
                   //  self.showAlertMessage(message: "Invalid username/password")
                     SVProgressHUD.dismiss()
+                    self.userDefault.setValue(false, forKey: "isLoggedIn")
                     }
             }
         }else
         {
             SVProgressHUD.dismiss()
-            self.passwordValidationLabel.text = "Check your email and password"
+            self.passwordValidationLabel.text = NSLocalizedString("Check your email and password", comment: "Check your email and password")
             UIView.animate(withDuration: 0.25, animations: {
                 self.passwordValidationLabel.isHidden = false
             },completion: nil)
@@ -175,7 +198,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         self.performSegue(withIdentifier: "loginPressedSegue", sender: self)
                         
                     }else{
-                        self.showAlertMessage(message: "Unable to load tasktypes and customfields")
+                        let formatMessage = NSLocalizedString("Unable to load tasktypes and customfields", comment: "Unable to load tasktypes and customfields")
+                        self.showAlertMessage(message: formatMessage)
                     }
                     
             }
@@ -194,8 +218,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                      "eMail": username,
                                      "mobileIMEINumber": "911430509678238",
                                      "password": password]
-        
-        SVProgressHUD.setStatus("Loading places...")
+        let formatMes = NSLocalizedString("Loading places...", comment: "Loading places...")
+        SVProgressHUD.setStatus(formatMes)
       
             
         
@@ -363,9 +387,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
        
     }
     func updatePOIData(json: JSON){
-        
+        //deleting existing objects from realm that have come from server to prevent duplication as they don't have a primary key associated
+       let existingObjsFrmServer = realm.objects(POI.self).filter("fromServer = true")
+        if existingObjsFrmServer.count > 0{
+            try! realm.write {
+                realm.delete(existingObjsFrmServer)
+                }
+        }
+ 
         let count : Int = json["totalCount"].intValue
-     //   let count : Int = json["accountRead"].
+       
         if(count > 0) {
         for i in 0..<count {
            
@@ -383,6 +414,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     newPlace.taskStatus = json["accountRead"][i]["taskStatus"].stringValue
                     newPlace.TypeName = json["accountRead"][i]["TypeName"].stringValue
                     newPlace.synced = true
+                    newPlace.fromServer = true
                     realm.add(newPlace, update: true)
                   
                   //  print("Successful in getting account \(i) from server")
@@ -403,8 +435,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
        
     }
     func authenticateUser(username: String, password: String, completion: @escaping (Bool) -> Void) {
-        
-        SVProgressHUD.setStatus("Authenticating user...")
+        let formatStr = NSLocalizedString("Authenticating user...", comment: "Authenticating user...")
+        SVProgressHUD.setStatus(formatStr)
         let url = Constants.Domains.Stag + Constants.authUserMethod
         if let uuid = UIDevice.current.identifierForVendor?.uuidString {
             print(uuid)
@@ -422,7 +454,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     if(result == "Login-Failure"){
                         self.authenticated = false
                         SVProgressHUD.dismiss()
-                        self.showAlertMessage(message: "Invalid username or password")
+                        let messageStr = NSLocalizedString("Invalid username or password", comment: "Invalid username or password")
+                        self.showAlertMessage(message: messageStr)
                        // print("Error \(response.result.error!)")
                         
                     }

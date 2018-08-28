@@ -14,7 +14,8 @@ import GooglePlaces
 class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
 
     @IBOutlet weak var DetailsTableView: UITableView!
-    var poi : PointOfInterest!
+   // var poi : PointOfInterest!
+    var poi: POI!
     @IBOutlet weak var mapView: GMSMapView!
     var acctLocation = CLLocation()
     
@@ -50,7 +51,7 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         if(segue.identifier == "formSegue") {
             let destinationVC = segue.destination as! DynamicFormViewController
             destinationVC.acct = poi.address
-            destinationVC.taskTypeID = poi.taskTypeID
+            destinationVC.taskTypeID = poi.TasktypeID
             
             navigationItem.title = " "
             destinationVC.navigationItem.title = "Form Details"

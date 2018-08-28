@@ -1,0 +1,45 @@
+
+/* Class = "UILabel"; text = "Customer Name"; ObjectID = "4Q1-c3-g7O"; */
+"4Q1-c3-g7O.text" = "Customer Name";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "4x9-UY-G3b"; */
+"4x9-UY-G3b.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "Username"; ObjectID = "Gtz-mq-siG"; */
+"Gtz-mq-siG.placeholder" = "Username";
+
+/* Class = "UILabel"; text = "Address"; ObjectID = "Jg0-kj-7ss"; */
+"Jg0-kj-7ss.text" = "Address";
+
+/* Class = "UILabel"; text = "Name of the place you are currently at:"; ObjectID = "LYV-kP-9wP"; */
+"LYV-kP-9wP.text" = "Name of the place you are currently at:";
+
+/* Class = "UIButton"; normalTitle = "Track Orders"; ObjectID = "OCx-fv-rtJ"; */
+"OCx-fv-rtJ.normalTitle" = "Track Orders";
+
+/* Class = "UINavigationItem"; title = "Title"; ObjectID = "Tgd-oM-8x4"; */
+"Tgd-oM-8x4.title" = "Title";
+
+/* Class = "UIButton"; normalTitle = "Check In"; ObjectID = "Zba-yB-c8R"; */
+"Zba-yB-c8R.normalTitle" = "Check In";
+
+/* Class = "UIButton"; normalTitle = "ADD PLACE"; ObjectID = "akv-Lj-OuR"; */
+"akv-Lj-OuR.normalTitle" = "ADD PLACE";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "iLq-hq-uZV"; */
+"iLq-hq-uZV.normalTitle" = "Login";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "n8x-vQ-MFm"; */
+"n8x-vQ-MFm.placeholder" = "Password";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "psD-RZ-3St"; */
+"psD-RZ-3St.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Account Details"; ObjectID = "vIb-Yc-Bz3"; */
+"vIb-Yc-Bz3.normalTitle" = "Account Details";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "x0Y-Pp-ymU"; */
+"x0Y-Pp-ymU.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "Nearby Places"; ObjectID = "yPh-Vg-uWC"; */
+"yPh-Vg-uWC.title" = "Nearby Places";

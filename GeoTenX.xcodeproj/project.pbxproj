@@ -19,10 +19,13 @@
 		CB55BF8620D0E5F10084375D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB55BF8520D0E5F10084375D /* Assets.xcassets */; };
 		CB5D7B2820D526B80042EE03 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5D7B2720D526B80042EE03 /* Constants.swift */; };
 		CB67A50821283FBC00EDDCA9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB67A50721283FBB00EDDCA9 /* LaunchScreen.storyboard */; };
+		CB67A511212AEF6500EDDCA9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB67A513212AEF6500EDDCA9 /* Localizable.strings */; };
 		CB69E1BD20D68DA300AF7430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB69E1BC20D68DA300AF7430 /* LoginViewController.swift */; };
 		CB71DF1C20ECC2E500AEC106 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB71DF1B20ECC2E500AEC106 /* LocationService.swift */; };
 		CB7F7105211BF83100591603 /* AcctDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */; };
 		CB9AD93A211EF29D000EA6AF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9AD939211EF29D000EA6AF /* NetworkManager.swift */; };
+		CB9BB2082133DDFC00FCE5FB /* DualCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9BB2072133DDFC00FCE5FB /* DualCameraViewController.swift */; };
+		CB9BB20A2135131000FCE5FB /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9BB2092135131000FCE5FB /* RoundButton.swift */; };
 		CBA6E5C22126E8FF00740775 /* UIApplication+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA6E5C12126E8FF00740775 /* UIApplication+TopViewController.swift */; };
 		CBAB32BA211825A200D3E9DA /* DynamicFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAB32B9211825A200D3E9DA /* DynamicFormViewController.swift */; };
 		CBC50FB6211DCC1600015827 /* SyncAcctToServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC50FB5211DCC1600015827 /* SyncAcctToServer.swift */; };
@@ -53,10 +56,15 @@
 		CB55BF8A20D0E5F10084375D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB5D7B2720D526B80042EE03 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB67A50721283FBB00EDDCA9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CB67A510212AEF0700EDDCA9 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Main.strings"; sourceTree = "<group>"; };
+		CB67A512212AEF6500EDDCA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CB67A514212AEF6800EDDCA9 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CB69E1BC20D68DA300AF7430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CB71DF1B20ECC2E500AEC106 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcctDetailsViewController.swift; sourceTree = "<group>"; };
 		CB9AD939211EF29D000EA6AF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		CB9BB2072133DDFC00FCE5FB /* DualCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualCameraViewController.swift; sourceTree = "<group>"; };
+		CB9BB2092135131000FCE5FB /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		CBA6E5C12126E8FF00740775 /* UIApplication+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+TopViewController.swift"; sourceTree = "<group>"; };
 		CBAB32B9211825A200D3E9DA /* DynamicFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicFormViewController.swift; sourceTree = "<group>"; };
 		CBC50FB5211DCC1600015827 /* SyncAcctToServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncAcctToServer.swift; sourceTree = "<group>"; };
@@ -112,6 +120,7 @@
 		CB55BF6F20D0E5DA0084375D = {
 			isa = PBXGroup;
 			children = (
+				CB67A513212AEF6500EDDCA9 /* Localizable.strings */,
 				CBE1C1CC2122CBD500B4D61F /* Default-568h@2x.png */,
 				CB55BF7A20D0E5DA0084375D /* GeoTenX */,
 				CB55BF7920D0E5DA0084375D /* Products */,
@@ -149,6 +158,7 @@
 		CB67A5092128564400EDDCA9 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				CB9BB2092135131000FCE5FB /* RoundButton.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -174,6 +184,7 @@
 				CB71DF1B20ECC2E500AEC106 /* LocationService.swift */,
 				CBAB32B9211825A200D3E9DA /* DynamicFormViewController.swift */,
 				CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */,
+				CB9BB2072133DDFC00FCE5FB /* DualCameraViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -265,6 +276,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"es-419",
 			);
 			mainGroup = CB55BF6F20D0E5DA0084375D;
 			productRefGroup = CB55BF7920D0E5DA0084375D /* Products */;
@@ -282,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB55BF8620D0E5F10084375D /* Assets.xcassets in Resources */,
+				CB67A511212AEF6500EDDCA9 /* Localizable.strings in Resources */,
 				CB3121682122A7DD00F9B19F /* DetailsCell.xib in Resources */,
 				CBE1C1CD2122CBD500B4D61F /* Default-568h@2x.png in Resources */,
 				CB67A50821283FBC00EDDCA9 /* LaunchScreen.storyboard in Resources */,
@@ -374,11 +387,13 @@
 				CB9AD93A211EF29D000EA6AF /* NetworkManager.swift in Sources */,
 				CBAB32BA211825A200D3E9DA /* DynamicFormViewController.swift in Sources */,
 				CB71DF1C20ECC2E500AEC106 /* LocationService.swift in Sources */,
+				CB9BB2082133DDFC00FCE5FB /* DualCameraViewController.swift in Sources */,
 				CB1BDA7720DB6BF2001FB883 /* AddPlaceViewController.swift in Sources */,
 				CB69E1BD20D68DA300AF7430 /* LoginViewController.swift in Sources */,
 				CB1BDA7920DB76CB001FB883 /* GMSCircle+Bounds.swift in Sources */,
 				CB34F3742119CB9B00AFA75B /* KeychainPasswordItem.swift in Sources */,
 				CBC50FB8211DCC4200015827 /* SyncDataToServer.swift in Sources */,
+				CB9BB20A2135131000FCE5FB /* RoundButton.swift in Sources */,
 				CB5D7B2820D526B80042EE03 /* Constants.swift in Sources */,
 				CBF70AE120DD12CC002E69D5 /* POI.swift in Sources */,
 				CBE2AED72111792B00892F7E /* TaskType.swift in Sources */,
@@ -400,8 +415,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				CB55BF8020D0E5DA0084375D /* Base */,
+				CB67A510212AEF0700EDDCA9 /* es-419 */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CB67A513212AEF6500EDDCA9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB67A512212AEF6500EDDCA9 /* en */,
+				CB67A514212AEF6800EDDCA9 /* es-419 */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -411,6 +436,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -471,6 +497,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

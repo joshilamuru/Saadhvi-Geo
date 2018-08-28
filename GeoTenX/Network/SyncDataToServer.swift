@@ -50,11 +50,13 @@ class SyncDataToServer : NSObject {
                 para.setValue(keychainPassword, forKey: "password")
                 para.setValue("911430509678238", forKey: "mobileIMEINumber")
                 /*{"taskIDFrmMobile":9,"taskID":"504451","accountID":"90","taskDescription":"ssssssss","dueDate":"25-Jan-1900","dueTime":"08:00 AM","remindDate":"25-Jan-1900","remindTime":"07:00 AM","taskLat":0,"taskLng":0,"taskAddress":"","mapLocatedAddress":"","sync":"Synched","markedAsDone":0,"createdDate":"13-08-2018 18:36:14","shortNotes":"","snotesId":0,"taskStatus":"Open","TasktypeID":310,"Others":"{\"TSL\":{\"ST\":\"20180813 183614\",\"Lat\":\"13.039103231269072\",\"Lng\":\"80.17174715475144\",\"AL\":\"75.089554\",\"LP\":\"network\",\"cellId\":2147483647,\"lacId\":2147483647},\"TUL\":{\"UT\":\"20180813 184058\",\"Lat\":\"13.039103231269072\",\"Lng\":\"80.17174715475144\",\"AL\":\"75.08279\",\"LP\":\"network\",\"cellId\":2147483647,\"lacId\":2147483647}}","SpecialColumnValue":"","IsFavourite":0,"TaskDifferentiation":"M","AutoGenFieldNo":"","ReferenceNo":"72737337"}*/
+                
                 for tt in TTs
                 {
                     let acct: NSMutableDictionary = NSMutableDictionary()
                     
-                    acct.setValue(tt.TaskTypeIDFrmMobile, forKey: "taskIDFrmMobile")
+                    //acct.setValue(tt.TaskTypeIDFrmMobile, forKey: "taskIDFrmMobile")
+                    acct.setValue(tt.incrementID(), forKey: "taskIDFrmMobile")
                     acct.setValue(tt.JobTypeID, forKey: "taskID")
                     acct.setValue("0", forKey: "accountID")
                     acct.setValue(tt.Desc, forKey: "taskDescription")

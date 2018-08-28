@@ -34,7 +34,7 @@ class SyncAcctToServer : NSObject {
         } catch {
             fatalError("Error reading password from keychain - \(error)")
         }
-        let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .short, timeStyle: .full)
+     //   let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .short, timeStyle: .full)
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -53,8 +53,9 @@ class SyncAcctToServer : NSObject {
             for place in POIs
             {
                 let acct: NSMutableDictionary = NSMutableDictionary()
-            
-                acct.setValue(place.accountID, forKey: "accountIDFrmMobile")
+                
+               // acct.setValue(place.accountID, forKey: "accountIDFrmMobile")
+                acct.setValue(place.incrementID(), forKey: "accountIDFrmMobile")
                 acct.setValue("0", forKey: "accountID")
                 acct.setValue(place.name, forKey: "accountName")
                 acct.setValue(place.name, forKey: "taskDescription")
@@ -67,7 +68,7 @@ class SyncAcctToServer : NSObject {
                 acct.setValue(place.address, forKey: "taskAddress")
                 acct.setValue("Synched", forKey: "sync")
                 acct.setValue(0, forKey: "markedAsDone")
-                acct.setValue(timestamp, forKey: "createdDate")
+                acct.setValue(place.createdDate, forKey: "createdDate")
                 acct.setValue("", forKey: "shortNotes")
                 acct.setValue(0, forKey: "snotesId")
                 acct.setValue("", forKey: "taskStatus")
@@ -107,6 +108,8 @@ class SyncAcctToServer : NSObject {
         }
         }
     }
+    
+    
     func updateRealm(data: Results<POI>) {
         for poi in data{
             try! realm.write {

@@ -22,13 +22,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var counter: Int!
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
      
-        
+       // let root = UIApplication.shared.windows[0].view
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
        // UINavigationBar.appearance().tintColor = UIColor.orange
         UINavigationBar.appearance().backgroundColor = UIColor.orange
         
         GMSPlacesClient.provideAPIKey("AIzaSyD7vNT3SwPn-tY2rfabadA1l8rPFPPOOXs")
         GMSServices.provideAPIKey("AIzaSyD7vNT3SwPn-tY2rfabadA1l8rPFPPOOXs")
+        
+      
+        
         return true
     }
 
