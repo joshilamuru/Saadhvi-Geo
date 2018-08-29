@@ -58,26 +58,14 @@ class DynamicFormViewController: FormViewController{
                     row.title = field.DisplayName
                     
                 }
-            case "Image Upload":
-                self.form.last! <<< ImageRow(){ row in
-                    row.title = field.DisplayName
-                    row.sourceTypes = .Camera
-                    row.clearAction = .yes(style: .default)
-                    
-                }
-                //            case "Option", "Choice", "Auto Text":
-                //                self.form +++ SelectableSection<ListCheckRow<String>>(field.DisplayName, selectionType: .singleSelection(enableDeselection: true)){section in
-                //                    section.tag = field.DisplayName
-                //                }
-                //
-                //                let options = (field.DefaultValues).components(separatedBy: ",")
-                //                for item in options {
-                //                    form.last! <<< ListCheckRow<String>(item){ listRow in
-                //                        listRow.title = item
-                //                        listRow.selectableValue = item
-                //                        listRow.value = nil
-                //                    }
-            //                }
+//            case "Image Upload":
+//                self.form.last! <<< ImageRow(){ row in
+//                    row.title = field.DisplayName
+//                    row.sourceTypes = .Camera
+//                    row.clearAction = .yes(style: .default)
+//
+//                }
+               
             case "Option", "Auto Text":
                 self.form.last! <<< PushRow<String>(){
                     $0.title = field.DisplayName
@@ -102,24 +90,8 @@ class DynamicFormViewController: FormViewController{
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(DynamicFormViewController.multipleSelectorDone(_:)))
                         
                 }
-      /*      case "Dual Camera":
-                //go to dual cameraviewcontroller
-               //use presenter row
-                self.form.last! <<< ButtonRowWithPresent<DualCameraViewController>() {
-                    
-                    $0.title = field.DisplayName
-                    $0.presentationMode = PresentationMode<DualCameraViewController>.show(controllerProvider: ControllerProvider.Callback {
-                    let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-                    let vc = mainStoryboard.instantiateViewControllerWithIdentifier("colorPickerViewController") as! ColorPickerViewController
-                    vc.delegate = self
-                    return vc
-                        }, completionCallback: {vc in
-                            vc.navigationController?.popViewControllerAnimated(true)
-                            
-                    })
-                }
-            */
-            case "Dual Camera":
+      
+            case "Dual Camera", "Image Upload":
                 self.form.last! <<< PushRow<String>() {
                     $0.title = field.DisplayName
                     $0.presentationMode = .segueName(segueName: "DualCameraSegue", onDismiss: nil)

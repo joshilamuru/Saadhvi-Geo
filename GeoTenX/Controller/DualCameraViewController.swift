@@ -17,6 +17,10 @@ class DualCameraViewController: UIViewController {
    
     @IBOutlet weak var camBtn: RoundButton!
     
+    @IBOutlet weak var ContainerUIView: UIView!
+    @IBOutlet weak var backImageView: UIImageView!
+    
+    @IBOutlet weak var frontImageView: UIImageView!
     var captureSession = AVCaptureSession()
     
     var backFacingCamera: AVCaptureDevice?
@@ -24,6 +28,8 @@ class DualCameraViewController: UIViewController {
     var currentDevice: AVCaptureDevice?
     var photoOutput: AVCapturePhotoOutput?
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    var cameraFrontPreviewLayer: AVCaptureVideoPreviewLayer?
+    var image, backImg, frontImg, mergedImage: UIImage?
     
     let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInTelephotoCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera], mediaType: .video, position: .unspecified)
     
@@ -38,6 +44,11 @@ class DualCameraViewController: UIViewController {
     }
     
     @IBAction func camBtnPressed(_ sender: Any) {
+        
+        let settings = AVCapturePhotoSettings()
+        photoOutput?.capturePhoto(with: settings, delegate: self)
+        
+       
         
     }
     func setupCaptureSession(){
@@ -64,7 +75,8 @@ class DualCameraViewController: UIViewController {
         do{
             let captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice!)
             captureSession.addInput(captureDeviceInput)
-            photoOutput?.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
+            photoOutput = AVCapturePhotoOutput()
+        photoOutput?.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
             captureSession.addOutput(photoOutput!)
         }catch{
             print(error)
@@ -76,10 +88,99 @@ class DualCameraViewController: UIViewController {
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+        cameraPreviewLayer?.frame = backImageView.bounds
+        backImageView.layer.insertSublayer(cameraPreviewLayer!, at: 0)
+        
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         cameraPreviewLayer?.frame = self.view.frame
-        self.view.layer.insertSublayer(cameraPreviewLayer!, at: 0)
+       // cameraPreviewLayer?.frame = self.view.layer.bounds
     }
     func startRunningCaptureSession() {
         captureSession.startRunning()
+    }
+    func image(view: UIView) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, 0.0)
+        defer { UIGraphicsEndImageContext() }
+        if let context = UIGraphicsGetCurrentContext() {
+            view.layer.render(in: context)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            return image
+        }
+        return nil
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showPhotoSegue"{
+            let previewVC = segue.destination as! PreviewViewController
+           // mergedImage = ContainerUIView.capture()
+            mergedImage = image(view: ContainerUIView)
+            previewVC.mergeImage = mergedImage
+            navigationItem.title = " "
+        }
+    }
+    
+    
+}
+
+extension DualCameraViewController: AVCapturePhotoCaptureDelegate {
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let imageData = photo.fileDataRepresentation() {
+            print(imageData)
+            image = UIImage(data: imageData)
+            if(currentDevice == backFacingCamera){
+                backImageView.image = image
+                backImg = image
+                getFrontCameraImage()
+            }else {
+                
+                frontImageView.image = image
+                frontImg = image
+                captureSession.stopRunning()
+               
+                sleep(2)
+               // mergedImage = ContainerUIView.capture()
+          
+                performSegue(withIdentifier: "showPhotoSegue", sender: nil)
+                
+                
+               
+            }
+            
+            
+        //
+        }
+        
+    }
+    
+    func getFrontCameraImage(){
+        captureSession.beginConfiguration()
+        let newDevice = (currentDevice?.position == .back) ?
+            frontFacingCamera : backFacingCamera
+        for input in captureSession.inputs {
+            captureSession.removeInput(input as! AVCaptureDeviceInput)
+        }
+        let cameraInput: AVCaptureDeviceInput
+        do {
+            cameraInput = try AVCaptureDeviceInput(device: newDevice!)
+            
+        }catch let error {
+            print(error)
+            return
+        }
+        
+        if captureSession.canAddInput(cameraInput){
+            captureSession.addInput(cameraInput)
+        }
+        
+        currentDevice = newDevice
+      
+        cameraPreviewLayer?.frame = frontImageView.bounds
+        frontImageView.layer.insertSublayer(cameraPreviewLayer!, at: UInt32(frontImageView.bounds.height))
+     //   frontImageView.layer.addSublayer(cameraPreviewLayer!)
+        captureSession.commitConfiguration()
+        //sleep(2)
+        let settings = AVCapturePhotoSettings()
+        photoOutput?.capturePhoto(with: settings, delegate: self)
     }
 }

@@ -22,6 +22,8 @@
 		CB67A511212AEF6500EDDCA9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB67A513212AEF6500EDDCA9 /* Localizable.strings */; };
 		CB69E1BD20D68DA300AF7430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB69E1BC20D68DA300AF7430 /* LoginViewController.swift */; };
 		CB71DF1C20ECC2E500AEC106 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB71DF1B20ECC2E500AEC106 /* LocationService.swift */; };
+		CB75E2F421353525000A3E71 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75E2F321353525000A3E71 /* PreviewViewController.swift */; };
+		CB75E2F62136682C000A3E71 /* UIView+Capture.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75E2F52136682C000A3E71 /* UIView+Capture.swift */; };
 		CB7F7105211BF83100591603 /* AcctDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */; };
 		CB9AD93A211EF29D000EA6AF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9AD939211EF29D000EA6AF /* NetworkManager.swift */; };
 		CB9BB2082133DDFC00FCE5FB /* DualCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9BB2072133DDFC00FCE5FB /* DualCameraViewController.swift */; };
@@ -61,6 +63,8 @@
 		CB67A514212AEF6800EDDCA9 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CB69E1BC20D68DA300AF7430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CB71DF1B20ECC2E500AEC106 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		CB75E2F321353525000A3E71 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		CB75E2F52136682C000A3E71 /* UIView+Capture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Capture.swift"; sourceTree = "<group>"; };
 		CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcctDetailsViewController.swift; sourceTree = "<group>"; };
 		CB9AD939211EF29D000EA6AF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CB9BB2072133DDFC00FCE5FB /* DualCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualCameraViewController.swift; sourceTree = "<group>"; };
@@ -185,6 +189,7 @@
 				CBAB32B9211825A200D3E9DA /* DynamicFormViewController.swift */,
 				CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */,
 				CB9BB2072133DDFC00FCE5FB /* DualCameraViewController.swift */,
+				CB75E2F321353525000A3E71 /* PreviewViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -193,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				CBA6E5C12126E8FF00740775 /* UIApplication+TopViewController.swift */,
+				CB75E2F52136682C000A3E71 /* UIView+Capture.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -399,8 +405,10 @@
 				CBE2AED72111792B00892F7E /* TaskType.swift in Sources */,
 				CB55BF7C20D0E5DA0084375D /* AppDelegate.swift in Sources */,
 				CB55BF8420D0E5DB0084375D /* sampleForGeo.xcdatamodeld in Sources */,
+				CB75E2F421353525000A3E71 /* PreviewViewController.swift in Sources */,
 				CBE2AED92111AC4A00892F7E /* CustomField.swift in Sources */,
 				CB3121672122A7DD00F9B19F /* CustomDetailsViewCell.swift in Sources */,
+				CB75E2F62136682C000A3E71 /* UIView+Capture.swift in Sources */,
 				CBC84E0F20D17B83005D6A82 /* MapViewController.swift in Sources */,
 				CBC50FB6211DCC1600015827 /* SyncAcctToServer.swift in Sources */,
 				CBA6E5C22126E8FF00740775 /* UIApplication+TopViewController.swift in Sources */,
