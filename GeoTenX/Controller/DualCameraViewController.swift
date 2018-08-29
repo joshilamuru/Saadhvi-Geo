@@ -94,8 +94,8 @@ class DualCameraViewController: UIViewController {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        cameraPreviewLayer?.frame = self.view.frame
-       // cameraPreviewLayer?.frame = self.view.layer.bounds
+      cameraPreviewLayer?.frame = self.view.frame
+        
     }
     func startRunningCaptureSession() {
         captureSession.startRunning()
@@ -113,8 +113,8 @@ class DualCameraViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showPhotoSegue"{
             let previewVC = segue.destination as! PreviewViewController
-           // mergedImage = ContainerUIView.capture()
-            mergedImage = image(view: ContainerUIView)
+            mergedImage = ContainerUIView.capture()
+            //mergedImage = image(view: ContainerUIView)
             previewVC.mergeImage = mergedImage
             navigationItem.title = " "
         }
@@ -174,10 +174,11 @@ extension DualCameraViewController: AVCapturePhotoCaptureDelegate {
         }
         
         currentDevice = newDevice
-      
+        frontImageView.layer.masksToBounds = true
         cameraPreviewLayer?.frame = frontImageView.bounds
-        frontImageView.layer.insertSublayer(cameraPreviewLayer!, at: UInt32(frontImageView.bounds.height))
-     //   frontImageView.layer.addSublayer(cameraPreviewLayer!)
+        print("Bounds height: \(frontImageView.bounds.height), screen height: \(self.ContainerUIView.bounds.height)")
+       // frontImageView.layer.insertSublayer(cameraPreviewLayer!, at: UInt32(frontImageView.bounds.height))
+        frontImageView.layer.addSublayer(cameraPreviewLayer!)
         captureSession.commitConfiguration()
         //sleep(2)
         let settings = AVCapturePhotoSettings()
