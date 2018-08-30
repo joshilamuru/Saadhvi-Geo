@@ -18,6 +18,7 @@ class DualCameraViewController: UIViewController {
     @IBOutlet weak var camBtn: RoundButton!
     
     @IBOutlet weak var ContainerUIView: UIView!
+    
     @IBOutlet weak var backImageView: UIImageView!
     
     @IBOutlet weak var frontImageView: UIImageView!
@@ -36,13 +37,15 @@ class DualCameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
         setupCaptureSession()
         setupDevice()
         setupInputOutput()
         setupPreviewLayer()
         startRunningCaptureSession()
     }
-    
     @IBAction func camBtnPressed(_ sender: Any) {
         
         let settings = AVCapturePhotoSettings()
@@ -74,10 +77,20 @@ class DualCameraViewController: UIViewController {
     func  setupInputOutput(){
         do{
             let captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice!)
+            if let inputs = captureSession.inputs as? [AVCaptureDeviceInput] {
+                for input in inputs {
+                    captureSession.removeInput(input)
+                }
+            }
             captureSession.addInput(captureDeviceInput)
             photoOutput = AVCapturePhotoOutput()
         photoOutput?.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
-            captureSession.addOutput(photoOutput!)
+            if (captureSession.canAddOutput(photoOutput!)) {
+                captureSession.addOutput(photoOutput!)
+            } else {
+                print("cannot add output")
+            }
+            
         }catch{
             print(error)
         }
@@ -88,14 +101,17 @@ class DualCameraViewController: UIViewController {
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-        cameraPreviewLayer?.frame = backImageView.bounds
-        backImageView.layer.insertSublayer(cameraPreviewLayer!, at: 0)
+       // cameraPreviewLayer?.frame = backImageView.bounds
         
+       /// backImageView.layer.insertSublayer(cameraPreviewLayer!, at: 0)
+        cameraPreviewLayer?.frame = self.view.bounds
+        ContainerUIView.layer.insertSublayer(cameraPreviewLayer!, at: 0)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-      cameraPreviewLayer?.frame = self.view.frame
-        
+      
+    //  cameraPreviewLayer?.frame = self.view.frame
+        cameraPreviewLayer?.frame = self.view.bounds
     }
     func startRunningCaptureSession() {
         captureSession.startRunning()
@@ -120,7 +136,20 @@ class DualCameraViewController: UIViewController {
         }
     }
     
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        if captureSession.isRunning {
+            DispatchQueue.global().async {
+                if let inputs = self.captureSession.inputs as? [AVCaptureDeviceInput] {
+                    for input in inputs {
+                        self.captureSession.removeInput(input)
+                    }
+                }
+              
+                
+                self.captureSession.stopRunning()
+            }
+        }
+    }
 }
 
 extension DualCameraViewController: AVCapturePhotoCaptureDelegate {
@@ -130,13 +159,16 @@ extension DualCameraViewController: AVCapturePhotoCaptureDelegate {
             image = UIImage(data: imageData)
             if(currentDevice == backFacingCamera){
                 backImageView.image = image
+              
                 backImg = image
+                
                 getFrontCameraImage()
             }else {
                 
                 frontImageView.image = image
+              
                 frontImg = image
-                captureSession.stopRunning()
+               captureSession.stopRunning()
                
                 sleep(2)
                // mergedImage = ContainerUIView.capture()
@@ -155,11 +187,13 @@ extension DualCameraViewController: AVCapturePhotoCaptureDelegate {
     
     func getFrontCameraImage(){
         captureSession.beginConfiguration()
+        
         let newDevice = (currentDevice?.position == .back) ?
             frontFacingCamera : backFacingCamera
         for input in captureSession.inputs {
             captureSession.removeInput(input as! AVCaptureDeviceInput)
         }
+        
         let cameraInput: AVCaptureDeviceInput
         do {
             cameraInput = try AVCaptureDeviceInput(device: newDevice!)
@@ -168,20 +202,29 @@ extension DualCameraViewController: AVCapturePhotoCaptureDelegate {
             print(error)
             return
         }
+       
         
-        if captureSession.canAddInput(cameraInput){
-            captureSession.addInput(cameraInput)
+//        if captureSession.canAddInput(cameraInput){
+//            captureSession.addInput(cameraInput)
+//        }
+        if captureSession.inputs.isEmpty {
+            self.captureSession.addInput(cameraInput)
         }
         
         currentDevice = newDevice
-        frontImageView.layer.masksToBounds = true
-        cameraPreviewLayer?.frame = frontImageView.bounds
-        print("Bounds height: \(frontImageView.bounds.height), screen height: \(self.ContainerUIView.bounds.height)")
-       // frontImageView.layer.insertSublayer(cameraPreviewLayer!, at: UInt32(frontImageView.bounds.height))
-        frontImageView.layer.addSublayer(cameraPreviewLayer!)
+//        
+       let replicateLayer = CAReplicatorLayer()
+        
+        replicateLayer.frame = ContainerUIView.frame
+        //replicateLayer.addSublayer(cameraPreviewLayer!)
+        ContainerUIView.layer.addSublayer(replicateLayer)
+        //ContainerUIView.layer.insertSublayer(replicateLayer, at: 0)
+        
+        
         captureSession.commitConfiguration()
-        //sleep(2)
+       
         let settings = AVCapturePhotoSettings()
+        sleep(1)
         photoOutput?.capturePhoto(with: settings, delegate: self)
     }
 }

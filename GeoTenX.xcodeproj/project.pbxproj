@@ -125,7 +125,6 @@
 			isa = PBXGroup;
 			children = (
 				CB67A513212AEF6500EDDCA9 /* Localizable.strings */,
-				CBE1C1CC2122CBD500B4D61F /* Default-568h@2x.png */,
 				CB55BF7A20D0E5DA0084375D /* GeoTenX */,
 				CB55BF7920D0E5DA0084375D /* Products */,
 				C8A24CA73B788FA09DAAD2B7 /* Pods */,
@@ -199,6 +198,7 @@
 			children = (
 				CBA6E5C12126E8FF00740775 /* UIApplication+TopViewController.swift */,
 				CB75E2F52136682C000A3E71 /* UIView+Capture.swift */,
+				CBE1C1CC2122CBD500B4D61F /* Default-568h@2x.png */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

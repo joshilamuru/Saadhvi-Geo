@@ -26,7 +26,20 @@ class PreviewViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    
+    @IBAction func cancelBtnPressed(_ sender: Any) {
+        if let composeViewController = self.navigationController?.viewControllers[3] {
+            print(composeViewController)
+            self.navigationController?.popToViewController(composeViewController, animated: true)
+        }
+    }
+    @IBAction func UsePhotoBtnPressed(_ sender: Any) {
+        //save the photo and return..
+        if let composeViewController = self.navigationController?.viewControllers[2] {
+            print(composeViewController)
+            self.navigationController?.popToViewController(composeViewController, animated: true)
+        }
+    }
     /*
     // MARK: - Navigation
 
