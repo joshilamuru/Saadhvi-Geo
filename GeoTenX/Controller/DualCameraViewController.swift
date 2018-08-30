@@ -47,7 +47,8 @@ class DualCameraViewController: UIViewController {
         startRunningCaptureSession()
     }
     @IBAction func camBtnPressed(_ sender: Any) {
-        
+        (sender as? UIButton)?.isEnabled = false
+        (sender as? UIButton)?.isHidden = true
         let settings = AVCapturePhotoSettings()
         photoOutput?.capturePhoto(with: settings, delegate: self)
         

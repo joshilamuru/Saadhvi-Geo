@@ -12,13 +12,14 @@ class PreviewViewController: UIViewController {
     var mergeImage: UIImage?
     @IBOutlet weak var MergeImageView: UIImageView!
   
+    @IBOutlet weak var buttonsView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         //combine the two images
         let backButton = UIBarButtonItem(title: "", style: .plain, target: navigationController, action: nil)
         navigationItem.leftBarButtonItem = backButton
         MergeImageView.image = mergeImage
-       
+        buttonsView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.8)
     }
 
     override func didReceiveMemoryWarning() {

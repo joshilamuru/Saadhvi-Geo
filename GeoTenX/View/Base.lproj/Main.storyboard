@@ -324,31 +324,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9GK-IL-rQU">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zRM-KJ-6zy" customClass="RoundButton" customModule="GeoTenX" customModuleProvider="target">
-                                        <rect key="frame" x="305" y="276" width="50" height="50"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="Rl7-s4-lcH"/>
-                                            <constraint firstAttribute="width" constant="50" id="iU9-Ne-DPH"/>
-                                        </constraints>
-                                        <state key="normal">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="25"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                <real key="value" value="4"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="camBtnPressed:" destination="Obj-1d-3ai" eventType="touchUpInside" id="Zh3-JP-c2s"/>
-                                        </connections>
-                                    </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="y4e-RT-qrt">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="301.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -357,18 +332,43 @@
                                         <rect key="frame" x="0.0" y="301.5" width="375" height="301.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zRM-KJ-6zy" customClass="RoundButton" customModule="GeoTenX" customModuleProvider="target">
+                                        <rect key="frame" x="283" y="271.5" width="60" height="60"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="B0R-oa-HD2"/>
+                                            <constraint firstAttribute="width" constant="60" id="HQm-Cd-rIC"/>
+                                        </constraints>
+                                        <state key="normal">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="30"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="camBtnPressed:" destination="Obj-1d-3ai" eventType="touchUpInside" id="Zh3-JP-c2s"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="OsD-sY-X7M" secondAttribute="trailing" id="B5s-uf-XMM"/>
                                     <constraint firstAttribute="trailing" secondItem="y4e-RT-qrt" secondAttribute="trailing" id="D5k-af-BF8"/>
+                                    <constraint firstAttribute="trailing" secondItem="zRM-KJ-6zy" secondAttribute="trailing" constant="32" id="DzG-gk-FyE"/>
                                     <constraint firstItem="OsD-sY-X7M" firstAttribute="top" secondItem="y4e-RT-qrt" secondAttribute="bottom" id="KWM-yd-T2B"/>
                                     <constraint firstItem="OsD-sY-X7M" firstAttribute="leading" secondItem="9GK-IL-rQU" secondAttribute="leading" id="KZW-qq-j39"/>
                                     <constraint firstItem="OsD-sY-X7M" firstAttribute="top" secondItem="y4e-RT-qrt" secondAttribute="bottom" id="QcN-cL-6Xe"/>
-                                    <constraint firstItem="zRM-KJ-6zy" firstAttribute="centerY" secondItem="9GK-IL-rQU" secondAttribute="centerY" id="TTK-ji-L6n"/>
                                     <constraint firstAttribute="bottom" secondItem="OsD-sY-X7M" secondAttribute="bottom" id="brj-JI-edq"/>
-                                    <constraint firstAttribute="trailing" secondItem="zRM-KJ-6zy" secondAttribute="trailing" constant="20" id="kvC-l7-2NP"/>
                                     <constraint firstItem="y4e-RT-qrt" firstAttribute="leading" secondItem="9GK-IL-rQU" secondAttribute="leading" id="oLF-cr-J8j"/>
+                                    <constraint firstItem="zRM-KJ-6zy" firstAttribute="centerY" secondItem="9GK-IL-rQU" secondAttribute="centerY" id="qMQ-hU-AWz"/>
                                     <constraint firstItem="y4e-RT-qrt" firstAttribute="top" secondItem="9GK-IL-rQU" secondAttribute="top" id="qna-aW-2Zg"/>
                                     <constraint firstItem="OsD-sY-X7M" firstAttribute="height" secondItem="y4e-RT-qrt" secondAttribute="height" id="uHN-x1-9h3"/>
                                 </constraints>
@@ -407,29 +407,31 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zqD-ad-anz">
-                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                                <rect key="frame" x="0.0" y="612" width="375" height="55"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmU-3J-3n6">
-                                        <rect key="frame" x="295" y="8" width="72" height="30"/>
+                                        <rect key="frame" x="276" y="8" width="91" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Use Photo">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="UsePhotoBtnPressed:" destination="Htw-ge-KG3" eventType="touchUpInside" id="9ac-ug-f8I"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4qX-yB-IPu">
-                                        <rect key="frame" x="8" y="9" width="48" height="30"/>
+                                        <rect key="frame" x="8" y="9" width="61" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Cancel">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="cancelBtnPressed:" destination="Htw-ge-KG3" eventType="touchUpInside" id="B6d-by-NMQ"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="4qX-yB-IPu" secondAttribute="bottom" constant="10" id="6SC-pi-CwM"/>
                                     <constraint firstAttribute="trailing" secondItem="jmU-3J-3n6" secondAttribute="trailing" constant="8" id="Oez-tJ-hF8"/>
@@ -455,6 +457,7 @@
                     </view>
                     <connections>
                         <outlet property="MergeImageView" destination="UzV-ri-dI8" id="8U6-I6-0mu"/>
+                        <outlet property="buttonsView" destination="zqD-ad-anz" id="5qj-ne-XYX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VHy-pv-tZu" userLabel="First Responder" sceneMemberID="firstResponder"/>
