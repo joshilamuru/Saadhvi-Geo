@@ -17,7 +17,9 @@ class CustomField : Object {
     @objc dynamic var Desc : String = ""
     @objc dynamic var EntryType : String = ""
     @objc dynamic var DefaultValues : String = ""
+    @objc dynamic var FieldName : String = ""
     @objc dynamic var synced : Bool = false
+    @objc dynamic var Verified: Bool = false
     override static func primaryKey() -> String? {
         return "CFormFieldID"
     }

@@ -36,6 +36,7 @@ class TaskType: Object {
     @objc dynamic var ReferenceNo: String = ""
      @objc dynamic var synced : Bool = false
     @objc dynamic var taskIDToServer: Int = 0
+    @objc dynamic var AccountTypeID: Int = 0
     
     override static func primaryKey() -> String? {
         return "TaskTypeIDFrmMobile"
@@ -43,7 +44,7 @@ class TaskType: Object {
     
     func incrementID() -> Int {
         let realm = try! Realm()
-        return (realm.objects(POI.self).max(ofProperty: "taskIDToServer") as Int? ?? 0) + 1
+        return (realm.objects(TaskType.self).max(ofProperty: "taskIDToServer") as Int? ?? 0) + 1
     }
     
    

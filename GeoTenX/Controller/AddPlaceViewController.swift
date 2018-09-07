@@ -12,11 +12,14 @@ import GooglePlaces
 import RealmSwift
 import SwiftyJSON
 import Alamofire
+import Eureka
+import ImageRow
 
 class AddPlaceViewController:
-    UIViewController, GMSAutocompleteViewControllerDelegate, GMSMapViewDelegate
+    FormViewController, GMSAutocompleteViewControllerDelegate, GMSMapViewDelegate
 {
     
+    @IBOutlet weak var PlaceFieldsView: UIView!
     @IBOutlet weak var newPlacMapView: GMSMapView!
     
     @IBOutlet weak var customerTextField: UITextField!
@@ -24,6 +27,8 @@ class AddPlaceViewController:
     @IBOutlet weak var placeTextField: UITextField!
   
     @IBOutlet weak var addressTextView: UITextView!
+    var acctTypeID: String = ""
+    var customFields: Results<AccountTypeCustomField>? = nil
     var currentLocation = CLLocation()
     var marker = GMSMarker()
     let realm = try! Realm()
@@ -34,6 +39,14 @@ class AddPlaceViewController:
     let address: String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        customFields = getCustomFieldsByAccountTypeID(ID: acctTypeID)
+            if(!(customFields?.isEmpty)!){
+                loadForm()
+            }else{
+                let str = NSLocalizedString("No custom fields available. Try again", comment: "No custom fields available. Try again")
+                
+                showAlertMessage(message: str)
+            }
         placeTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         NotificationCenter.default.addObserver(self, selector: #selector(AddPlaceViewController.updateCurrentLocation), name: NSNotification.Name(rawValue: "currentLoc"), object: nil)
         
@@ -57,6 +70,96 @@ class AddPlaceViewController:
     @objc func textFieldDidChange(_ textField: UITextField) {
         //errorPlaceLabel.isHidden = true
     }
+    
+    func getCustomFieldsByAccountTypeID(ID: String) -> Results<AccountTypeCustomField>{
+        
+        let realm = try! Realm()
+        let fields = realm.objects(AccountTypeCustomField.self).filter("AccountTypeID == %@", ID)
+        // let fields = realm.objects(CustomField.self).filter("TaskTypeID == '59'")
+        
+        return fields
+    }
+    
+    func loadForm() {
+        
+        let sectStr = NSLocalizedString("New Place Info", comment: "Account Info")
+        form +++ Section(sectStr)
+        
+        // let section = form.sectionBy(tag: "Account Info")
+        for field in customFields! {
+            switch(field.EntryType) {
+            case "Text":
+                
+                self.form.last! <<< TextRow(){ row in
+                    row.title = field.DisplayName
+                    row.placeholder = field.Desc
+                }
+                
+            case "Number":
+                self.form.last! <<< IntRow(){ row in
+                    row.title = field.DisplayName
+                    row.placeholder = field.Desc
+                    
+                }
+            case "Date","Time":
+                self.form.last! <<< DateTimeRow(){ row in
+                    row.title = field.DisplayName
+                    
+                }
+            case "Image Upload":
+                self.form.last! <<< ImageRow(){ row in
+                    row.title = field.DisplayName
+                    row.sourceTypes = .Camera
+                    row.clearAction = .yes(style: .default)
+                    
+                }
+                
+            case "Option", "Auto Text":
+                self.form.last! <<< PushRow<String>(){
+                    $0.title = field.DisplayName
+                    let values = (field.DefaultValues).components(separatedBy: ",")
+                    print("Values are: \(values)")
+                    $0.options = values
+                    $0.value = ""
+                    let strOption = NSLocalizedString("Choose an option", comment: "Choose an option")
+                    $0.selectorTitle = strOption
+                    }.onPresent{from, to in
+                        to.dismissOnSelection = true
+                        to.dismissOnChange = false
+                }
+            case "Choice":
+                self.form.last! <<< MultipleSelectorRow<String> {
+                    $0.title = field.DisplayName
+                    let values = (field.DefaultValues).components(separatedBy: ",")
+                    print("Values are: \(values)")
+                    $0.options = values
+                    $0.value = [""]
+                    }.onPresent{from, to in
+                        to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(DynamicFormViewController.multipleSelectorDone(_:)))
+                        
+                }
+                
+            case "Dual Camera":
+                self.form.last! <<< PushRow<String>() {
+                    $0.title = field.DisplayName
+                    $0.presentationMode = .segueName(segueName: "DualCameraSegue", onDismiss: nil)
+                }
+               
+            default:
+                print("no custom fields - \(field.EntryType)")
+                
+            }
+            
+        }
+    
+        self.form.last! <<< ButtonRow("Add New Place") {
+            
+            $0.title = NSLocalizedString("Add New Place", comment: "Add New Place")
+            }.cellUpdate { cell, row in
+                cell.textLabel?.textColor = UIColor.orange
+                cell.backgroundColor = UIColor.darkGray }
+    }
+    
     func setUpMap(){
         
         camera = GMSCameraPosition.camera(withLatitude: currentLocation.coordinate.latitude,longitude: currentLocation.coordinate.longitude, zoom: 20)
@@ -110,24 +213,34 @@ class AddPlaceViewController:
             newPlace.latitude = marker.position.latitude
             newPlace.longitude = marker.position.longitude
             
-           
-            let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .full, timeStyle: .full)
-           newPlace.createdDate = timestamp
-            //newPlace.createdDate = timeNow()
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "MM-dd-yyyy HH:mm:ss"
+        let date = dateFormatterGet.string(from: Date())
+            print("DATE FORMATTED: \(date)")
+        newPlace.createdDate = date
+           // newPlace.createdDate = timeNow()
+         print("Formatted date from timeNow(): \(newPlace.createdDate)")
             newPlace.fromServer = false
             newPlace.synced = false
+      
         
             do{
                 try realm.write{
-                    realm.add(newPlace)
-                    if (NetworkManager.sharedInstance.reachability).connection != .none {
+                    //check for duplicate before adding to realm
+                    if(chkUnique(place: newPlace)){
+                        realm.add(newPlace)
                         
-                    SyncAcctToServer.SharedSyncInstance.syncData()
-                    
-                    _ = navigationController?.popViewController(animated: true)
+                        if (NetworkManager.sharedInstance.reachability).connection != .none {
+                            
+                        SyncAcctToServer.SharedSyncInstance.syncData()
+                        
+                        _ = navigationController?.popViewController(animated: true)
+                        }else{
+                            let str = NSLocalizedString("Lost internet connection. Please connect to internet", comment: "Lost internet connection. Please connect to internet")
+                            showAlertMessage(message: str)
+                        }
                     }else{
-                        let str = NSLocalizedString("Lost internet connection. Please connect to internet", comment: "Lost internet connection. Please connect to internet")
-                        showAlertMessage(message: str)
+                        showAlertMessage(message: "Place already exists")
                     }
                 }
             }catch{
@@ -138,9 +251,21 @@ class AddPlaceViewController:
         
     }
     
-   
+    func chkUnique(place: POI) -> Bool{
+        
+        let POIs = realm.objects(POI.self)
+        for poi in POIs {
+            if(place.name == poi.name){
+                
+                return false
+            }
+            
+        }
+       return true
+        
+    }
     func timeNow()->String{
-        df.setLocalizedDateFormatFromTemplate("dd-mm-yyyy HH:MM:SS")
+        df.setLocalizedDateFormatFromTemplate("dd-MM-yyyy HH:mm:ss")
         return df.string(from: Date())
     }
     

@@ -15,6 +15,7 @@ class DynamicFormViewController: FormViewController{
     
  var acct : String = ""
     var taskTypeID : Int!
+   // var acctTypeID: Int!
     @IBOutlet weak var acctLabel: UILabel!
     var customFields: Results<CustomField>? = nil
     override func viewDidLoad() {
@@ -58,13 +59,13 @@ class DynamicFormViewController: FormViewController{
                     row.title = field.DisplayName
                     
                 }
-//            case "Image Upload":
-//                self.form.last! <<< ImageRow(){ row in
-//                    row.title = field.DisplayName
-//                    row.sourceTypes = .Camera
-//                    row.clearAction = .yes(style: .default)
-//
-//                }
+            case "Image Upload":
+                self.form.last! <<< ImageRow(){ row in
+                    row.title = field.DisplayName
+                    row.sourceTypes = .Camera
+                    row.clearAction = .yes(style: .default)
+
+                }
                
             case "Option", "Auto Text":
                 self.form.last! <<< PushRow<String>(){
@@ -91,11 +92,18 @@ class DynamicFormViewController: FormViewController{
                         
                 }
       
-            case "Dual Camera", "Image Upload":
+            case "Dual Camera":
                 self.form.last! <<< PushRow<String>() {
                     $0.title = field.DisplayName
                     $0.presentationMode = .segueName(segueName: "DualCameraSegue", onDismiss: nil)
                 }
+//                    .onPresent { from, to in
+//                        to.selectableRowCellUpdate = { cell, row in
+//                            print("here")
+//                                cell.
+//                                cell.textLabel!.textColor = UIColor.green
+//                        }
+           //             }
                 
                 
                 
@@ -131,8 +139,8 @@ class DynamicFormViewController: FormViewController{
     func getCustomFieldsByTaskID(ID: String) -> Results<CustomField>{
         
         let realm = try! Realm()
-      //  let fields = realm.objects(CustomField.self).filter("TaskTypeID == %@", ID)
-        let fields = realm.objects(CustomField.self).filter("TaskTypeID == '59'")
+        let fields = realm.objects(CustomField.self).filter("TaskTypeID == %@", ID)
+       // let fields = realm.objects(CustomField.self).filter("TaskTypeID == '59'")
         
         return fields
     }

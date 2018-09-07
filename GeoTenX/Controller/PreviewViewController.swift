@@ -29,7 +29,7 @@ class PreviewViewController: UIViewController {
     
     
     @IBAction func cancelBtnPressed(_ sender: Any) {
-        if let composeViewController = self.navigationController?.viewControllers[3] {
+        if let composeViewController = self.navigationController?.viewControllers[2] {
             print(composeViewController)
             self.navigationController?.popToViewController(composeViewController, animated: true)
         }

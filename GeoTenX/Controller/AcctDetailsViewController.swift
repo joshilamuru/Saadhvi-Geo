@@ -51,8 +51,9 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         if(segue.identifier == "formSegue") {
             let destinationVC = segue.destination as! DynamicFormViewController
             destinationVC.acct = poi.address
-            destinationVC.taskTypeID = poi.TasktypeID
-            
+          //  destinationVC.acctTypeID = poi.AccountTypeID
+            //hard coding the tasktypeid for checkin
+            destinationVC.taskTypeID = 286
             navigationItem.title = " "
             destinationVC.navigationItem.title = "Form Details"
         }
@@ -79,11 +80,11 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
             cell.ItemName.text = "Created Date"
             cell.ItemDescription.text = poi.createdDate
         }else if(indexPath.row  == 3 ){
-            cell.ItemName.text = "Notes"
-            cell.ItemDescription.text = poi.shortNotes
+            cell.ItemName.text = "Account Description"
+            cell.ItemDescription.text = poi.AccountDescription
         }else if(indexPath.row  == 4 ){
-            cell.ItemName.text = "Task Status"
-            cell.ItemDescription.text = poi.taskStatus
+            cell.ItemName.text = "Status"
+            cell.ItemDescription.text = poi.status
         }
         return cell
     }

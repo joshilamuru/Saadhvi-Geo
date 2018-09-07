@@ -48,6 +48,7 @@ class SyncAcctToServer : NSObject {
             
             para.setValue(user, forKey: "eMail")
             para.setValue(keychainPassword, forKey: "password")
+            
             para.setValue("911430509678238", forKey: "mobileIMEINumber")
             
             for place in POIs
@@ -58,27 +59,27 @@ class SyncAcctToServer : NSObject {
                 acct.setValue(place.incrementID(), forKey: "accountIDFrmMobile")
                 acct.setValue("0", forKey: "accountID")
                 acct.setValue(place.name, forKey: "accountName")
-                acct.setValue(place.name, forKey: "taskDescription")
-                acct.setValue("0", forKey: "dueDate")
-                acct.setValue("0", forKey: "dueTime")
-                acct.setValue("0", forKey: "remindDate")
-                acct.setValue("0", forKey: "remindTime")
-                acct.setValue(place.latitude, forKey: "taskLat")
-                acct.setValue(place.longitude, forKey: "taskLng")
-                acct.setValue(place.address, forKey: "taskAddress")
+                acct.setValue(place.name, forKey: "AccountDescription")
+              //  acct.setValue("0", forKey: "dueDate")
+               // acct.setValue("0", forKey: "dueTime")
+             //   acct.setValue("0", forKey: "remindDate")
+              //  acct.setValue("0", forKey: "remindTime")
+                acct.setValue(place.latitude, forKey: "AccountLat")
+                acct.setValue(place.longitude, forKey: "AccountLng")
+                acct.setValue(place.address, forKey: "AccountAddress")
                 acct.setValue("Synched", forKey: "sync")
-                acct.setValue(0, forKey: "markedAsDone")
+               // acct.setValue(0, forKey: "markedAsDone")
                 acct.setValue(place.createdDate, forKey: "createdDate")
-                acct.setValue("", forKey: "shortNotes")
-                acct.setValue(0, forKey: "snotesId")
-                acct.setValue("", forKey: "taskStatus")
-                acct.setValue(295, forKey: "TasktypeID")
+             //   acct.setValue("", forKey: "shortNotes")
+              //  acct.setValue(0, forKey: "snotesId")
+              //  acct.setValue("", forKey: "taskStatus")
+                acct.setValue(place.AccountTypeID, forKey: "AccountTypeID")
                 acct.setValue("{}", forKey: "Others")
-                acct.setValue("", forKey: "SpecialColumnValue")
+             //   acct.setValue("", forKey: "SpecialColumnValue")
                 acct.setValue(0, forKey: "IsFavourite")
-                acct.setValue("M", forKey: "TaskDifferentiation")
-                acct.setValue("", forKey: "AutoGenFieldNo")
-                acct.setValue("", forKey: "ReferenceNo")
+                acct.setValue("M", forKey: "AccountDifferentiation")
+              //  acct.setValue("", forKey: "AutoGenFieldNo")
+              //  acct.setValue("", forKey: "ReferenceNo")
                 acctArray.add(acct)
             }
             
@@ -89,6 +90,8 @@ class SyncAcctToServer : NSObject {
             
             request.httpBody = try! JSONSerialization.data(withJSONObject: values)
             
+            print("request body: \(request.httpBody!)")
+         
             Alamofire.request(request)
                 .responseJSON { response in
                     // do whatever you want here
@@ -96,10 +99,12 @@ class SyncAcctToServer : NSObject {
                     case .failure(let error):
                         print(error)
                         
+                        
                         if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
                             print(responseString)
                         }
                     case .success(let responseObject):
+                           print(NSString(data: (response.request?.httpBody)!, encoding: String.Encoding.utf8.rawValue))
                         print(responseObject)
                         self.updateRealm(data: POIs)
                     }
@@ -109,6 +114,7 @@ class SyncAcctToServer : NSObject {
         }
     }
     
+  
     
     func updateRealm(data: Results<POI>) {
         for poi in data{

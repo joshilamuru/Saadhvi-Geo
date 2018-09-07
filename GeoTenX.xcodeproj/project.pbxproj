@@ -10,6 +10,9 @@
 		457A2DE04F364BE8F49D3456 /* Pods_GeoTenX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1FD9094BF0D73148EA7C01 /* Pods_GeoTenX.framework */; };
 		CB1BDA7720DB6BF2001FB883 /* AddPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1BDA7620DB6BF2001FB883 /* AddPlaceViewController.swift */; };
 		CB1BDA7920DB76CB001FB883 /* GMSCircle+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1BDA7820DB76CB001FB883 /* GMSCircle+Bounds.swift */; };
+		CB1C28EA21410CB8005FAA35 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1C28E921410CB7005FAA35 /* AccountType.swift */; };
+		CB1C28EC21410CCF005FAA35 /* AccountTypeCustomField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1C28EB21410CCF005FAA35 /* AccountTypeCustomField.swift */; };
+		CB1C28F021413C33005FAA35 /* FormGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1C28EF21413C33005FAA35 /* FormGenerator.swift */; };
 		CB3121672122A7DD00F9B19F /* CustomDetailsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3121652122A7DD00F9B19F /* CustomDetailsViewCell.swift */; };
 		CB3121682122A7DD00F9B19F /* DetailsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB3121662122A7DD00F9B19F /* DetailsCell.xib */; };
 		CB34F3742119CB9B00AFA75B /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */; };
@@ -33,6 +36,8 @@
 		CBC50FB6211DCC1600015827 /* SyncAcctToServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC50FB5211DCC1600015827 /* SyncAcctToServer.swift */; };
 		CBC50FB8211DCC4200015827 /* SyncDataToServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC50FB7211DCC4200015827 /* SyncDataToServer.swift */; };
 		CBC84E0F20D17B83005D6A82 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC84E0E20D17B83005D6A82 /* MapViewController.swift */; };
+		CBD7CB342141489F0031216E /* AcctTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD7CB332141489E0031216E /* AcctTypesViewController.swift */; };
+		CBD7CB362141597F0031216E /* NewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD7CB352141597F0031216E /* NewPlaceViewController.swift */; };
 		CBE1C1CD2122CBD500B4D61F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE1C1CC2122CBD500B4D61F /* Default-568h@2x.png */; };
 		CBE2AED72111792B00892F7E /* TaskType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE2AED62111792B00892F7E /* TaskType.swift */; };
 		CBE2AED92111AC4A00892F7E /* CustomField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE2AED82111AC4A00892F7E /* CustomField.swift */; };
@@ -47,6 +52,9 @@
 		946C38E7BFE3F822CA77381E /* Pods-GeoTenX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoTenX.release.xcconfig"; path = "Pods/Target Support Files/Pods-GeoTenX/Pods-GeoTenX.release.xcconfig"; sourceTree = "<group>"; };
 		CB1BDA7620DB6BF2001FB883 /* AddPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaceViewController.swift; sourceTree = "<group>"; };
 		CB1BDA7820DB76CB001FB883 /* GMSCircle+Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GMSCircle+Bounds.swift"; sourceTree = "<group>"; };
+		CB1C28E921410CB7005FAA35 /* AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		CB1C28EB21410CCF005FAA35 /* AccountTypeCustomField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeCustomField.swift; sourceTree = "<group>"; };
+		CB1C28EF21413C33005FAA35 /* FormGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormGenerator.swift; sourceTree = "<group>"; };
 		CB3121652122A7DD00F9B19F /* CustomDetailsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailsViewCell.swift; sourceTree = "<group>"; };
 		CB3121662122A7DD00F9B19F /* DetailsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailsCell.xib; sourceTree = "<group>"; };
 		CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
@@ -74,6 +82,8 @@
 		CBC50FB5211DCC1600015827 /* SyncAcctToServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncAcctToServer.swift; sourceTree = "<group>"; };
 		CBC50FB7211DCC4200015827 /* SyncDataToServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDataToServer.swift; sourceTree = "<group>"; };
 		CBC84E0E20D17B83005D6A82 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		CBD7CB332141489E0031216E /* AcctTypesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcctTypesViewController.swift; sourceTree = "<group>"; };
+		CBD7CB352141597F0031216E /* NewPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaceViewController.swift; sourceTree = "<group>"; };
 		CBE1C1CC2122CBD500B4D61F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		CBE2AED62111792B00892F7E /* TaskType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskType.swift; sourceTree = "<group>"; };
 		CBE2AED82111AC4A00892F7E /* CustomField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomField.swift; sourceTree = "<group>"; };
@@ -162,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				CB9BB2092135131000FCE5FB /* RoundButton.swift */,
+				CB1C28EF21413C33005FAA35 /* FormGenerator.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -172,6 +183,8 @@
 				CBF70AE020DD12CC002E69D5 /* POI.swift */,
 				CBE2AED62111792B00892F7E /* TaskType.swift */,
 				CBE2AED82111AC4A00892F7E /* CustomField.swift */,
+				CB1C28E921410CB7005FAA35 /* AccountType.swift */,
+				CB1C28EB21410CCF005FAA35 /* AccountTypeCustomField.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -184,11 +197,13 @@
 				CBC84E0E20D17B83005D6A82 /* MapViewController.swift */,
 				CB55BF7B20D0E5DA0084375D /* AppDelegate.swift */,
 				CB1BDA7620DB6BF2001FB883 /* AddPlaceViewController.swift */,
+				CB75E2F321353525000A3E71 /* PreviewViewController.swift */,
 				CB71DF1B20ECC2E500AEC106 /* LocationService.swift */,
 				CBAB32B9211825A200D3E9DA /* DynamicFormViewController.swift */,
 				CB7F7104211BF83100591603 /* AcctDetailsViewController.swift */,
 				CB9BB2072133DDFC00FCE5FB /* DualCameraViewController.swift */,
-				CB75E2F321353525000A3E71 /* PreviewViewController.swift */,
+				CBD7CB332141489E0031216E /* AcctTypesViewController.swift */,
+				CBD7CB352141597F0031216E /* NewPlaceViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -392,11 +407,13 @@
 			files = (
 				CB9AD93A211EF29D000EA6AF /* NetworkManager.swift in Sources */,
 				CBAB32BA211825A200D3E9DA /* DynamicFormViewController.swift in Sources */,
+				CB1C28EC21410CCF005FAA35 /* AccountTypeCustomField.swift in Sources */,
 				CB71DF1C20ECC2E500AEC106 /* LocationService.swift in Sources */,
 				CB9BB2082133DDFC00FCE5FB /* DualCameraViewController.swift in Sources */,
 				CB1BDA7720DB6BF2001FB883 /* AddPlaceViewController.swift in Sources */,
 				CB69E1BD20D68DA300AF7430 /* LoginViewController.swift in Sources */,
 				CB1BDA7920DB76CB001FB883 /* GMSCircle+Bounds.swift in Sources */,
+				CB1C28F021413C33005FAA35 /* FormGenerator.swift in Sources */,
 				CB34F3742119CB9B00AFA75B /* KeychainPasswordItem.swift in Sources */,
 				CBC50FB8211DCC4200015827 /* SyncDataToServer.swift in Sources */,
 				CB9BB20A2135131000FCE5FB /* RoundButton.swift in Sources */,
@@ -409,8 +426,11 @@
 				CBE2AED92111AC4A00892F7E /* CustomField.swift in Sources */,
 				CB3121672122A7DD00F9B19F /* CustomDetailsViewCell.swift in Sources */,
 				CB75E2F62136682C000A3E71 /* UIView+Capture.swift in Sources */,
+				CBD7CB342141489F0031216E /* AcctTypesViewController.swift in Sources */,
+				CB1C28EA21410CB8005FAA35 /* AccountType.swift in Sources */,
 				CBC84E0F20D17B83005D6A82 /* MapViewController.swift in Sources */,
 				CBC50FB6211DCC1600015827 /* SyncAcctToServer.swift in Sources */,
+				CBD7CB362141597F0031216E /* NewPlaceViewController.swift in Sources */,
 				CBA6E5C22126E8FF00740775 /* UIApplication+TopViewController.swift in Sources */,
 				CB7F7105211BF83100591603 /* AcctDetailsViewController.swift in Sources */,
 			);

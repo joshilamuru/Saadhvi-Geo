@@ -70,6 +70,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                   self.performSegue(withIdentifier: "loginPressedSegue", sender: self)
                 }else{
                     print("no user logged in")
+                  
                 }
         }
 
@@ -111,13 +112,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if((validate(textField: userTextfield).0) && (validate(textField: passwordTextfield).0)){
             print("both are valid")
             
-            encryptedPassword = passwordTextfield.text!.md5()
+           encryptedPassword = passwordTextfield.text!.md5()
+            //**commenting for debugging--**//
+           // encryptedPassword = "21232f297a57a5a743894a0e4a801fc3"
             authenticateUser(username: user!, password: encryptedPassword) {
             (response) in
                 if(self.authenticated){
                     //store in keychain
                     
-                     self.userDefault.setValue(user, forKey: "username")
+                    self.userDefault.setValue(user, forKey: "username")
+                    //**commenting for debugging--**//
+                   // self.userDefault.setValue("dig006@thetaskease.com", forKey: "username")
                     do {
                         
                         let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,
@@ -136,7 +141,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     DispatchQueue.main.async {
                     //get the tasktypes and accounts from server
                         self.loadPOIfromServer(username: user!, password: self.encryptedPassword)
+                         self.loadAccountTypefromServer(username: user!, password: self.encryptedPassword)
                         self.loadTaskTypefromServer(username: user!, password: self.encryptedPassword)
+                       
                     }
                 }
                     else{
@@ -163,6 +170,96 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    func loadAccountTypefromServer(username: String, password: String) {
+        let url = Constants.Domains.Stag + Constants.syncAcctTypes
+        let input : [String: Any] = [ "AccountTypeLUV": 0,
+                                      "CustomFieldLUV": 0,
+                                      "FormFieldLUV": 0,
+                                      "FormTypeLUV": 0,
+                                      "FormAccountTypeLUV": 0,
+                                      "eMail": username,
+                                      "mobileIMEINumber": "911430509678238",
+                                      "password": password]
+        
+        SVProgressHUD.setStatus("Loading account types and custom fields...")
+        
+        Alamofire.request(url, method: .post, parameters: input, encoding: JSONEncoding.default, headers: nil).responseJSON
+            {
+                (response) in
+                
+                print(response.request as Any)
+                print(response.response as Any)
+                print(response.result.value as Any)
+                
+                if response.result.isSuccess{
+                    //loadPOI in realm
+                    
+                    let result : JSON = JSON(response.result.value!)
+                    //carrying out the update task in the background
+                    // DispatchQueue.global(qos: .background).async(){
+                    self.updateAccountTypesData(json: result)
+                    
+                    self.updateAccountTypeCustomFieldData(json: result)
+                    //   }
+                    SVProgressHUD.dismiss()
+                    
+                    
+                }else{
+                    let formatMessage = NSLocalizedString("Unable to load account types and customfields", comment: "Unable to load tasktypes and customfields")
+                    SVProgressHUD.dismiss()
+                    self.showAlertMessage(message: formatMessage)
+                }
+                
+        }
+        
+        
+    }
+    
+    func updateAccountTypesData(json: JSON){
+        for item in json["accounttype"].arrayValue {
+            print(item["AccountTypeID"].intValue)
+            
+            do{
+                let backgdRealm = try! Realm()
+                //   let objects = backgndRealm.objects(TaskType.self)
+                try backgdRealm.write{
+                    let accountType = AccountType()
+                    accountType.AccountTypeID = item["AccountTypeID"].stringValue
+                    accountType.Desc = item["Desc"].stringValue
+                    accountType.OrganizationID = item["OrganizationID"].intValue
+                    accountType.TypeName = item["TypeName"].stringValue
+                    backgdRealm.add(accountType, update: true)
+                }
+            }catch{
+                print("Error updating tasktypes to realm \(error)")
+            }
+        }
+    }
+    
+    func updateAccountTypeCustomFieldData(json: JSON){
+        for item in json["customfield"].arrayValue {
+            
+            do{
+                let backgdRealm = try! Realm()
+                try backgdRealm.write{
+                    //try self.realm.write{
+                    let atcustomField = AccountTypeCustomField()
+                    atcustomField.ATCFormFieldID = item["CFormFieldID"].stringValue
+                    atcustomField.Desc = item["Desc"].stringValue
+                    atcustomField.DisplayName = item["DisplayName"].stringValue
+                    atcustomField.EntryType = item["EntryType"].stringValue
+                    atcustomField.AccountTypeID = item["AccountTypeID"].stringValue
+                    atcustomField.DefaultValues = item["DefaultValues"].stringValue
+                    atcustomField.FieldName = item["FieldName"].stringValue
+                    
+                    backgdRealm.add(atcustomField, update: true)
+                }
+            }catch{
+                print("Error adding customfields to realm \(error)")
+            }
+        }
+    }
+    
     func loadTaskTypefromServer(username: String, password: String) {
         let url = Constants.Domains.Stag + Constants.syncTaskTypes
         let input : [String: Any] = [ "TaskTypeLUV": 0,
@@ -174,7 +271,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                       "mobileIMEINumber": "911430509678238",
                                       "password": password]
         
-       // SVProgressHUD.setStatus("Loading task types and custom fields...")
+        SVProgressHUD.setStatus("Loading task types and custom fields...")
     
             Alamofire.request(url, method: .post, parameters: input, encoding: JSONEncoding.default, headers: nil).responseJSON
                 {
@@ -199,6 +296,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         
                     }else{
                         let formatMessage = NSLocalizedString("Unable to load tasktypes and customfields", comment: "Unable to load tasktypes and customfields")
+                        SVProgressHUD.dismiss()
                         self.showAlertMessage(message: formatMessage)
                     }
                     
@@ -210,11 +308,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func loadPOIfromServer(username: String, password: String) {
         let url = Constants.Domains.Stag + Constants.requestPOI
         // let url = "http://49.207.180.189:8082/taskease/requestAT.htm"
-        let input: [String: Any] = [ "TaskTypeLUV": 0,
+        let input: [String: Any] = [ "AccountTypeLUV": 0,
                                      "CustomFieldLUV": 0,
                                      "FormFieldLUV": 0,
                                      "FormTypeLUV": 0,
-                                     "FormTaskTypeLUV": 0,
+                                     "FormAccountTypeLUV": 0,
                                      "eMail": username,
                                      "mobileIMEINumber": "911430509678238",
                                      "password": password]
@@ -241,7 +339,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                   
                 }
                 else {
-                    print("Error \(response.result.error as Optional)")
+                    print("Error in requestAT \(response.result.error as Optional)")
                     
                     SVProgressHUD.dismiss()
                    
@@ -252,88 +350,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-  /*  func loadTaskTypefromServer(username: String, password: String, completion: @escaping (_ : Bool)->())  {
-        let url = Constants.Domains.Stag + Constants.syncTaskTypes
-        let input : [String: Any] = [ "TaskTypeLUV": 0,
-                                      "CustomFieldLUV": 0,
-                                      "FormFieldLUV": 0,
-                                      "FormTypeLUV": 0,
-                                      "FormTaskTypeLUV": 0,
-                                      "eMail": username,
-                                      "mobileIMEINumber": "911430509678238",
-                                      "password": password]
-      
-         SVProgressHUD.setStatus("Loading task types and custom fields...")
-        
-        Alamofire.request(url, method: .post, parameters: input, encoding: JSONEncoding.default, headers: nil).responseJSON
-            {
-                (response) in
-                
-                print(response.request as Any)
-                print(response.response as Any)
-                print(response.result.value as Any)
-                
-                if response.result.isSuccess{
-                    //loadPOI in realm
-                   
-                        let result : JSON = JSON(response.result.value!)
-                        
-                        self.updateTaskTypesData(json: result)
-                        
-                        self.updateCustomFieldData(json: result)
-                   
-                   completion(true)
-                   
-                }else{
-                    completion(false)
-                }
-                
-        }
-      
-    }
-    func loadPOIfromServer(username: String, password: String, completion: @escaping (_ : Bool)->())  {
-        //
-        let url = Constants.Domains.Stag + Constants.requestPOI
-       // let url = "http://49.207.180.189:8082/taskease/requestAT.htm"
-        let input: [String: Any] = [ "TaskTypeLUV": 0,
-                                     "CustomFieldLUV": 0,
-                                     "FormFieldLUV": 0,
-                                     "FormTypeLUV": 0,
-                                     "FormTaskTypeLUV": 0,
-                                     "eMail": username,
-                                     "mobileIMEINumber": "911430509678238",
-                                     "password": password]
-   //    self.myGroup.enter()
-        SVProgressHUD.setStatus("Loading places...")
-        Alamofire.request(url, method: .post, parameters: input, encoding: JSONEncoding.default, headers: nil).responseJSON
-            {
-                (response) in
-                
-                print(response.request as Any)
-                print(response.response as Any)
-                print(response.result.value as Any)
-                
-                if response.result.isSuccess{
-                    //loadPOI in realm
-                  
-                    let acctsJSON : JSON = JSON(response.result.value!)
-                    
-                    self.updatePOIData(json: acctsJSON)
-//                    SVProgressHUD.dismiss()
-//                    self.performSegue(withIdentifier: "loginPressedSegue", sender: self)
-                     completion(true)
-                }
-                else {
-                    print("Error \(response.result.error as Optional)")
-                    
-                    SVProgressHUD.dismiss()
-                     completion(false)
-                }
-                
-             // self.myGroup.leave()
-        }
-    }
-  */
+ 
     func updateTaskTypesData(json: JSON) {
      // DispatchQueue.global(qos: .background).async(){
             for item in json["tasktype"].arrayValue {
@@ -344,6 +361,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                  //   let objects = backgndRealm.objects(TaskType.self)
                      try backgdRealm.write{
                         let taskType = TaskType()
+                        taskType.AccountTypeID = item["AccountTypeID"].intValue
                         taskType.Desc = item["Desc"].stringValue
                         taskType.JobType = item["JobType"].stringValue
                         taskType.JobTypeID = item["JobTypeID"].intValue
@@ -353,7 +371,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         backgdRealm.add(taskType, update: true)
                     }
                 }catch{
-                    print("Error adding place to realm \(error)")
+                    print("Error updating tasktypes to realm \(error)")
                 }
             }
         
@@ -376,11 +394,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     customField.EntryType = item["EntryType"].stringValue
                     customField.TaskTypeID = item["TaskTypeID"].stringValue
                     customField.DefaultValues = item["DefaultValues"].stringValue
-                    
+                    customField.FieldName = item["FieldName"].stringValue
+                        
                     backgdRealm.add(customField, update: true)
                 }
             }catch{
-                print("Error adding place to realm \(error)")
+                print("Error adding customfields to realm \(error)")
             }
         }
      //}
@@ -404,15 +423,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 try realm.write{
                     let newPlace = POI()
                     newPlace.accountID = json["accountRead"][i]["accountID"].intValue
-                    newPlace.TasktypeID = json["accountRead"][i]["TasktypeID"].intValue
+                    newPlace.AccountTypeID = json["accountRead"][i]["AccountTypeID"].intValue
                     newPlace.name = json["accountRead"][i]["accountName"].stringValue
-                    newPlace.address = json["accountRead"][i]["taskAddress"].stringValue
-                    newPlace.latitude = json["accountRead"][i]["taskLat"].doubleValue
-                    newPlace.longitude = json["accountRead"][i]["taskLng"].doubleValue
+                    newPlace.address = json["accountRead"][i]["accountAddress"].stringValue
+                    newPlace.latitude = json["accountRead"][i]["accountLat"].doubleValue
+                    newPlace.longitude = json["accountRead"][i]["accountLng"].doubleValue
                     newPlace.createdDate = json["accountRead"][i]["createdDate"].stringValue
-                    newPlace.shortNotes = json["accountRead"][i]["shortNotes"].stringValue
-                    newPlace.taskStatus = json["accountRead"][i]["taskStatus"].stringValue
-                    newPlace.TypeName = json["accountRead"][i]["TypeName"].stringValue
+                    newPlace.AccountDescription = json["accountRead"][i]["AccountDescription"].stringValue
+                    newPlace.status = json["accountRead"][i]["status"].stringValue
+                    
                     newPlace.synced = true
                     newPlace.fromServer = true
                     realm.add(newPlace, update: true)
