@@ -10,6 +10,7 @@
 import Foundation
 import RealmSwift
 import CoreLocation
+import SwiftyJSON
 
 class POI: Object {
     
@@ -27,6 +28,10 @@ class POI: Object {
     @objc dynamic var done : Bool = false
     @objc dynamic var fromServer: Bool = false
     @objc dynamic var accountIDToServer: Int = 0
+    @objc dynamic var Others: String = ""
+    @objc dynamic var sync : String = ""
+    @objc dynamic var IsFavourite: Int = 0
+    @objc dynamic var AccountDiffrentiation: String = ""
     
     override static func primaryKey() -> String? {
         return "accountIDfrmMobile"

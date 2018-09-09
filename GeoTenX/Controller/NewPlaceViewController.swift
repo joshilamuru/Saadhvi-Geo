@@ -26,9 +26,11 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
     var visibleRegion = GMSVisibleRegion()
     var camera = GMSCameraPosition()
     let df = DateFormatter()
-    let address: String = ""
+    
     var valArray: [String: Any?]!
     
+    @IBOutlet weak var addressTextView: UITextView!
+    @IBOutlet weak var placeNameTextField: UITextField!
     @IBOutlet weak var newPlaceMapView: GMSMapView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,9 +76,11 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         
         func loadForm() {
             
-            let sectStr = NSLocalizedString("New Place Info", comment: "Account Info")
-            form +++ Section(sectStr)
+           let sectStr = NSLocalizedString("AdditionalInfo", comment: "Account Info")
             
+            form +++ Section(sectStr)
+           
+    
             // let section = form.sectionBy(tag: "Account Info")
             for field in customFields! {
                 switch(field.EntryType) {
@@ -84,10 +88,11 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
                     
                     self.form.last! <<< TextRow(){ row in
                         
-                        row.tag = field.DisplayName
+                        row.tag = field.FieldName
                         row.title = field.DisplayName
                         row.placeholder = field.Desc
-                        if(row.title == "Name" || row.title == "Name of Place" || row.title == "Address") {
+                        
+                        if(row.title == "Name of Place" || row.title == "Address") {
                             row.add(rule: RuleRequired())
                             row.validationOptions = .validatesOnBlur
                         }
@@ -169,7 +174,7 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
                 
             }
             
-            self.form.last! <<< ButtonRow() {
+           /* self.form.last! <<< ButtonRow() {
                 
                 $0.title = NSLocalizedString("Add New Place", comment: "Add New Place")
                 }.cellUpdate { cell, row in
@@ -188,10 +193,26 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
                                 self.saveFormValues(values: formValues)
                             }
                             
-                        }
+                        }*/
         }
    
     
+    @IBAction func NewPlaceBtnPressed(_ sender: Any) {
+        guard let text = placeNameTextField.text, !text.isEmpty else{
+            let messStr = NSLocalizedString("Place name cannot be empty", comment: "Name of place cannot be empty")
+            showAlertMessage(message: messStr)
+            placeNameTextField.becomeFirstResponder()
+            return
+        }
+        guard let _ = addressTextView.text, !text.isEmpty else{
+            let messStr = NSLocalizedString("Address cannot be empty. Enter address", comment: "Address cannot be empty. Enter address")
+            showAlertMessage(message: messStr)
+            addressTextView.becomeFirstResponder()
+            return
+        }
+        let formValues = self.form.values()
+        self.saveFormValues(values: formValues)
+    }
     
     func saveFormValues(values: [String: Any?]){
         valArray = values
@@ -205,21 +226,20 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         savePlace(values: valArray)
     }
     
+    func convertToString(obj: [String: Any?]) -> String? {
+        guard let data = try? JSONSerialization.data(withJSONObject: obj, options: []) else {
+            return nil
+        }
+        return String(data: data, encoding: String.Encoding.utf8)
+    }
     
     func savePlace(values: [String: Any?]){
         let newPlace = POI()
         
-        if let name = values["Name"] as? String, !name.isEmpty,let place = values["Place"] as? String, !place.isEmpty,let address = values["Address"] as? String, !address.isEmpty{
-            
-                newPlace.name = (values["Name"] as? String)! + "-" + (values["Place"] as? String)! + "-" + (values["Address"] as? String)!
-        }else  if let place = values["Place"] as? String, !place.isEmpty,let address = values["Address"] as? String, !address.isEmpty{
-            newPlace.name = (values["Place"] as? String)! + "-" + (values["Address"] as? String)!
-        }else {
-            newPlace.name = (values["Name"] as? String)!
-        }
-            if let address = values["Address"] as? String, !address.isEmpty {
-                newPlace.address = (values["Address"] as? String)!
-        }
+        newPlace.address = self.addressTextView.text!
+     
+        newPlace.name = self.placeNameTextField.text! + "-" + self.addressTextView.text!
+        
         newPlace.latitude = marker.position.latitude
         newPlace.longitude = marker.position.longitude
         newPlace.AccountTypeID = Int(acctTypeID)!
@@ -232,7 +252,7 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         print("Formatted date from timeNow(): \(newPlace.createdDate)")
         newPlace.fromServer = false
         newPlace.synced = false
-        
+        newPlace.Others = json(obj: values)!
         
         do{
             try realm.write{
@@ -273,6 +293,14 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         }
         
     }
+    
+        func json(obj:Any) -> String? {
+            guard let data = try? JSONSerialization.data(withJSONObject: obj, options: []) else {
+                return nil
+            }
+            print(data)
+            return String(data: data, encoding: String.Encoding.utf8)
+        }
         func setUpMap(){
             
             camera = GMSCameraPosition.camera(withLatitude: currentLocation.coordinate.latitude,longitude: currentLocation.coordinate.longitude, zoom: 20)
@@ -285,6 +313,7 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
             //        let update = GMSCameraUpdate.fit(gmsCircle.bounds())
             //        newPlacMapView.animate(with: update)
             setMarkerAddress(pos: currentLocation.coordinate)
+            //self.addressTextView.text = setMarkerAddress(pos: currentLocation.coordinate)
             marker.position = currentLocation.coordinate
             marker.isDraggable = true
             marker.map = self.newPlaceMapView
@@ -366,14 +395,14 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
                 guard let address = response?.firstResult(), let lines = address.lines else {
                     return
                 }
-            //    self.valArray["AccountAddress"] = lines.joined(separator: "\n")
-               
-               // let row = self.form.rowBy(tag: "Address") as! TextRow
-                if let row = self.form.rowBy(tag: "Address") as? TextRow{
-                    row.value = lines.joined(separator: "\n")
-                    row.reload()
-                }
+                self.addressTextView.text = lines.joined(separator: "\n")
+                
+//                if let row = self.form.rowBy(tag: "Address") as? TextRow{
+//                    row.value = lines.joined(separator: "\n")
+//                    row.reload()
+//                }
             }
+            
             
         }
         
@@ -394,7 +423,7 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         //MARK : Autocomplete search delegate methods
         
     override func viewWillAppear(_ animated: Bool) {
-        navigationItem.title = NSLocalizedString("Account Types", comment: "Types of Accounts")
+        navigationItem.title = NSLocalizedString("Add New Place", comment: "Types of Accounts")
     }
     override func viewWillDisappear(_ animated: Bool) {
         

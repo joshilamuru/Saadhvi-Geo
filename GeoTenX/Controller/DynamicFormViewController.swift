@@ -140,8 +140,7 @@ class DynamicFormViewController: FormViewController{
         
         let realm = try! Realm()
         let fields = realm.objects(CustomField.self).filter("TaskTypeID == %@", ID)
-       // let fields = realm.objects(CustomField.self).filter("TaskTypeID == '59'")
-        
+    
         return fields
     }
  

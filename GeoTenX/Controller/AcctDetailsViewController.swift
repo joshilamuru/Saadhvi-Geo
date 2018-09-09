@@ -44,18 +44,17 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         
     }
     
-    @IBAction func ChkInPressed(_ sender: Any) {
-        performSegue(withIdentifier: "formSegue", sender: self)
-    }
+   
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "formSegue") {
-            let destinationVC = segue.destination as! DynamicFormViewController
-            destinationVC.acct = poi.address
+        if(segue.identifier == "tasksSegue") {
+            let destinationVC = segue.destination as! TaskTypesViewController
+           // destinationVC.acct = poi.address
           //  destinationVC.acctTypeID = poi.AccountTypeID
             //hard coding the tasktypeid for checkin
-            destinationVC.taskTypeID = 286
+            
+           // destinationVC.taskTypeID = poi.
             navigationItem.title = " "
-            destinationVC.navigationItem.title = "Form Details"
+            destinationVC.navigationItem.title = "Task Types"
         }
     }
     override func didReceiveMemoryWarning() {
@@ -92,6 +91,7 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewWillAppear(_ animated: Bool) {
         DetailsTableView.rowHeight = UITableViewAutomaticDimension
         DetailsTableView.estimatedRowHeight = 120.0
+        navigationItem.title = NSLocalizedString("Account Details", comment: "Account Details")
     }
  
    

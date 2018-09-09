@@ -209,6 +209,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
        performSegue(withIdentifier: "acctTypesSegue", sender: self)
     }
     
+   
+    @IBAction func taskBtnPressed(_ sender: Any) {
+         performSegue(withIdentifier: "taskTypesSegue", sender: self)
+    }
     
   /*  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "addPlaceSegue") {

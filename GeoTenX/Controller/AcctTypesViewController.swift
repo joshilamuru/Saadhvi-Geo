@@ -32,13 +32,14 @@ class AcctTypesViewController: UITableViewController {
         
             let realm = try! Realm()
             let types = realm.objects(AccountType.self)
-        
+            print(types)
             return types
         }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return acctTypes.count
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndex = indexPath.row
         performSegue(withIdentifier: "addPlaceSegue", sender: self)
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -47,7 +48,9 @@ class AcctTypesViewController: UITableViewController {
         cell.textLabel?.text = "Create " + acctTypes[indexPath.row].TypeName
         return cell
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = NSLocalizedString("Account Types", comment: "Account Types")
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "addPlaceSegue") {
             let destinationVC = segue.destination as! NewPlaceViewController

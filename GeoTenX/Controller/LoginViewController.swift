@@ -201,7 +201,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     
                     self.updateAccountTypeCustomFieldData(json: result)
                     //   }
-                    SVProgressHUD.dismiss()
+               //     SVProgressHUD.dismiss()
                     
                     
                 }else{
@@ -431,11 +431,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     newPlace.createdDate = json["accountRead"][i]["createdDate"].stringValue
                     newPlace.AccountDescription = json["accountRead"][i]["AccountDescription"].stringValue
                     newPlace.status = json["accountRead"][i]["status"].stringValue
-                    
+                    newPlace.Others = json["accountRead"][i]["Others"].stringValue
                     newPlace.synced = true
                     newPlace.fromServer = true
                     realm.add(newPlace, update: true)
-                  
+                    print("Others: \(newPlace.Others)")
                   //  print("Successful in getting account \(i) from server")
                    // print (json["accountRead"][i])
                 }

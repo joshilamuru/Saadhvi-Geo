@@ -55,31 +55,25 @@ class SyncAcctToServer : NSObject {
             {
                 let acct: NSMutableDictionary = NSMutableDictionary()
                 
-               // acct.setValue(place.accountID, forKey: "accountIDFrmMobile")
+            
                 acct.setValue(place.incrementID(), forKey: "accountIDFrmMobile")
-                acct.setValue("0", forKey: "accountID")
+                acct.setValue(place.accountID, forKey: "accountID")
                 acct.setValue(place.name, forKey: "accountName")
-                acct.setValue(place.name, forKey: "AccountDescription")
-              //  acct.setValue("0", forKey: "dueDate")
-               // acct.setValue("0", forKey: "dueTime")
-             //   acct.setValue("0", forKey: "remindDate")
-              //  acct.setValue("0", forKey: "remindTime")
+                acct.setValue(place.AccountDescription, forKey: "AccountDescription")
+           
                 acct.setValue(place.latitude, forKey: "AccountLat")
                 acct.setValue(place.longitude, forKey: "AccountLng")
                 acct.setValue(place.address, forKey: "AccountAddress")
                 acct.setValue("Synched", forKey: "sync")
-               // acct.setValue(0, forKey: "markedAsDone")
+             
                 acct.setValue(place.createdDate, forKey: "createdDate")
-             //   acct.setValue("", forKey: "shortNotes")
-              //  acct.setValue(0, forKey: "snotesId")
-              //  acct.setValue("", forKey: "taskStatus")
+             
                 acct.setValue(place.AccountTypeID, forKey: "AccountTypeID")
-                acct.setValue("{}", forKey: "Others")
-             //   acct.setValue("", forKey: "SpecialColumnValue")
-                acct.setValue(0, forKey: "IsFavourite")
-                acct.setValue("M", forKey: "AccountDifferentiation")
-              //  acct.setValue("", forKey: "AutoGenFieldNo")
-              //  acct.setValue("", forKey: "ReferenceNo")
+                acct.setValue(place.Others, forKey: "Others")
+           
+                acct.setValue(place.IsFavourite, forKey: "IsFavourite")
+                acct.setValue(place.AccountDiffrentiation, forKey: "AccountDifferentiation")
+             
                 acctArray.add(acct)
             }
             
@@ -104,7 +98,7 @@ class SyncAcctToServer : NSObject {
                             print(responseString)
                         }
                     case .success(let responseObject):
-                           print(NSString(data: (response.request?.httpBody)!, encoding: String.Encoding.utf8.rawValue))
+                     //      print(NSString(data: (response.request?.httpBody)!, encoding: String.Encoding.utf8.rawValue))
                         print(responseObject)
                         self.updateRealm(data: POIs)
                     }
