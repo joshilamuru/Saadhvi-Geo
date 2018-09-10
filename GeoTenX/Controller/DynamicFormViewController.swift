@@ -136,6 +136,14 @@ class DynamicFormViewController: FormViewController{
         _ = navigationController?.popViewController(animated: true)
     }
 
+    func json(obj:Any) -> String? {
+        guard let data = try? JSONSerialization.data(withJSONObject: obj, options: []) else {
+            return nil
+        }
+        print(data)
+        return String(data: data, encoding: String.Encoding.utf8)
+    }
+    
     func getCustomFieldsByTaskID(ID: String) -> Results<CustomField>{
         
         let realm = try! Realm()

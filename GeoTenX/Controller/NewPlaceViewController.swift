@@ -27,8 +27,13 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
     var camera = GMSCameraPosition()
     let df = DateFormatter()
     
+    
     var valArray: [String: Any?]!
     
+   
+    @IBOutlet var mainView: UIView!
+   
+    @IBOutlet weak var customFieldsTableView: UITableView!
     @IBOutlet weak var addressTextView: UITextView!
     @IBOutlet weak var placeNameTextField: UITextField!
     @IBOutlet weak var newPlaceMapView: GMSMapView!
@@ -38,7 +43,10 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         customFields = getCustomFieldsByAccountTypeID(ID: acctTypeID)
         if(!(customFields?.isEmpty)!){
             loadForm()
+            animateView(view: self.customFieldsTableView, toHidden: false)
         }else{
+           
+            animateView(view: self.customFieldsTableView, toHidden: true)
             let str = NSLocalizedString("No custom fields available. Try again", comment: "No custom fields available. Try again")
             
             showAlertMessage(message: str)
@@ -52,6 +60,12 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    private func animateView(view: UIView, toHidden hidden: Bool) {
+        UIView.animate(withDuration: 0.8, delay: 0, options: .curveLinear, animations: { ()
+            -> Void in
+            view.isHidden = hidden
+            }, completion: nil)
+    }
 
         @objc func locationUpdateNotification(_ notification: Notification){
             currentLocation = notification.userInfo?["value"] as! CLLocation
@@ -76,7 +90,7 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         
         func loadForm() {
             
-           let sectStr = NSLocalizedString("AdditionalInfo", comment: "Account Info")
+           let sectStr = NSLocalizedString("Additional Info", comment: "Account Info")
             
             form +++ Section(sectStr)
            
@@ -429,4 +443,6 @@ class NewPlaceViewController: FormViewController, GMSMapViewDelegate {
         
        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
     }
+    
+    
 }

@@ -48,11 +48,7 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "tasksSegue") {
             let destinationVC = segue.destination as! TaskTypesViewController
-           // destinationVC.acct = poi.address
-          //  destinationVC.acctTypeID = poi.AccountTypeID
-            //hard coding the tasktypeid for checkin
-            
-           // destinationVC.taskTypeID = poi.
+           
             navigationItem.title = " "
             destinationVC.navigationItem.title = "Task Types"
         }
