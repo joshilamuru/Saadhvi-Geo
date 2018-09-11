@@ -64,7 +64,7 @@ class SyncAcctToServer : NSObject {
                 acct.setValue(place.latitude, forKey: "AccountLat")
                 acct.setValue(place.longitude, forKey: "AccountLng")
                 acct.setValue(place.address, forKey: "AccountAddress")
-                acct.setValue("Synched", forKey: "sync")
+                acct.setValue(place.sync, forKey: "sync")
              
                 acct.setValue(place.createdDate, forKey: "createdDate")
              

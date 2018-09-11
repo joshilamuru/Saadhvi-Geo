@@ -252,7 +252,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
             destinationVC.navigationItem.title = NSLocalizedString("Account Details", comment: "Account Details")
             if(selectedIndex != nil){
                 destinationVC.acctLocation = CLLocation(latitude: savedPlaces[selectedIndex].latitude, longitude: savedPlaces[selectedIndex].longitude)
-                
+                destinationVC.currentLocation = currentLocation
                 destinationVC.poi = savedPlaces[selectedIndex]
                 //print(filteredNearHundred[selectedIndex])
             }else

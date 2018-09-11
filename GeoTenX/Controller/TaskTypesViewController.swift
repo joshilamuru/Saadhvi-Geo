@@ -60,10 +60,10 @@ class TaskTypesViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "formSegue") {
             let destinationVC = segue.destination as! DynamicFormViewController
-            destinationVC.acct = taskTypes[selectedIndex].TypeName
+            destinationVC.taskTypeName = taskTypes[selectedIndex].TypeName
             //  destinationVC.acctTypeID = poi.AccountTypeID
             //hard coding the tasktypeid for checkin
-            
+            destinationVC.currentLocation = currentLocation
             destinationVC.taskTypeID = taskTypes[selectedIndex].TasktypeID
             navigationItem.title = " "
             destinationVC.navigationItem.title = "Form Details"

@@ -11,16 +11,18 @@ import CoreLocation
 import GoogleMaps
 import GooglePlaces
 
-class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, LocationUpdateProtocol {
 
     @IBOutlet weak var DetailsTableView: UITableView!
    // var poi : PointOfInterest!
     var poi: POI!
     @IBOutlet weak var mapView: GMSMapView!
     var acctLocation = CLLocation()
+    var currentLocation = CLLocation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(AcctDetailsViewController.locationUpdateNotification(_:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
         initMap()
         DetailsTableView.delegate = self
         DetailsTableView.dataSource = self
@@ -29,7 +31,19 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         DetailsTableView.register(UINib(nibName: "DetailsCell", bundle: nil), forCellReuseIdentifier: "customDetailCell")
         //configureTableView()
     }
-
+    @objc func locationUpdateNotification(_ notification: Notification) {
+        let userinfo = notification.userInfo
+        self.currentLocation = userinfo!["location"] as! CLLocation
+        print("Latitude from AcctDetails: \(self.currentLocation.coordinate.latitude)")
+        print("Longitude from AcctDetails : \(self.currentLocation.coordinate.longitude)")
+        
+    }
+    
+    func locationDidUpdateToLocation(location: CLLocation) {
+        currentLocation = location
+        print("location from notification in acctDetails : \(currentLocation)")
+        
+    }
     func initMap() {
         let camera = GMSCameraPosition.camera(withLatitude: (acctLocation.coordinate.latitude),longitude: (acctLocation.coordinate.longitude), zoom: 25)
         mapView.camera = camera
@@ -48,7 +62,7 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "tasksSegue") {
             let destinationVC = segue.destination as! TaskTypesViewController
-           
+            destinationVC.currentLocation = currentLocation
             navigationItem.title = " "
             destinationVC.navigationItem.title = "Task Types"
         }

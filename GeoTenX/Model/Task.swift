@@ -19,8 +19,8 @@ class Task: Object {
     @objc dynamic var remindDate : String = ""//format "07:00 AM"
     @objc dynamic var dueTime : String = ""
     @objc dynamic var remindTime : String = ""
-    @objc dynamic var taskLat : Int = 0
-    @objc dynamic var taskLng : Int = 0
+    @objc dynamic var taskLat : Double = 0.0
+    @objc dynamic var taskLng : Double = 0.0
     @objc dynamic var taskAddress : String = ""
     @objc dynamic var mapLocatedAddress : String = ""
     @objc dynamic var sync : String = ""
