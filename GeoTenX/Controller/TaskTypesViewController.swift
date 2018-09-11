@@ -16,14 +16,18 @@ class TaskTypesViewController: UITableViewController {
     var currentLocation = CLLocation()
     var taskTypes: Results<TaskType>!
     var selectedIndex: Int!
+    var poi: POI!
+    var tasks: Results<Task>!
     
-   
     override func viewDidLoad() {
         super.viewDidLoad()
 
         super.viewDidLoad()
         
         taskTypes = getTaskTypes()
+        SyncTaskByAccount.SharedSyncInstance.syncTask(id: poi.accountID)
+        tasks = getTasks(id: String(poi.accountID))
+        print(tasks)
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
 
@@ -33,6 +37,13 @@ class TaskTypesViewController: UITableViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         navigationItem.title = NSLocalizedString("Task Types", comment: "Task Types")
+    }
+    
+    func getTasks(id: String) ->Results<Task> {
+        let realm = try! Realm()
+        let tasks = realm.objects(Task.self).filter("accountID == %@", id)
+        print(tasks.count)
+        return tasks
     }
     func getTaskTypes() ->Results<TaskType>{
         
@@ -67,6 +78,7 @@ class TaskTypesViewController: UITableViewController {
             destinationVC.taskTypeID = taskTypes[selectedIndex].TasktypeID
             navigationItem.title = " "
             destinationVC.navigationItem.title = "Form Details"
+            destinationVC.poi = poi
         }
     }
 }

@@ -38,7 +38,7 @@ class NetworkManager: NSObject {
             print("Reachable via WiFi/cellular-Syncing data..")
 
             SyncAcctToServer.SharedSyncInstance.syncData()
-      
+            SyncDataToServer.SharedSyncInstance.syncData()
         case .none:
             print("Network not reachable")
             let alert = UIAlertController(title: "Internet Connection Lost", message: "Please check your internet connection", preferredStyle: .alert)

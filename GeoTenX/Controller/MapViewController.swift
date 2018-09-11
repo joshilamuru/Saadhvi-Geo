@@ -211,7 +211,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
     
    
     @IBAction func taskBtnPressed(_ sender: Any) {
-         performSegue(withIdentifier: "taskTypesSegue", sender: self)
+        if(selectedIndex != nil) {
+            performSegue(withIdentifier: "taskTypesSegue", sender: self)
+        }else{
+            //alert user if no selection made
+            let formatString = NSLocalizedString("Please select a place before continuing.", comment: "Select a place to continue")
+            let alert = UIAlertController(title: "Alert", message: formatString, preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
+       
     }
     
   /*  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -255,6 +265,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
                 destinationVC.currentLocation = currentLocation
                 destinationVC.poi = savedPlaces[selectedIndex]
                 //print(filteredNearHundred[selectedIndex])
+            }
+        }else
+                 if (segue.identifier == "taskTypesSegue") {
+                    let destinationVC = segue.destination as! TaskTypesViewController
+                    navigationItem.title = ""
+                    destinationVC.navigationItem.title = NSLocalizedString("Task Types", comment: "Task Types")
+                    destinationVC.poi = savedPlaces[selectedIndex]
+                    destinationVC.currentLocation = currentLocation
+                    
             }else
             {
                 print("no row selected in tableview")
@@ -262,7 +281,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
             }
             //    destinationVC.navigationItem.title = "Check-In \n \(filteredNearHundred[selectedIndex].address)"
         }
-    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

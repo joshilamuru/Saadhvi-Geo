@@ -37,7 +37,7 @@ class Task: Object {
     @objc dynamic var AutoGenFieldNo: String = ""
     @objc dynamic var ReferenceNo : String = ""
     @objc dynamic var synced : Bool = false
-    @objc dynamic var taskIDToServer : String = ""
+    @objc dynamic var taskIDToServer : Int = 0
     
     override static func primaryKey() -> String? {
         return "taskIDFrmMobile"

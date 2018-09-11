@@ -19,8 +19,8 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
     var taskTypeName : String = ""
     var taskTypeID : Int!
     // var acctTypeID: Int!
-    var valArray: [String: Any]!
-    @IBOutlet weak var acctLabel: UILabel!
+    var valArray: [String: Any?]!
+    var poi: POI!
     var customFields: Results<CustomField>? = nil
     let realm = try! Realm()
     
@@ -31,7 +31,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         LocationMgr.delegate = self
         let str = NSLocalizedString("Check-In", comment: "Check-In")
         self.navigationItem.title = str
-        acctLabel.text = taskTypeName
+      
         customFields = getCustomFieldsByTaskID(ID: String(taskTypeID))
         if(!(customFields?.isEmpty)!){
             loadForm()
@@ -45,6 +45,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
     @objc func locationUpdateNotification(_ notification: Notification) {
         let userinfo = notification.userInfo
         self.currentLocation = userinfo!["location"] as! CLLocation
+        
         print("Latitude from dynamicform: \(self.currentLocation.coordinate.latitude)")
         print("Longitude from dynamicform : \(self.currentLocation.coordinate.longitude)")
        
@@ -58,7 +59,8 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
 
     func loadForm() {
     
-        let sectStr = NSLocalizedString("Account Info", comment: "Account Info")
+        let sectStr = NSLocalizedString("\(taskTypeName)", comment: "Task type name")
+        
         form +++ Section(sectStr)
         // let section = form.sectionBy(tag: "Account Info")
         for field in customFields! {
@@ -66,23 +68,27 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
             case "Text":
                 
                 self.form.last! <<< TextRow(){ row in
+                    row.tag = field.FieldName
                     row.title = field.DisplayName
                     row.placeholder = field.Desc
                 }
                 
             case "Number":
                 self.form.last! <<< IntRow(){ row in
+                    row.tag = field.FieldName
                     row.title = field.DisplayName
                     row.placeholder = field.Desc
                     
                 }
             case "Date","Time":
                 self.form.last! <<< DateTimeRow(){ row in
+                    row.tag = field.FieldName
                     row.title = field.DisplayName
                     
                 }
             case "Image Upload":
                 self.form.last! <<< ImageRow(){ row in
+                    row.tag = field.FieldName
                     row.title = field.DisplayName
                     row.sourceTypes = .Camera
                     row.clearAction = .yes(style: .default)
@@ -91,6 +97,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
                
             case "Option", "Auto Text":
                 self.form.last! <<< PushRow<String>(){
+                    $0.tag = field.FieldName
                     $0.title = field.DisplayName
                     let values = (field.DefaultValues).components(separatedBy: ",")
                     print("Values are: \(values)")
@@ -104,6 +111,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
                 }
             case "Choice":
                 self.form.last! <<< MultipleSelectorRow<String> {
+                    $0.tag = field.FieldName
                     $0.title = field.DisplayName
                     let values = (field.DefaultValues).components(separatedBy: ",")
                     print("Values are: \(values)")
@@ -116,6 +124,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
       
             case "Dual Camera":
                 self.form.last! <<< PushRow<String>() {
+                    $0.tag = field.FieldName
                     $0.title = field.DisplayName
                     $0.presentationMode = .segueName(segueName: "DualCameraSegue", onDismiss: nil)
                 }
@@ -138,26 +147,20 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
             }
             
         }
-        //        for section in form.allSections {
-        //            print("Section tags - \(section.tag)")
-        //        }
-        self.form.last! <<< ButtonRow("Save") {
-            
-            $0.title = NSLocalizedString("Save", comment: "Save")
-            }.cellUpdate { cell, row in
-                cell.textLabel?.textColor = UIColor.orange
-                cell.backgroundColor = UIColor.darkGray }.onCellSelection
-                    { cell, row in
-                    
-                    let formValues = self.form.values()
-                    
-                    self.saveFormValues(values: formValues)
-                    }
-                    
+       
+        
         
     }
-    func saveFormValues(values: [String: Any]){
+    
+    @IBAction func saveBtnPressed(_ sender: Any) {
+        let formValues = self.form.values()
+        print(formValues)
+        self.saveFormValues(values: formValues)
+    }
+    
+    func saveFormValues(values: [String: Any?]){
         valArray = values
+        
         for val in values {
             if(val.value is UIImage) {
                 let image = val.value
@@ -170,11 +173,14 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
     
     
     
-    func saveTaskDetails(values: [String: Any]) {
+    func saveTaskDetails(values: [String: Any?]) {
 
 
         let task = Task()
-        
+        task.taskLat = self.currentLocation.coordinate.latitude
+        task.taskLng = self.currentLocation.coordinate.longitude
+        task.TasktypeID = taskTypeID
+        task.accountID = String(poi.accountID)
         GMSGeocoder().reverseGeocodeCoordinate(currentLocation.coordinate) { response, error in
             if let location = response?.firstResult() {
                 
@@ -183,8 +189,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
             }
         }
 
-        task.taskLat = self.currentLocation.coordinate.latitude
-        task.taskLng = self.currentLocation.coordinate.longitude
+        
 
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "MM-dd-yyyy HH:mm:ss"
@@ -196,7 +201,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
      
         
         task.Others = updateLocDetailsInOthers(data: values)
-        
+        print(task.Others)
         do{
             try realm.write{
                
@@ -242,31 +247,28 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         _ = navigationController?.popViewController(animated: true)
     }
     
-    func updateLocDetailsInOthers(data: [String: Any]) -> String {
+    func updateLocDetailsInOthers(data: [String: Any?]) -> String {
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyyMMdd HHmmss"
+        let date = dateFormatterGet.string(from: Date())
         
         let others: NSMutableDictionary = NSMutableDictionary()
-        
+        let towerDetails:NSMutableDictionary = NSMutableDictionary()
         let tslDetails: NSMutableDictionary = NSMutableDictionary()
-       let tulDetails: NSMutableDictionary = NSMutableDictionary()
-        tslDetails.setValue("", forKey: "ST")
-        tslDetails.setValue("", forKey: "Lat")
-        tslDetails.setValue("", forKey: "Lng")
-        tslDetails.setValue("", forKey: "AL")
-        tslDetails.setValue("", forKey: "LP")
-        tslDetails.setValue("", forKey: "cellId")
-        tslDetails.setValue("", forKey: "lacId")
+       
+        tslDetails.setValue(date, forKey: "ST")
+        tslDetails.setValue(currentLocation.coordinate.latitude, forKey: "Lat")
+        tslDetails.setValue(currentLocation.coordinate.longitude, forKey: "Lng")
+        tslDetails.setValue("0", forKey: "AL")
+        tslDetails.setValue("0", forKey: "LP")
+        tslDetails.setValue("0", forKey: "cellId")
+        tslDetails.setValue("0", forKey: "lacId")
         
+        towerDetails.setObject(tslDetails, forKey: "TSL" as NSCopying)
+        towerDetails.addEntries(from: data)
+        others.setObject(towerDetails, forKey: "Others" as NSCopying)
         
-        tulDetails.setValue("", forKey: "UT")
-        tulDetails.setValue("", forKey: "Lat")
-        tulDetails.setValue("", forKey: "Lng")
-        tulDetails.setValue("", forKey: "AL")
-        tulDetails.setValue("", forKey: "LP")
-        tulDetails.setValue("", forKey: "cellId")
-        tulDetails.setValue("", forKey: "lacId")
-        others.setObject(tulDetails, forKey: "TSL" as NSCopying)
-         others.setObject(tulDetails, forKey: "TUL" as NSCopying)
-        others.addEntries(from: data)
+        print(others)
         return json(obj: others)!
     }
     func json(obj:Any) -> String? {

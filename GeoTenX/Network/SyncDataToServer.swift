@@ -57,9 +57,9 @@ class SyncDataToServer : NSObject {
                     let tk: NSMutableDictionary = NSMutableDictionary()
                     
                     
-                    tk.setValue(task.incrementID(), forKey: "taskIDFrmMobile")
-                    tk.setValue(task.taskID, forKey: "taskID")
-                    tk.setValue(task.accountID, forKey: "accountID")
+                    tk.setValue(String(task.incrementID()), forKey: "taskIDFrmMobile")
+                    tk.setValue(String(task.taskID), forKey: "taskID")
+                    tk.setValue(String(task.accountID), forKey: "accountID")
                     tk.setValue(task.taskDescription, forKey: "taskDescription")
                     tk.setValue(task.dueDate, forKey: "dueDate")
                     tk.setValue(task.dueTime, forKey: "dueTime")
@@ -71,7 +71,7 @@ class SyncDataToServer : NSObject {
                     tk.setValue(task.mapLocatedAddress, forKey: "mapLocatedAddress")
                     tk.setValue(task.sync, forKey: "sync")
                     tk.setValue(task.markedAsDone, forKey: "markedAsDone")
-                    tk.setValue(timestamp, forKey: "createdDate")
+                    tk.setValue(task.createdDate, forKey: "createdDate")
                     tk.setValue(task.shortNotes, forKey: "shortNotes")
                     tk.setValue(task.snotesId, forKey: "snotesId")
                     tk.setValue(task.taskStatus, forKey: "taskStatus")
@@ -82,12 +82,12 @@ class SyncDataToServer : NSObject {
                     tk.setValue(task.TaskDifferentiation, forKey: "TaskDifferentiation")
                     tk.setValue(task.AutoGenFieldNo, forKey: "AutoGenFieldNo")
                     tk.setValue(task.ReferenceNo, forKey: "ReferenceNo")
-                    tkArray.add(acct)
+                    tkArray.add(tk)
                 }
                 
                 para.setObject(tkArray, forKey: "tasks" as NSCopying)
                 let values : [String: Any] = para as! [String : Any]
-                
+                print(values)
                 
                 
                 request.httpBody = try! JSONSerialization.data(withJSONObject: values)
