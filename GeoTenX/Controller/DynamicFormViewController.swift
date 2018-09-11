@@ -253,7 +253,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         let date = dateFormatterGet.string(from: Date())
         
         let others: NSMutableDictionary = NSMutableDictionary()
-        let towerDetails:NSMutableDictionary = NSMutableDictionary()
+      //  let towerDetails:NSMutableDictionary = NSMutableDictionary()
         let tslDetails: NSMutableDictionary = NSMutableDictionary()
        
         tslDetails.setValue(date, forKey: "ST")
@@ -264,9 +264,9 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         tslDetails.setValue("0", forKey: "cellId")
         tslDetails.setValue("0", forKey: "lacId")
         
-        towerDetails.setObject(tslDetails, forKey: "TSL" as NSCopying)
-        towerDetails.addEntries(from: data)
-        others.setObject(towerDetails, forKey: "Others" as NSCopying)
+        others.setObject(tslDetails, forKey: "TSL" as NSCopying)
+        others.addEntries(from: data)
+      //  others.setObject(towerDetails, forKey: "Others" as NSCopying)
         
         print(others)
         return json(obj: others)!
