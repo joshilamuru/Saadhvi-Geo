@@ -31,7 +31,7 @@ class DualCameraViewController: UIViewController {
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     var cameraFrontPreviewLayer: AVCaptureVideoPreviewLayer?
     var image, backImg, frontImg, mergedImage: UIImage?
-    
+    var rowTag: String = ""
     let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInTelephotoCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera], mediaType: .video, position: .unspecified)
     
     override func viewDidLoad() {
@@ -133,6 +133,7 @@ class DualCameraViewController: UIViewController {
             mergedImage = ContainerUIView.capture()
             //mergedImage = image(view: ContainerUIView)
             previewVC.mergeImage = mergedImage
+            previewVC.rowTag = rowTag
             navigationItem.title = " "
         }
     }
@@ -151,7 +152,12 @@ class DualCameraViewController: UIViewController {
             }
         }
     }
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    
 }
+
 
 extension DualCameraViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
@@ -228,4 +234,6 @@ extension DualCameraViewController: AVCapturePhotoCaptureDelegate {
         sleep(1)
         photoOutput?.capturePhoto(with: settings, delegate: self)
     }
+    
+    
 }

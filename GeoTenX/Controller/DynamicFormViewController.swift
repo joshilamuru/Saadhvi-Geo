@@ -23,7 +23,10 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
     var poi: POI!
     var customFields: Results<CustomField>? = nil
     let realm = try! Realm()
-    
+    var mergedImg: UIImage?
+    var rowTag: String?
+    var name: String = ""
+    var formValues: [String: Any?]!
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(DynamicFormViewController.locationUpdateNotification(_:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
@@ -80,27 +83,34 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
                     row.placeholder = field.Desc
                     
                 }
-            case "Date","Time":
+            case "Date":
                 self.form.last! <<< DateTimeRow(){ row in
                     row.tag = field.FieldName
                     row.title = field.DisplayName
                     
                 }
-            case "Image Upload":
-                self.form.last! <<< ImageRow(){ row in
+            case "Time":
+                self.form.last! <<< DateTimeRow(){ row in
+                    row.dateFormatter?.dateFormat = "HH:mm:ss"
                     row.tag = field.FieldName
                     row.title = field.DisplayName
-                    row.sourceTypes = .Camera
-                    row.clearAction = .yes(style: .default)
-
+                    
                 }
-               
+//            case "Image Upload":
+//                self.form.last! <<< ImageRow(){ row in
+//                    row.tag = field.FieldName
+//                    row.title = field.DisplayName
+//                    row.sourceTypes = .Camera
+//                    row.clearAction = .yes(style: .default)
+//
+//                }
+//
             case "Option", "Auto Text":
                 self.form.last! <<< PushRow<String>(){
                     $0.tag = field.FieldName
                     $0.title = field.DisplayName
                     let values = (field.DefaultValues).components(separatedBy: ",")
-                    print("Values are: \(values)")
+                  //  print("Values are: \(values)")
                     $0.options = values
                     $0.value = ""
                     let strOption = NSLocalizedString("Choose an option", comment: "Choose an option")
@@ -122,12 +132,36 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
                         
                 }
       
-            case "Dual Camera":
-                self.form.last! <<< PushRow<String>() {
+            case "Dual Camera", "Image Upload":
+                self.form.last! <<< ButtonRow() {
                     $0.tag = field.FieldName
                     $0.title = field.DisplayName
+                    name = $0.tag! + "-" + "copy.png"
                     $0.presentationMode = .segueName(segueName: "DualCameraSegue", onDismiss: nil)
-                }
+                    }
+                   .cellUpdate { cell, row in
+                        let fileManager = FileManager.default
+                    let endIndex = self.name.range(of: "-")!.lowerBound
+                    let str = self.name.substring(to: endIndex).trimmingCharacters(in: .whitespacesAndNewlines)
+                    if str == row.tag!{
+                            let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(self.name)
+                            
+                                if fileManager.fileExists(atPath: imagePAth){
+                                    
+                                    self.mergedImg = UIImage(contentsOfFile: imagePAth)
+                                    //self.form.rowBy(tag: "rowTag")?.updateCell()
+                                    
+                                    cell.imageView?.image = self.mergedImg
+                                    
+                                
+                        }
+                    }
+                        
+                    
+                    }
+                        
+                       
+                
 //                    .onPresent { from, to in
 //                        to.selectableRowCellUpdate = { cell, row in
 //                            print("here")
@@ -152,20 +186,46 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      
+        if segue.identifier == "DualCameraSegue" {
+            let destinationVC = segue.destination as! DualCameraViewController
+             rowTag = (sender as! ButtonRow).tag!
+            destinationVC.rowTag = rowTag!
+        }
+    }
     @IBAction func saveBtnPressed(_ sender: Any) {
-        let formValues = self.form.values()
+        formValues = self.form.values()
         print(formValues)
         self.saveFormValues(values: formValues)
+        name = ""
     }
     
     func saveFormValues(values: [String: Any?]){
         valArray = values
-        
+        //remove null values
+      
         for val in values {
             if(val.value is UIImage) {
                 let image = val.value
-                let data = UIImageJPEGRepresentation(image as! UIImage, 0.8)
-                valArray[val.key] = data
+                //let data = UIImageJPEGRepresentation(image as! UIImage, 0.8)
+               // valArray[val.key] = data
+         //       let data = UIImagePNGRepresentation(image as! UIImage)
+           //     let datastring = data?.base64EncodedString(options: .lineLength64Characters)
+            //    valArray[val.key] = datastring
+            }else if(val.value is NSSet){
+                
+                let strArr: NSArray = (val.value as! NSSet).allObjects as NSArray
+            
+             //   let strVal = strArr.compactMap{($0)}
+                let strVal = strArr.componentsJoined(by: ",")
+                valArray.updateValue(strVal, forKey: val.key)
+                
+            }else if(val.value is NSDate){
+                 let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MM-dd-yyyy HH:mm:ss"
+                let dateStr = dateFormatter.string(from: (val.value as! Date))
+                valArray.updateValue(dateStr, forKey: val.key)
             }
         }
         saveTaskDetails(values: valArray)
@@ -175,37 +235,28 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
     
     func saveTaskDetails(values: [String: Any?]) {
 
-
-        let task = Task()
-        task.taskLat = self.currentLocation.coordinate.latitude
-        task.taskLng = self.currentLocation.coordinate.longitude
-        task.TasktypeID = taskTypeID
-        task.accountID = String(poi.accountID)
-        GMSGeocoder().reverseGeocodeCoordinate(currentLocation.coordinate) { response, error in
-            if let location = response?.firstResult() {
-                
-                let lines = location.lines! as [String]
-                task.taskAddress = lines.joined(separator: "\n")
-            }
-        }
-
         
-
-        let dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = "MM-dd-yyyy HH:mm:ss"
-        let date = dateFormatterGet.string(from: Date())
-        print("DATE FORMATTED: \(date)")
-        task.createdDate = date
-        task.synced = false
+                    let task = Task()
+                    task.taskLat = self.currentLocation.coordinate.latitude
+                    task.taskLng = self.currentLocation.coordinate.longitude
+                    task.TasktypeID = taskTypeID
+                    task.accountID = "\(poi.accountID)"
+                    let dateFormatterGet = DateFormatter()
+                    dateFormatterGet.dateFormat = "MM-dd-yyyy HH:mm:ss"
+                    let date = dateFormatterGet.string(from: Date())
+                    print("DATE FORMATTED: \(date)")
+                    task.createdDate = date
+                   // task.taskAddress = currentLocation.coordinate
+                    task.synced = false
         
-     
         
-        task.Others = updateLocDetailsInOthers(data: values)
-        print(task.Others)
+        
+                    task.Others = updateLocDetailsInOthers(data: values)
+                    print(task.Others)
+        
+        
         do{
             try realm.write{
-               
-                
                     realm.add(task)
                     
                     if (NetworkManager.sharedInstance.reachability).connection != .none {
@@ -247,22 +298,49 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         _ = navigationController?.popViewController(animated: true)
     }
     
+    func getImageFromDir(name: String)-> UIImage{
+        let fileManager = FileManager.default
+    
+        let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(name)
+    
+        if fileManager.fileExists(atPath: imagePAth){
+            
+            mergedImg = UIImage(contentsOfFile: imagePAth)
+            
+            }else{
+            
+            print("No Image")
+            
+      }
+        return mergedImg!
+    }
+        func getDirectoryPath() -> String {
+            
+            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+            
+            let documentsDirectory = paths[0]
+            return documentsDirectory
+            
+        }
+    
+    
     func updateLocDetailsInOthers(data: [String: Any?]) -> String {
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyyMMdd HHmmss"
         let date = dateFormatterGet.string(from: Date())
-        
+        let latStr: String = String(format:"%f", currentLocation.coordinate.latitude)
+        let lngStr: String = String(format:"%f", currentLocation.coordinate.longitude)
         let others: NSMutableDictionary = NSMutableDictionary()
       //  let towerDetails:NSMutableDictionary = NSMutableDictionary()
         let tslDetails: NSMutableDictionary = NSMutableDictionary()
        
         tslDetails.setValue(date, forKey: "ST")
-        tslDetails.setValue(currentLocation.coordinate.latitude, forKey: "Lat")
-        tslDetails.setValue(currentLocation.coordinate.longitude, forKey: "Lng")
+        tslDetails.setValue(latStr, forKey: "Lat")
+        tslDetails.setValue(lngStr, forKey: "Lng")
         tslDetails.setValue("0", forKey: "AL")
         tslDetails.setValue("0", forKey: "LP")
-        tslDetails.setValue("0", forKey: "cellId")
-        tslDetails.setValue("0", forKey: "lacId")
+        tslDetails.setValue(0, forKey: "cellId")
+        tslDetails.setValue(0, forKey: "lacId")
         
         others.setObject(tslDetails, forKey: "TSL" as NSCopying)
         others.addEntries(from: data)
@@ -272,6 +350,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         return json(obj: others)!
     }
     func json(obj:Any) -> String? {
+    
         guard let data = try? JSONSerialization.data(withJSONObject: obj, options: []) else {
             return nil
         }
@@ -298,6 +377,8 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
     }
-   
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
 }
 

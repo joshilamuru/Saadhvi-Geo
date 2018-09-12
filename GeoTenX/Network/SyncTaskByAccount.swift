@@ -53,6 +53,7 @@ class SyncTaskByAccount: NSObject {
                             //loadPOI in realm
                             
                             result = JSON(response.result.value!)
+                            print(result)
                             self.updateInRealm(json: result)
                         }
              

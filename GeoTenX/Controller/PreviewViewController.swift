@@ -11,7 +11,7 @@ import UIKit
 class PreviewViewController: UIViewController {
     var mergeImage: UIImage?
     @IBOutlet weak var MergeImageView: UIImageView!
-  
+    var rowTag: String?
     @IBOutlet weak var buttonsView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,21 +34,28 @@ class PreviewViewController: UIViewController {
             self.navigationController?.popToViewController(composeViewController, animated: true)
         }
     }
+   
     @IBAction func UsePhotoBtnPressed(_ sender: Any) {
         //save the photo and return..
+        if let image = self.mergeImage {
+            if let data = UIImagePNGRepresentation(image) {
+                let name = rowTag! + "-" + "copy.png"
+                let filename = getDocumentsDirectory().appendingPathComponent(name)
+                print(filename)
+                try? data.write(to: filename)
+            }
+        }
         if let composeViewController = self.navigationController?.viewControllers[2] {
             print(composeViewController)
             self.navigationController?.popToViewController(composeViewController, animated: true)
         }
+        //save photo
+        
+       // performSegue(withIdentifier: "returnFormSegue", sender: self)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
-    */
 
 }

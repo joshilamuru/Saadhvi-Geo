@@ -7,6 +7,7 @@ import Foundation
 import Alamofire
 import RealmSwift
 import Reachability
+import CoreLocation
 
 class SyncDataToServer : NSObject {
     static let SharedSyncInstance = SyncDataToServer()
@@ -35,7 +36,7 @@ class SyncDataToServer : NSObject {
             } catch {
                 fatalError("Error reading password from keychain - \(error)")
             }
-            let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .short, timeStyle: .full)
+         //   let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .short, timeStyle: .full)
             var request = URLRequest(url: url!)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -57,9 +58,9 @@ class SyncDataToServer : NSObject {
                     let tk: NSMutableDictionary = NSMutableDictionary()
                     
                     
-                    tk.setValue(String(task.incrementID()), forKey: "taskIDFrmMobile")
-                    tk.setValue(String(task.taskID), forKey: "taskID")
-                    tk.setValue(String(task.accountID), forKey: "accountID")
+                    tk.setValue(task.incrementID(), forKey: "taskIDFrmMobile")
+                    tk.setValue(task.taskID, forKey: "taskID")
+                    tk.setValue(task.accountID, forKey: "accountID")
                     tk.setValue(task.taskDescription, forKey: "taskDescription")
                     tk.setValue(task.dueDate, forKey: "dueDate")
                     tk.setValue(task.dueTime, forKey: "dueTime")
@@ -68,6 +69,15 @@ class SyncDataToServer : NSObject {
                     tk.setValue(task.taskLat, forKey: "taskLat")
                     tk.setValue(task.taskLng, forKey: "taskLng")
                     tk.setValue(task.taskAddress, forKey: "taskAddress")
+                    
+//                    geocode(latitude: task.taskLat, longitude: task.taskLng) { address, error in
+//                        guard let _ = address, error == nil else { return }
+//
+//
+//                            tk.setValue(address, forKey: "taskAddress")
+//
+//
+//                    }
                     tk.setValue(task.mapLocatedAddress, forKey: "mapLocatedAddress")
                     tk.setValue(task.sync, forKey: "sync")
                     tk.setValue(task.markedAsDone, forKey: "markedAsDone")
@@ -89,20 +99,21 @@ class SyncDataToServer : NSObject {
                 let values : [String: Any] = para as! [String : Any]
                 print(values)
                 
-                
+               
                 request.httpBody = try! JSONSerialization.data(withJSONObject: values)
-                
+            //   print(request.httpBody!)
                 Alamofire.request(request)
                     .responseJSON { response in
-                        // do whatever you want here
+                  
                         switch response.result {
                         case .failure(let error):
                             print(error)
-                            
+                           
                             if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
                                 print(responseString)
                             }
                         case .success(let responseObject):
+                            
                             print(responseObject)
                             self.updateRealm(data: tasks)
                         }
@@ -119,4 +130,52 @@ class SyncDataToServer : NSObject {
             
         }
     }
-}
+    
+    func geocode(latitude: Double, longitude: Double, completion: @escaping (String?, Error?) -> ())  {
+        
+        CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: latitude, longitude: longitude), completionHandler:
+            {(placemarks, error) in
+                    if (error != nil)
+                    {
+                        print("reverse geodcode fail: \(error!.localizedDescription)")
+                    }
+                    let pm = placemarks! as [CLPlacemark]
+            
+                    if pm.count > 0 {
+                    let pm = placemarks![0]
+                    print(pm.country)
+                    print(pm.locality)
+                    print(pm.subLocality)
+                    print(pm.thoroughfare)
+                    print(pm.postalCode)
+                    print(pm.subThoroughfare)
+                    var addressString : String = ""
+                    if pm.subLocality != nil {
+                    addressString = addressString + pm.subLocality! + ", "
+                    }
+                    if pm.thoroughfare != nil {
+                    addressString = addressString + pm.thoroughfare! + ", "
+                    }
+                    if pm.locality != nil {
+                    addressString = addressString + pm.locality! + ", "
+                    }
+                    if pm.country != nil {
+                    addressString = addressString + pm.country! + ", "
+                    }
+                    if pm.postalCode != nil {
+                    addressString = addressString + pm.postalCode! + " "
+                    }
+            
+            
+                        print(addressString)
+                    
+                }
+            })
+        
+            }
+            
+            
+            
+    
+    }
+

@@ -25,7 +25,7 @@ class TaskTypesViewController: UITableViewController {
         super.viewDidLoad()
         
         taskTypes = getTaskTypes()
-        SyncTaskByAccount.SharedSyncInstance.syncTask(id: poi.accountID)
+       // SyncTaskByAccount.SharedSyncInstance.syncTask(id: poi.accountID)
         tasks = getTasks(id: String(poi.accountID))
         print(tasks)
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
@@ -36,6 +36,7 @@ class TaskTypesViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     override func viewWillAppear(_ animated: Bool) {
+        tableView.isUserInteractionEnabled = true
         navigationItem.title = NSLocalizedString("Task Types", comment: "Task Types")
     }
     
@@ -59,6 +60,7 @@ class TaskTypesViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedIndex = indexPath.row
+        tableView.isUserInteractionEnabled = false
         performSegue(withIdentifier: "formSegue", sender: self)
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
