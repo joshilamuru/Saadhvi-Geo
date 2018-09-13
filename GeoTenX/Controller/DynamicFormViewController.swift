@@ -14,7 +14,9 @@ import CoreLocation
 import GoogleMaps
 import GooglePlaces
 
-class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
+class DynamicFormViewController: FormViewController, LocationUpdateProtocol, MergedImagesProtocol {
+   private let preview = PreviewViewController()
+    
     var currentLocation = CLLocation()
     var taskTypeName : String = ""
     var taskTypeID : Int!
@@ -27,9 +29,14 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
     var rowTag: String?
     var name: String = ""
     var formValues: [String: Any?]!
-    var images: [UIImage]?
+    var images = [String: UIImage]()
+   // var preview: PreviewViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        preview.delegate = self
+        
         NotificationCenter.default.addObserver(self, selector: #selector(DynamicFormViewController.locationUpdateNotification(_:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
         let LocationMgr = LocationService.SharedManager
         LocationMgr.delegate = self
@@ -60,7 +67,16 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         print("location from notification in dynamic form: \(currentLocation)")
         
     }
-
+    
+    func mergeImages(img: [String : UIImage]) {
+        self.images = img
+        for image in images{
+            print("rowtag from mergeImages: \(image.key)")
+            let row = form.rowBy(tag: image.key)
+            row?.baseCell.textLabel?.text = "Image saved"
+            row?.updateCell()
+        }
+    }
     func loadForm() {
     
         let sectStr = NSLocalizedString("\(taskTypeName)", comment: "Task type name")
@@ -141,17 +157,17 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
                     $0.presentationMode = .segueName(segueName: "DualCameraSegue", onDismiss: nil)
                     }
                    .cellUpdate { cell, row in
-                    
-                    let endIndex = self.name.range(of: "-")!.lowerBound
-                    let str = self.name.substring(to: endIndex).trimmingCharacters(in: .whitespacesAndNewlines)
-                    print("str:\(str)")
-                    print("rowTag: \(self.rowTag)")
-
-                    if str == self.rowTag{
-
-                       //             cell.imageView?.image = self.mergedImg
-                       
-                    }
+                    cell.imageView?.image = self.images[row.tag!]
+//                    let endIndex = self.name.range(of: "-")!.lowerBound
+//                    let str = self.name.substring(to: endIndex).trimmingCharacters(in: .whitespacesAndNewlines)
+//                    print("str:\(str)")
+//                    print("rowTag: \(self.rowTag)")
+//
+//                    if str == self.rowTag{
+//
+//                                    cell.imageView?.image = self.mergedImg
+//                       
+//                    }
 
                     
                     }
@@ -174,6 +190,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
             let destinationVC = segue.destination as! DualCameraViewController
              rowTag = (sender as! ButtonRow).tag!
             destinationVC.rowTag = rowTag!
+            destinationVC.dynamicVC = self
         }
     }
     @IBAction func saveBtnPressed(_ sender: Any) {
@@ -361,24 +378,24 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
     }
     override func viewDidAppear(_ animated: Bool) {
        
-        if let Tag = rowTag{
-            if let row = self.form.rowBy(tag: Tag){
-                let fileManager = FileManager.default
-               
-                let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(self.name)
-                
-                if fileManager.fileExists(atPath: imagePAth){
-                    
-                        self.mergedImg = UIImage(contentsOfFile: imagePAth)
-                        //self.form.rowBy(tag: "rowTag")?.updateCell()
-                    
-                    
-                    row.baseCell.imageView?.image = mergedImg
-                        row.updateCell()
-                  //  row.reload()
-                  //  self.tableView?.reloadData()
-                }
-        }
-    }
+//        if let Tag = rowTag{
+//            if let row = self.form.rowBy(tag: Tag){
+//                let fileManager = FileManager.default
+//
+//                let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(self.name)
+//
+//                if fileManager.fileExists(atPath: imagePAth){
+//
+//                        self.mergedImg = UIImage(contentsOfFile: imagePAth)
+//                        //self.form.rowBy(tag: "rowTag")?.updateCell()
+//
+//
+//                    row.baseCell.imageView?.image = mergedImg
+//                        row.updateCell()
+//                  //  row.reload()
+//                  //  self.tableView?.reloadData()
+//                }
+//        }
+//    }
 }
 }

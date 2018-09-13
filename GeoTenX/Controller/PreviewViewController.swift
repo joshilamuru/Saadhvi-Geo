@@ -8,13 +8,20 @@
 
 import UIKit
 
+protocol MergedImagesProtocol: class {
+    func mergeImages(img: [String: UIImage])
+}
+
 class PreviewViewController: UIViewController {
     var mergeImage: UIImage?
     @IBOutlet weak var MergeImageView: UIImageView!
     var rowTag: String?
+    weak var delegate: MergedImagesProtocol!
+    var imageArr = [String: UIImage]()
     @IBOutlet weak var buttonsView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //combine the two images
         let backButton = UIBarButtonItem(title: "", style: .plain, target: navigationController, action: nil)
         navigationItem.leftBarButtonItem = backButton
@@ -38,17 +45,25 @@ class PreviewViewController: UIViewController {
     @IBAction func UsePhotoBtnPressed(_ sender: Any) {
         //save the photo and return..
         if let image = self.mergeImage {
-            if let data = UIImageJPEGRepresentation(image, 0.5) {
+            if let key = rowTag{
+                imageArr[key] = image
+                delegate?.mergeImages(img: self.imageArr)
+            }
+            if let data = UIImagePNGRepresentation(image) {
+                
+                
                 let name = rowTag! + "-" + "copy.png"
                 let filename = getDocumentsDirectory().appendingPathComponent(name)
                 print(filename)
                 try? data.write(to: filename)
+                
             }
         }
         if let composeViewController = self.navigationController?.viewControllers[2] {
             print(composeViewController)
             self.navigationController?.popToViewController(composeViewController, animated: true)
         }
+        
         //save photo
         
        // performSegue(withIdentifier: "returnFormSegue", sender: self)

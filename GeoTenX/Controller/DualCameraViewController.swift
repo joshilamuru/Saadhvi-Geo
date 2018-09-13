@@ -23,7 +23,7 @@ class DualCameraViewController: UIViewController {
     
     @IBOutlet weak var frontImageView: UIImageView!
     var captureSession = AVCaptureSession()
-    
+    var dynamicVC: DynamicFormViewController?
     var backFacingCamera: AVCaptureDevice?
     var frontFacingCamera: AVCaptureDevice?
     var currentDevice: AVCaptureDevice?
@@ -134,6 +134,7 @@ class DualCameraViewController: UIViewController {
             //mergedImage = image(view: ContainerUIView)
             previewVC.mergeImage = mergedImage
             previewVC.rowTag = rowTag
+            previewVC.delegate = dynamicVC
             navigationItem.title = " "
         }
     }
