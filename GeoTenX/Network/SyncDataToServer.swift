@@ -143,12 +143,7 @@ class SyncDataToServer : NSObject {
             
                     if pm.count > 0 {
                     let pm = placemarks![0]
-                    print(pm.country)
-                    print(pm.locality)
-                    print(pm.subLocality)
-                    print(pm.thoroughfare)
-                    print(pm.postalCode)
-                    print(pm.subThoroughfare)
+                 
                     var addressString : String = ""
                     if pm.subLocality != nil {
                     addressString = addressString + pm.subLocality! + ", "

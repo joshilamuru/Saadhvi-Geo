@@ -861,6 +861,7 @@
         <image name="icon150" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="78b-dY-lXW"/>
         <segue reference="1KZ-06-pGR"/>
         <segue reference="LIH-EI-0WB"/>
     </inferredMetricsTieBreakers>

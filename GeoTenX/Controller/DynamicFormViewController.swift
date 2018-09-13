@@ -27,6 +27,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
     var rowTag: String?
     var name: String = ""
     var formValues: [String: Any?]!
+    var images: [UIImage]?
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(DynamicFormViewController.locationUpdateNotification(_:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
@@ -140,39 +141,20 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
                     $0.presentationMode = .segueName(segueName: "DualCameraSegue", onDismiss: nil)
                     }
                    .cellUpdate { cell, row in
-                        let fileManager = FileManager.default
+                    
                     let endIndex = self.name.range(of: "-")!.lowerBound
                     let str = self.name.substring(to: endIndex).trimmingCharacters(in: .whitespacesAndNewlines)
-                    if str == row.tag!{
-                            let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(self.name)
-                            
-                                if fileManager.fileExists(atPath: imagePAth){
-                                    
-                                    self.mergedImg = UIImage(contentsOfFile: imagePAth)
-                                    //self.form.rowBy(tag: "rowTag")?.updateCell()
-                                    
-                                    cell.imageView?.image = self.mergedImg
-                                    
-                                
-                        }
+                    print("str:\(str)")
+                    print("rowTag: \(self.rowTag)")
+
+                    if str == self.rowTag{
+
+                       //             cell.imageView?.image = self.mergedImg
+                       
                     }
-                        
+
                     
                     }
-                        
-                       
-                
-//                    .onPresent { from, to in
-//                        to.selectableRowCellUpdate = { cell, row in
-//                            print("here")
-//                                cell.
-//                                cell.textLabel!.textColor = UIColor.green
-//                        }
-           //             }
-                
-                
-                
-                
                 
                 
             default:
@@ -207,7 +189,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
       
         for val in values {
             if(val.value is UIImage) {
-                let image = val.value
+              //  let image = val.value
                 //let data = UIImageJPEGRepresentation(image as! UIImage, 0.8)
                // valArray[val.key] = data
          //       let data = UIImagePNGRepresentation(image as! UIImage)
@@ -378,7 +360,25 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
     }
     override func viewDidAppear(_ animated: Bool) {
-        
+       
+        if let Tag = rowTag{
+            if let row = self.form.rowBy(tag: Tag){
+                let fileManager = FileManager.default
+               
+                let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(self.name)
+                
+                if fileManager.fileExists(atPath: imagePAth){
+                    
+                        self.mergedImg = UIImage(contentsOfFile: imagePAth)
+                        //self.form.rowBy(tag: "rowTag")?.updateCell()
+                    
+                    
+                    row.baseCell.imageView?.image = mergedImg
+                        row.updateCell()
+                  //  row.reload()
+                  //  self.tableView?.reloadData()
+                }
+        }
     }
 }
-
+}

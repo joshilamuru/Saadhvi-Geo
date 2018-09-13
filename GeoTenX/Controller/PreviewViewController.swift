@@ -38,7 +38,7 @@ class PreviewViewController: UIViewController {
     @IBAction func UsePhotoBtnPressed(_ sender: Any) {
         //save the photo and return..
         if let image = self.mergeImage {
-            if let data = UIImagePNGRepresentation(image) {
+            if let data = UIImageJPEGRepresentation(image, 0.5) {
                 let name = rowTag! + "-" + "copy.png"
                 let filename = getDocumentsDirectory().appendingPathComponent(name)
                 print(filename)
