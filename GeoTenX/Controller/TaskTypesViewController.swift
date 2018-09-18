@@ -25,7 +25,7 @@ class TaskTypesViewController: UITableViewController {
     var tasks: Results<Task>!
     var tableViewData = [cellData]()
     var sectionHeaderNames = [Int: String]()
-    var selectedRowIndex: Int!
+    var selectedRowIndex: Int = 0
     var taskTypeName: String!
 //    var isExpanded: Bool = true
 //    var Section = [[String]]()
@@ -158,24 +158,37 @@ class TaskTypesViewController: UITableViewController {
             performSegue(withIdentifier: "formSegue", sender: self)
         }
     }
+    
+   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         selectedIndex = indexPath.row
         print("selectedIndex: \(selectedIndex)")
         if indexPath.row == 0 {
-            
+
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else {return UITableViewCell()}
             cell.textLabel?.text = tableViewData[indexPath.section].title
-          //  cell.textLabel?.textColor = UIColor.orange
-         //   cell.backgroundColor = UIColor.darkGray
+            cell.textLabel?.textColor = UIColor.darkGray
+            cell.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
+            
+            cell.accessoryType = .detailButton
+          //  cell.accessoryView = UIImageView(image: #imageLiteral(resourceName: "icons8-plus-50"))
             return cell
         }else {
        
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else {return UITableViewCell()}
             cell.textLabel?.text = tableViewData[indexPath.section].sectionData[indexPath.row - 1]
+          
+            cell.backgroundColor = UIColor.white
+            cell.accessoryType = .none
             return cell
         }
     }
     
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        selectedIndex = indexPath.section
+        taskTypeName = tableViewData[indexPath.section].title
+        performSegue(withIdentifier: "formSegue", sender: self)
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "formSegue") {
             let destinationVC = segue.destination as! DynamicFormViewController
@@ -195,7 +208,10 @@ class TaskTypesViewController: UITableViewController {
             }
            
             print(destinationVC.taskTypeID)
-            destinationVC.task = tasks[selectedRowIndex - 1]
+            print(selectedRowIndex)
+            if(selectedRowIndex != 0) {
+                destinationVC.task = tasks[selectedRowIndex - 1]
+            }
             print(destinationVC.task)
             navigationItem.title = " "
             destinationVC.navigationItem.title = "Form Details"

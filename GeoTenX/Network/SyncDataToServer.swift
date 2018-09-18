@@ -102,7 +102,7 @@ class SyncDataToServer : NSObject {
            
                 Alamofire.request(request)
                     .responseJSON { response in
-                  
+                      print(NSString(data: (response.request?.httpBody)!, encoding: String.Encoding.utf8.rawValue))
                         switch response.result {
                         case .failure(let error):
                             print(error)

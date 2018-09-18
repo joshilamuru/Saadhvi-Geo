@@ -12,7 +12,7 @@ import RealmSwift
 class Task: Object {
     
     @objc dynamic var taskIDFrmMobile: String = UUID().uuidString
-    @objc dynamic var taskID : String = ""
+    @objc dynamic var taskID : String = "0"
     @objc dynamic var accountID : String = ""
     @objc dynamic var taskDescription : String = ""
     @objc dynamic var dueDate : String = ""//format "25-Jan-1900"
