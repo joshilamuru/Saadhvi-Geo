@@ -11,8 +11,8 @@ import RealmSwift
 import Reachability
 import SwiftyJSON
 
-class SyncTaskByAccount: NSObject {
-    static let SharedSyncInstance = SyncTaskByAccount()
+class UnSyncedTaskByAccount: NSObject {
+    static let SharedInstance = UnSyncedTaskByAccount()
     let realm = try! Realm()
     
     //declare this inside of viewWillAppear
@@ -21,8 +21,8 @@ class SyncTaskByAccount: NSObject {
         
     }
     
-    func syncTask(id: Int) {
-        let url = Constants.Domains.Stag + Constants.syncTaskInfo
+    func getUnsyncedTask(id: Int, completion: @escaping (String) -> Void) {
+        let url = Constants.Domains.Stag + Constants.unsyncTaskInfo
         var result: JSON!
         let username = UserDefaults.standard.value(forKey: "username") as? String
         var keychainPassword = ""
@@ -56,7 +56,7 @@ class SyncTaskByAccount: NSObject {
                             print(result)
                             self.updateInRealm(json: result)
                         }
-             
+                    completion("We finished")
                 }
             }
         
@@ -89,7 +89,7 @@ class SyncTaskByAccount: NSObject {
                         task.snotesId = item["snotesId"].intValue
                         task.SpecialColumnValue = item["SpecialColumnValue"].stringValue
                         task.sync = item["sync"].stringValue
-                        
+                        task.TasktypeID = item["TasktypeID"].intValue
                         task.taskAddress = item["taskAddress"].stringValue
                         task.TaskDifferentiation = item["TaskDifferentiation"].stringValue
                         task.taskIDFrmMobile = item["taskIDFrmMobile"].stringValue

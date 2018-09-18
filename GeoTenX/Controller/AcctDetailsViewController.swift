@@ -65,6 +65,7 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
             destinationVC.currentLocation = currentLocation
             navigationItem.title = " "
             destinationVC.navigationItem.title = "Task Types"
+            destinationVC.poi = poi
         }
     }
     override func didReceiveMemoryWarning() {
@@ -77,9 +78,10 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "customDetailCell", for: indexPath) as! CustomDetailsViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customDetailCell", for: indexPath)
+            //as! CustomDetailsViewCell
         
-        if(indexPath.row == 0){
+       /* if(indexPath.row == 0){
             cell.ItemName.text = "Account Name"
             cell.ItemDescription.text = poi.name
         }else if(indexPath.row == 1){
@@ -94,8 +96,7 @@ class AcctDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         }else if(indexPath.row  == 4 ){
             cell.ItemName.text = "Status"
             cell.ItemDescription.text = poi.status
-        }
-        return cell
+        }*/        return cell
     }
    
     override func viewWillAppear(_ animated: Bool) {

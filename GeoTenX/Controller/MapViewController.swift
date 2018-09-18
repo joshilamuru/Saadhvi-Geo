@@ -49,7 +49,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
 
     @IBOutlet weak var detailButton: UIButton!
     
-   // MARK: Declare variables
+    @IBOutlet weak var taskButton: UIButton!
+    // MARK: Declare variables
     let locationManager = CLLocationManager()
     var currentLocation = CLLocation()
     var nearHundred = [PointOfInterest]()
@@ -196,6 +197,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        detailButton.isUserInteractionEnabled = true
+        taskButton.isUserInteractionEnabled = true
         navigationItem.title = NSLocalizedString("Nearby Places", comment: "Places near you")
         
         loadPOI()
@@ -212,7 +215,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
    
     @IBAction func taskBtnPressed(_ sender: Any) {
         if(selectedIndex != nil) {
-            performSegue(withIdentifier: "taskTypesSegue", sender: self)
+            taskButton.isUserInteractionEnabled = false
+            UnSyncedTaskByAccount.SharedInstance.getUnsyncedTask(id:savedPlaces[selectedIndex].accountID) {
+                (result) in
+                print("got back:\(result)")
+                DispatchQueue.main.async {
+                     self.performSegue(withIdentifier: "taskTypesSegue", sender: self)
+                }
+            }
+           
         }else{
             //alert user if no selection made
             let formatString = NSLocalizedString("Please select a place before continuing.", comment: "Select a place to continue")
@@ -271,6 +282,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
                     let destinationVC = segue.destination as! TaskTypesViewController
                     navigationItem.title = ""
                     destinationVC.navigationItem.title = NSLocalizedString("Task Types", comment: "Task Types")
+                    
                     destinationVC.poi = savedPlaces[selectedIndex]
                     destinationVC.currentLocation = currentLocation
                     
@@ -293,7 +305,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UISearchRe
 
     @IBAction func detailBtnPressed(_ sender: Any) {
         if(selectedIndex != nil) {
-            performSegue(withIdentifier: "detailSegue", sender: self)
+            detailButton.isUserInteractionEnabled = false
+            UnSyncedTaskByAccount.SharedInstance.getUnsyncedTask(id:savedPlaces[selectedIndex].accountID) {
+                (result) in
+                print("got back:\(result)")
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "detailSegue", sender: self)
+                }
+            }
+            
+            
+            
         }else{
             //alert user if no selection made
             let formatString = NSLocalizedString("Please select a place before continuing.", comment: "Select a place to continue")

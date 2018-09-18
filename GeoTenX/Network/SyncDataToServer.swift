@@ -51,8 +51,7 @@ class SyncDataToServer : NSObject {
                 para.setValue(user, forKey: "eMail")
                 para.setValue(keychainPassword, forKey: "password")
                 para.setValue("911430509678238", forKey: "mobileIMEINumber")
-              
-                
+           
                 for task in tasks
                 {
                     let tk: NSMutableDictionary = NSMutableDictionary()
@@ -99,9 +98,8 @@ class SyncDataToServer : NSObject {
                 let values : [String: Any] = para as! [String : Any]
                 print(values)
                 
-               
                 request.httpBody = try! JSONSerialization.data(withJSONObject: values)
-            //   print(request.httpBody!)
+           
                 Alamofire.request(request)
                     .responseJSON { response in
                   
@@ -116,6 +114,8 @@ class SyncDataToServer : NSObject {
                             
                             print(responseObject)
                             self.updateRealm(data: tasks)
+            
+                       
                         }
                         
                 }
@@ -127,7 +127,7 @@ class SyncDataToServer : NSObject {
             try! realm.write {
                 task.synced = true
             }
-            
+
         }
     }
     

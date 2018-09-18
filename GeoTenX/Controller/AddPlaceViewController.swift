@@ -83,7 +83,7 @@ class AddPlaceViewController:
     func loadForm() {
         
         let sectStr = NSLocalizedString("New Place Info", comment: "Account Info")
-        form +++ Section(sectStr)
+        form +++ Section()
         
         // let section = form.sectionBy(tag: "Account Info")
         for field in customFields! {

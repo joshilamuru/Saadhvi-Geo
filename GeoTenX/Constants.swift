@@ -30,4 +30,5 @@ struct Constants {
         static let createPOI = "WSCreateAccount.do"
         static let createTask = "WSCreateTask.do"
         static let syncTaskInfo = "requestTaskInfo.htm"
+        static let unsyncTaskInfo = "TaskSyncWithAccountID.do"
 }

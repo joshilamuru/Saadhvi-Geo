@@ -100,7 +100,10 @@ class SyncAcctToServer : NSObject {
                     case .success(let responseObject):
                      //      print(NSString(data: (response.request?.httpBody)!, encoding: String.Encoding.utf8.rawValue))
                         print(responseObject)
+                        
+                        
                         self.updateRealm(data: POIs)
+                        
                     }
                     
             }
@@ -111,11 +114,13 @@ class SyncAcctToServer : NSObject {
   
     
     func updateRealm(data: Results<POI>) {
+    
+        
         for poi in data{
             try! realm.write {
                 poi.synced = true
             }
-            
+
         }
     }
 }
