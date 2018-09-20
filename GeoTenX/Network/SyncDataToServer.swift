@@ -36,7 +36,7 @@ class SyncDataToServer : NSObject {
             } catch {
                 fatalError("Error reading password from keychain - \(error)")
             }
-         //   let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .short, timeStyle: .full)
+         //   let timestamp = DateFormatter.localizedString(from: NSDate() as F, dateStyle: .short, timeStyle: .full)
             var request = URLRequest(url: url!)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -96,7 +96,7 @@ class SyncDataToServer : NSObject {
                 
                 para.setObject(tkArray, forKey: "tasks" as NSCopying)
                 let values : [String: Any] = para as! [String : Any]
-                print(values)
+             //   print(values)
                 
                 request.httpBody = try! JSONSerialization.data(withJSONObject: values)
            

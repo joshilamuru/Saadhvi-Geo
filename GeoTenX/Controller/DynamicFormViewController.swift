@@ -200,9 +200,10 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol, Mer
     }
     @IBAction func saveBtnPressed(_ sender: Any) {
         formValues = self.form.values()
-        print(formValues)
+     //   print(formValues)
         //add images obtained via preview vc
         for item in images{
+            
             print(item.key)
             formValues[item.key] = item.value
             
@@ -226,11 +227,16 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol, Mer
       
         for val in values {
             if(val.value is UIImage) {
-                let imageData = UIImagePNGRepresentation(val.value as! UIImage)
+                //let imageData = UIImagePNGRepresentation(val.value as! UIImage)
+                let imageResized = (val.value as! UIImage).resized(withPercentage: 0.1)
+                let imageData = UIImageJPEGRepresentation(imageResized!, 0.0)
+                print("SIZE OF IMAGE:\(imageData?.count)")
                 let imageStr = imageData?.base64EncodedString(options:.lineLength64Characters)
-                
+                print("SIZE OF IMAGE STR: \(imageStr?.lengthOfBytes(using: .utf8))")
                 valArray[val.key] = imageStr
-             
+            
+                
+                
             }else if(val.value is NSSet){
         
                 let strArr: NSArray = (val.value as! NSSet).allObjects as NSArray
@@ -261,7 +267,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol, Mer
                     task.TasktypeID = taskTypeID
                     task.accountID = "\(poi.accountID)"
                     let dateFormatterGet = DateFormatter()
-                    dateFormatterGet.dateFormat = "MM-dd-yyyy HH:mm:ss"
+                    dateFormatterGet.dateFormat = "dd-MM-yyyy HH:mm:ss"
                     let date = dateFormatterGet.string(from: Date())
                     print("DATE FORMATTED: \(date)")
                     task.createdDate = date
@@ -271,7 +277,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol, Mer
         
         
                     task.Others = updateLocDetailsInOthers(data: values)
-                    print("from saveTaskDetails- Others:\(task.Others)")
+                 //   print("from saveTaskDetails- Others:\(task.Others)")
         
         
         do{
