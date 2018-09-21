@@ -20,6 +20,8 @@
 		CB34954521456DF900A205A1 /* TaskTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB34954421456DF900A205A1 /* TaskTypesViewController.swift */; };
 		CB34F3742119CB9B00AFA75B /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */; };
 		CB366BFD21525A88003C843F /* UIImage+Compress.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB366BFC21525A88003C843F /* UIImage+Compress.swift */; };
+		CB37D0A52155054200B9D00E /* TaskTypeCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB37D0A32155054200B9D00E /* TaskTypeCustomCell.swift */; };
+		CB37D0A62155054200B9D00E /* TaskTypeCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB37D0A42155054200B9D00E /* TaskTypeCustomCell.xib */; };
 		CB55BF7C20D0E5DA0084375D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55BF7B20D0E5DA0084375D /* AppDelegate.swift */; };
 		CB55BF8120D0E5DA0084375D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB55BF7F20D0E5DA0084375D /* Main.storyboard */; };
 		CB55BF8420D0E5DB0084375D /* sampleForGeo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB55BF8220D0E5DB0084375D /* sampleForGeo.xcdatamodeld */; };
@@ -66,6 +68,8 @@
 		CB34954421456DF900A205A1 /* TaskTypesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTypesViewController.swift; sourceTree = "<group>"; };
 		CB34F3732119CB9A00AFA75B /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		CB366BFC21525A88003C843F /* UIImage+Compress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compress.swift"; sourceTree = "<group>"; };
+		CB37D0A32155054200B9D00E /* TaskTypeCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTypeCustomCell.swift; sourceTree = "<group>"; };
+		CB37D0A42155054200B9D00E /* TaskTypeCustomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskTypeCustomCell.xib; sourceTree = "<group>"; };
 		CB55BF7820D0E5DA0084375D /* GeoTenX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeoTenX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB55BF7B20D0E5DA0084375D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB55BF8020D0E5DA0084375D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -135,6 +139,8 @@
 			children = (
 				CB3121652122A7DD00F9B19F /* CustomDetailsViewCell.swift */,
 				CB3121662122A7DD00F9B19F /* DetailsCell.xib */,
+				CB37D0A32155054200B9D00E /* TaskTypeCustomCell.swift */,
+				CB37D0A42155054200B9D00E /* TaskTypeCustomCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -332,6 +338,7 @@
 				CBE1C1CD2122CBD500B4D61F /* Default-568h@2x.png in Resources */,
 				CB67A50821283FBC00EDDCA9 /* LaunchScreen.storyboard in Resources */,
 				CB55BF8120D0E5DA0084375D /* Main.storyboard in Resources */,
+				CB37D0A62155054200B9D00E /* TaskTypeCustomCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +436,7 @@
 				CB366BFD21525A88003C843F /* UIImage+Compress.swift in Sources */,
 				CB1C28F021413C33005FAA35 /* FormGenerator.swift in Sources */,
 				CB34F3742119CB9B00AFA75B /* KeychainPasswordItem.swift in Sources */,
+				CB37D0A52155054200B9D00E /* TaskTypeCustomCell.swift in Sources */,
 				CBC50FB8211DCC4200015827 /* SyncDataToServer.swift in Sources */,
 				CB9BB20A2135131000FCE5FB /* RoundButton.swift in Sources */,
 				CB5D7B2820D526B80042EE03 /* Constants.swift in Sources */,

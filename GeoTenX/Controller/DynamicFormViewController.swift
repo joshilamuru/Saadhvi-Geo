@@ -13,7 +13,8 @@ import ImageRow
 import CoreLocation
 import GoogleMaps
 import GooglePlaces
-
+import Alamofire
+import SwiftyJSON
 class DynamicFormViewController: FormViewController, LocationUpdateProtocol, MergedImagesProtocol {
    private let preview = PreviewViewController()
     
@@ -227,15 +228,23 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol, Mer
       
         for val in values {
             if(val.value is UIImage) {
-                //let imageData = UIImagePNGRepresentation(val.value as! UIImage)
-                let imageResized = (val.value as! UIImage).resized(withPercentage: 0.1)
-                let imageData = UIImageJPEGRepresentation(imageResized!, 0.0)
-                print("SIZE OF IMAGE:\(imageData?.count)")
-                let imageStr = imageData?.base64EncodedString(options:.lineLength64Characters)
-                print("SIZE OF IMAGE STR: \(imageStr?.lengthOfBytes(using: .utf8))")
-                valArray[val.key] = imageStr
-            
+//                //let imageData = UIImagePNGRepresentation(val.value as! UIImage)
+//                let imageResized = (val.value as! UIImage).resized(withPercentage: 0.1)
+//                let imageData = UIImageJPEGRepresentation(imageResized!, 0.0)
+//                print("SIZE OF IMAGE:\(imageData?.count)")
+//                let imageStr = imageData?.base64EncodedString(options:.lineLength64Characters)
+//                print("SIZE OF IMAGE STR: \(imageStr?.lengthOfBytes(using: .utf8))")
+//                valArray[val.key] = imageStr
+//
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
+               
+                let timestamp = dateFormatter.string(from: Date())
+                let imageData = UIImageJPEGRepresentation(val.value as! UIImage, 1.0)
+                //send imageData to server via WSUploadSignature.do
                 
+                uploadImage(parameters: ["fileID": UUID().uuidString,"fileName": val.key + timestamp + ".jpg"], imageData: imageData!)
+                valArray[val.key] = ""
                 
             }else if(val.value is NSSet){
         
@@ -246,7 +255,7 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol, Mer
                 
             }else if(val.value is NSDate){
                  let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "MM-dd-yyyy HH:mm:ss"
+                dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
                 let dateStr = dateFormatter.string(from: (val.value as! Date))
                 valArray.updateValue(dateStr, forKey: val.key)
             }else if(val.value is NSNull){
@@ -257,6 +266,45 @@ class DynamicFormViewController: FormViewController, LocationUpdateProtocol, Mer
     }
     
     
+    
+        func uploadImage(parameters: [String : String], imageData: Data?, onCompletion: ((JSON?) -> Void)? = nil, onError: ((Error?) -> Void)? = nil){
+            
+            let url = Constants.Domains.Stag + Constants.uploadImage
+            
+            let headers: HTTPHeaders = [
+                /* "Authorization": "your_access_token",  in case you need authorization header */
+                "Content-type": "multipart/form-data"
+            ]
+            
+            Alamofire.upload(multipartFormData: { (multipartFormData) in
+                for (key, value) in parameters {
+                    multipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+                }
+                
+                if let data = imageData{
+                   multipartFormData.append(data, withName: "image", fileName: "image.png", mimeType: "image/png")
+                 
+                  
+                }
+                
+            }, usingThreshold: UInt64.init(), to: url, method: .post, headers: headers) { (result) in
+                switch result{
+                case .success(let upload, _, _):
+                    upload.responseJSON { response in
+                        print("Succesfully uploaded")
+                        if let err = response.error{
+                            onError?(err)
+                            return
+                        }
+                        onCompletion?(nil)
+                    }
+                case .failure(let error):
+                    print("Error in upload: \(error.localizedDescription)")
+                    onError?(error)
+                }
+            }
+        }
+
     
     func saveTaskDetails(values: [String: Any?]) {
 

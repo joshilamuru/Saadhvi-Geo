@@ -31,4 +31,5 @@ struct Constants {
         static let createTask = "WSCreateTask.do"
         static let syncTaskInfo = "requestTaskInfo.htm"
         static let unsyncTaskInfo = "TaskSyncWithAccountID.do"
+        static let  uploadImage = "WSUploadSignature.do"
 }

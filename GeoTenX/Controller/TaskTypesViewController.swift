@@ -159,36 +159,63 @@ class TaskTypesViewController: UITableViewController {
         }
     }
     
+  
    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         selectedIndex = indexPath.row
         print("selectedIndex: \(selectedIndex)")
         if indexPath.row == 0 {
-
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else {return UITableViewCell()}
+            
             cell.textLabel?.text = tableViewData[indexPath.section].title
+            
+            
             cell.textLabel?.textColor = UIColor.darkGray
             cell.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
             
-            cell.accessoryType = .detailButton
-          //  cell.accessoryView = UIImageView(image: #imageLiteral(resourceName: "icons8-plus-50"))
+            let btnImage = UIImage(named:"rt_arrow.png")
+            let button = UIButton(type: .custom)
+            // match the button's size with the image size
+            let frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat((btnImage?.size.width)!), height: CGFloat((btnImage?.size.height)!))
+            button.frame = frame
+            button.setBackgroundImage(btnImage, for: .normal)
+            
+            cell.accessoryView = button
+            let action = #selector(checkButtonTapped(sender:event:))
+            (cell.accessoryView as? UIButton)?.addTarget(self, action: action, for: .touchUpInside)
+          
+        
+         
+        
             return cell
         }else {
        
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else {return UITableViewCell()}
-            cell.textLabel?.text = tableViewData[indexPath.section].sectionData[indexPath.row - 1]
-          
+             let cell = tableView.dequeueReusableCell(withIdentifier: "cell",for: indexPath)
+             cell.textLabel?.text = tableViewData[indexPath.section].sectionData[indexPath.row - 1]
+    
             cell.backgroundColor = UIColor.white
             cell.accessoryType = .none
             return cell
         }
     }
-    
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         selectedIndex = indexPath.section
         taskTypeName = tableViewData[indexPath.section].title
         performSegue(withIdentifier: "formSegue", sender: self)
     }
+   
+    @objc func checkButtonTapped(sender: UIButton?, event: UIEvent) {
+        let touches = event.allTouches
+        let touch = touches!.first
+        guard let touchPosition = touch?.location(in: self.tableView) else {
+            return
+        }
+        if let indexPath = tableView.indexPathForRow(at: touchPosition) {
+            tableView(self.tableView, accessoryButtonTappedForRowWith: indexPath)
+        }
+    }
+  
+       
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "formSegue") {
             let destinationVC = segue.destination as! DynamicFormViewController
